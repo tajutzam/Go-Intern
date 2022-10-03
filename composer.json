@@ -1,0 +1,28 @@
+{
+    "name": "zam/learn-php-mvc",
+    "description": "learn php mvc",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            
+            "LearnPhpMvc\\": "src/app"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LearnPhpMvc\\": "src/test"
+        }
+    },
+    "authors": [
+        {
+            "name": "zam"
+        }
+    ],
+    "require": {
+        "php" :">8"
+
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "9.5.8"
+    }
+}
