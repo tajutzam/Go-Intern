@@ -3,6 +3,8 @@
     namespace LearnPhpMvc\controller;
     
 
+    use LearnPhpMvc\APP\View;
+
     class HomeController{
         
         function index(){
@@ -10,9 +12,8 @@
                 'title'=>"Belajar php mvc",
                 'content'=>"Beleajar php mvc content"
             ];
-            
 
-            require __DIR__.'../../view/home/index.php';
+            View::render("/home/index" , $model);
         }
         
     
