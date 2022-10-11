@@ -74,5 +74,14 @@
     integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
     crossorigin="anonymous"
 ></script>
+
+<!-- modal script -->
+<script>
+    const myModal = new bootstrap.Modal(document.getElementById('myModal'), options)
+</script>
+<!-- end modal script -->
+<script>
+    feather.replace()
+</script>
 </body>
 </html>

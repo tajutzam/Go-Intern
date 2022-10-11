@@ -3,7 +3,6 @@
     require_once __DIR__.'/../../../vendor/autoload.php';
     use LearnPhpMvc\app\controller\HomeController;
     class Router{
-
         private static array $routes = [];
         
         public static function add(string $method , string $path , string $controller , string $function) :void
@@ -22,7 +21,6 @@
             }
             $method = $_SERVER['REQUEST_METHOD'];
             foreach(self::$routes as $route){
-
                 $patern = '#^'.$route['path'].'$#';
                 if(preg_match($patern , $path , $variables) && $method == $route['method']){
                     $controller = new $route['controller'];
