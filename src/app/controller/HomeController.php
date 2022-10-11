@@ -10,10 +10,11 @@
         function index(){
             $model=[
                 'title'=>"Belajar php mvc",
-                'content'=>"Beleajar php mvc content"
+                'content'=>"Go Intern"
             ];
 
             View::render("/home/index" , $model);
+            View::redirect("");
         }
         
     

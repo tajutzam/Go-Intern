@@ -10,32 +10,32 @@
         </div>
     </div>
 </div>
-<div class="row justify-content-between">
+<div class="row justify-content-between mt-5">
     <aside class="col col-12">
         <div class="box">
             <div class="card js-sidebar" style="width: 40rem">
-                <div class="card-body">
+                <div class="card-body text-center" style="padding: 20px">
                     <h5 class="card-title text-center">
                         Kami Di <span style="color: #004aad">Dukung Oleh</span>
                     </h5>
-                    <div class="row">
-                        <div class="col-sm">
+                    <div class="d-flex justify-content-between align-items-center p-5">
+                        <div class="">
                             <img
                                     src="../assets/Logo%20JTI%20(Hitam)1.png"
-                                    style="height: 150px; width: 150px"
+                                    style="width: 150px;"
                                     alt="Jti Logo"
                                     srcset=""
                             />
                         </div>
-                        <div class="col-sm">
+                        <div class="">
                             <img
                                     src="../assets/logo-polije.png"
-                                    style="height: 150px; width: 150px"
+                                    style=" width: 150px"
                                     alt="Polie Logo"
                                     srcset=""
                             />
                         </div>
-                        <div class="col-sm">
+                        <div class="">
                             <img
                                     src="../assets/logo-kominfo.png"
                                     style="height: 150px; width: 150px"
