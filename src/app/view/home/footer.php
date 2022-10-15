@@ -1,9 +1,9 @@
 
 <!-- start footer -->
-<footer class="text-center text-lg-start bg-light text-muted">
+<footer class="text-center text-lg-start text-muted">
     <!-- Section: Social media -->
     <section
-        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+        class="d-flex justify-content-center justify-content-lg-between  border-bottom"
     ></section>
     <!-- Section: Social media -->
 
@@ -83,5 +83,6 @@
 <script>
     feather.replace()
 </script>
+
 </body>
 </html>

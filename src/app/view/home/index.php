@@ -13,7 +13,7 @@
 <div class="row justify-content-between mt-5">
     <aside class="col col-12">
         <div class="box">
-            <div class="card js-sidebar" style="width: 40rem">
+            <div class="card js-sidebar" style="width: 40rem;">
                 <div class="card-body text-center" style="padding: 20px">
                     <h5 class="card-title text-center">
                         Kami Di <span style="color: #004aad">Dukung Oleh</span>

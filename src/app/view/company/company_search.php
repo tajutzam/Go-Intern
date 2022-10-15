@@ -62,6 +62,28 @@
         </div>
     <?php } ?>
 </div>
+<div class="content-head2">
+    <h1 class="text-center" style="font-size: 20px;padding-top: 20px">
+        Buat magang mu menjadi mudah
+    </h1>
+    <div class="row">
+        <div class="col col-6 mb-3 mt-3 d-flex justify-content-around">
+            <img src="http://localhost:8080/assets/peoples.png" alt="" style="height: 100px">
+        </div>
+        <div class="col col-6 mb-3 mt-3 d-flex justify-content-around">
+            <img src="http://localhost:8080/assets/company.png" alt="" style="height: 100px">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-6 mb-3 mt-3 d-flex justify-content-around">
+            <p>Kerja sama dengan banyak perusahaan</p>
+        </div>
+        <div class="col col-6 mb-3 mt-3 d-flex justify-content-around">
+            <p>Real Employe In Indonesia</p>
+        </div>
+    </div>
+</div>
+
 <div class="mt-5"></div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
