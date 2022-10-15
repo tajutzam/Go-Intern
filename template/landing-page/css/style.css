@@ -1,4 +1,10 @@
 
+
+.navbar-fixed-top.scrolled {
+  background-color: salmon !important;
+  transition: background-color 200ms linear;
+}
+
 a:hover {
   color: #004aad;
 }

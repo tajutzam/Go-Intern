@@ -1,7 +1,7 @@
 <?php
     namespace LearnPhpMvc\APP;
     require_once __DIR__.'/../../../vendor/autoload.php';
-    use LearnPhpMvc\app\controller\HomeController;
+ 
     class Router{
         private static array $routes = [];
         

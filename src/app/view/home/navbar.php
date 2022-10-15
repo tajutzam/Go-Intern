@@ -1,6 +1,6 @@
 <body>
 <!-- navbar -->
-<nav class="navbar navbar-expand fixed-top bg-light">
+<nav class="navbar navbar-expand fixed-top" id="navbar">
     <div class="container-fluid">
         <!-- logo -->
         <a class="navbar-brand" href="/">
