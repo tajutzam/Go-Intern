@@ -13,7 +13,7 @@ class SekolahRepositoryTest extends TestCase
     protected function setUp() : void
     {
         $this->repository = new SekolahRepository(Database::getConnection());
-      $this->repository->deleteAll();
+    //  $this->repository->deleteAll();
     }
 
     public function testFindAll()
@@ -34,7 +34,6 @@ class SekolahRepositoryTest extends TestCase
         self::assertNotNull($sekolah);
     }
 
-
     public function testFindByIdFailed()
     {
         $sekolah = $this->repository->findById(12);
@@ -48,7 +47,6 @@ class SekolahRepositoryTest extends TestCase
         $sekolah->jurusan = "Komputer jaringan";
         $save = $this->repository->save($sekolah);
         self::assertNotNull($save);
-
     }
 
     public function testUpdate()
@@ -56,12 +54,22 @@ class SekolahRepositoryTest extends TestCase
         $sekolah = new Sekolah();
         $sekolah->sekolah = " Smkn baru 2";
         $sekolah->jurusan = "jurusan baru";
-        $sekolah->id = 23;
+        $sekolah->id = 24;
         $update = $this->repository->update($sekolah);
 //      data update sesuai
-        self::assertEquals($update->id , 23);
+        self::assertEquals($update->id, 24);
         self::assertEquals($update->sekolah , $sekolah->sekolah);
         self::assertEquals($update->jurusan, $sekolah->jurusan);
+    }
+
+    public function testUpdateFailed()
+    {
+        $sekolah = new Sekolah();
+        $sekolah->sekolah = " Smkn baru 2";
+        $sekolah->jurusan = "jurusan baru";
+        $sekolah->id = 26;
+        $update = $this->repository->update($sekolah);
+        self::assertNull($update);
     }
 
 

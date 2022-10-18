@@ -55,8 +55,7 @@ class SekolahRepository
             }
             return $sekolah;
         }else{
-            $sekolah=null;
-            return $sekolah;
+            return null;
         }
     }
     public function save(Sekolah $sekolah) : Sekolah {
@@ -69,17 +68,24 @@ class SekolahRepository
         return $sekolah;
     }
 
-    public function deleteAll(){
+    public function deleteAll(): void
+    {
         $this->connection->exec("delete from sekolah");
     }
 
-    public function  update(Sekolah $sekolah) : Sekolah{
-        $PDOStatement = $this->connection->prepare("update sekolah set nama_sekolah = ? , jurusan = ? where id = ?");
-        $PDOStatement->execute([
-            $sekolah->sekolah ,
-            $sekolah->jurusan,
-            $sekolah->id
-        ]);
-        return $sekolah;
+    public function  update(Sekolah $sekolah) : ?Sekolah{
+
+        $sekolahFindById = $this->findById($sekolah->id);
+        if($sekolahFindById==null){
+            return null;
+        }else{
+            $PDOStatement = $this->connection->prepare("update sekolah set nama_sekolah = ? , jurusan = ? where id = ?");
+            $PDOStatement->execute([
+                $sekolah->sekolah ,
+                $sekolah->jurusan,
+                $sekolah->id
+            ]);
+            return $sekolah;
+        }
     }
 }

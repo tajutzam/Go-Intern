@@ -13,8 +13,8 @@ class RoleRepositoryTest extends TestCase
     protected function setUp() : void
     {
         $this-> repository = new RoleRepository(Database::getConnection());
-
     }
+
     public function testSave()
     {
         $role = new Role();
@@ -25,17 +25,16 @@ class RoleRepositoryTest extends TestCase
     }
     public function testFindByIdSuccess()
     {
-        $byId = $this->repository->findById(3);
+        $byId = $this->repository->findById(4);
         var_dump($byId);
         self::assertNotNull($byId);
     }
 
-    public function testFindByIdNotSuccess()
+    public function testFindByIdNotFailed()
     {
-        $role = $this->repository->findById(4);
+        $role = $this->repository->findById(5);
         self::assertNull($role);
     }
-
     public function testFindAll()
     {
         $role = $this->repository->findAll();
@@ -43,9 +42,20 @@ class RoleRepositoryTest extends TestCase
         self::assertNotNull($role);
     }
 
+    public function testFindAllNull()
+    {
+        $role = $this->repository->findAll();
+//        data harus null agar success
+        self::assertNull($role);
+    }
+
+
     public function testUpdateSucces()
     {
-        $result = $this->repository->update("admin baru", 3);
+        $role = new Role();
+        $role->setId(3);
+        $role->setRole("admin new");
+        $result = $this->repository->update($role);
         var_dump($result);
         self::assertNotNull($result);
     }
