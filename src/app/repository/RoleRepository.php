@@ -26,7 +26,7 @@ class RoleRepository
         $this->connection->exec($query);
     }
     public function  findById($id) : ?Role{
-        $result = array();
+
         $query = "select id, role from role where id = ?";
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$id]);
@@ -64,28 +64,21 @@ class RoleRepository
         }
     }
 
-    public function update($role , $id) : array{
-        $result = array();
+    public function update(Role $role) : ?Role{
+
         $query = "update role set role = ? where id = ?";
-        $roleUser = $this->findById($id);
+        $roleUser = $this->findById($role->getId());
         if($roleUser==null){
-            $result= array(
-              "status" => "data tidak ditemukan"
-            );
+            return null;
         }else{
             try {
                 $PDOStatement = $this->connection->prepare($query);
-                $PDOStatement->execute([$role , $id]);
-                return array(
-                    "status" => "data berhasil di update"
-                );
+                $PDOStatement->execute([$role->getRole() , $role->getId()]);
+                return $role;
             }catch (\PDOException $pdo){
-                http_response_code(400);
-                return array(
-                    "status" => "terjadi kesalahan"
-                );
+                http_response_code(404);
             }
+            return $role;
         }
-        return $result;
     }
 }

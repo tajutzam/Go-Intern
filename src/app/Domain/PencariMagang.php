@@ -3,6 +3,7 @@
 
 namespace LearnPhpMvc\Domain;
 
+use Cassandra\Date;
 use DateTime;
 
 class PencariMagang{
@@ -12,14 +13,65 @@ class PencariMagang{
     private string $password;
     private string $email;
     private string $no_telp;
+    private string $tanggalLahir;
+    private int $id_sekolah;
+
+    /**
+     * @return int
+     */
+    public function getIdSekolah(): int
+    {
+        return $this->id_sekolah;
+    }
+
+    /**
+     * @param int $id_sekolah
+     */
+    public function setIdSekolah(int $id_sekolah): void
+    {
+        $this->id_sekolah = $id_sekolah;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStatusMagang(): bool
+    {
+        return $this->statusMagang;
+    }
+
+    /**
+     * @param bool $statusMagang
+     */
+    public function setStatusMagang(bool $statusMagang): void
+    {
+        $this->statusMagang = $statusMagang;
+    }
+    private string $statusMagang;
     private string $agama;
+
+    /**
+     * @return DateTime
+     */
+    public function getTanggalLahir(): string
+    {
+        return $this->tanggalLahir;
+    }
+
+    /**
+     * @param DateTime $tanggalLahir
+     */
+    public function setTanggalLahir(string $tanggalLahir): void
+    {
+        $this->tanggalLahir = $tanggalLahir;
+    }
     private string $token;
     private string $cv;
     private string $resume;
-    private bool $status;
+    private string $status;
     private int $role;
-    private DateTime $create_at;
-    private DateTime $update_at;
+    private string $create_at;
+    private string $update_at;
     
 
     public function getId()
