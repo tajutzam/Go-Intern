@@ -15,6 +15,33 @@ class PencariMagang{
     private string $no_telp;
     private string $tanggalLahir;
     private int $id_sekolah;
+    private string $foto;
+
+    /**
+     * @return string
+     */
+    public function getFoto(): string
+    {
+        return $this->foto;
+    }
+
+    /**
+     * @param string $foto
+     */
+    public function setFoto(string $foto): void
+    {
+        $this->foto = $foto;
+    }
+
+
+    /**
+     * @param Sekolah $id_sekolah
+     */
+//    public function __construct(int $id_sekolah)
+//    {
+//        $this->id_sekolah = $id_sekolah;
+//    }
+
 
     /**
      * @return int
@@ -35,7 +62,7 @@ class PencariMagang{
     /**
      * @return bool
      */
-    public function isStatusMagang(): bool
+    public function isStatusMagang(): string
     {
         return $this->statusMagang;
     }
@@ -43,7 +70,7 @@ class PencariMagang{
     /**
      * @param bool $statusMagang
      */
-    public function setStatusMagang(bool $statusMagang): void
+    public function setStatusMagang(string $statusMagang): void
     {
         $this->statusMagang = $statusMagang;
     }

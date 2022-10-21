@@ -16,7 +16,7 @@ class PencariMagangRepositoryTest extends TestCase
     {
         $this->repository= new PencariMagangRepository(Database::getConnection());
         $this->sekolahRepository = new SekolahRepository(Database::getConnection());
-        $this->repository->deleteAll();
+        //$this->repository->deleteAll();
     }
     public function testFindAll()
     {
@@ -25,24 +25,22 @@ class PencariMagangRepositoryTest extends TestCase
         self::assertNotNull($all);
         self::assertEquals("oke" , $all['status']);
     }
-
     public function testFindAllNull()
     {
         $all = $this->repository->findAll();
         self::assertEquals(404 , http_response_code());
         self::assertEquals("data tidak ditemukan" , $all['status']);
     }
-
     public function testSave()
     {
-        $pencariMagang = new PencariMagang();
+        $sekolah = new Sekolah();
+        $pencariMagang = new PencariMagang($sekolah);
         $sekolah = $this->sekolahRepository->findById(24);
         $dt = new \DateTime();
         $date = \date("Y-m-d");
                     $pencariMagang->setUsername("zam baru");
                     $pencariMagang->setPassword("zam baru");
                     $pencariMagang -> setEmail("zam");
-                    $sekolah->id;
                     $pencariMagang->setNo_telp("0821323123");
                     $pencariMagang ->setAgama("islam");
                     $pencariMagang -> setTanggalLahir($date);
@@ -50,21 +48,101 @@ class PencariMagangRepositoryTest extends TestCase
                     $pencariMagang -> setCv("Adasdas");
                     $pencariMagang -> setResume("Adadas");
                     $pencariMagang -> setStatus("aktif");
-                    $pencariMagang -> setStatusMagang("tidak-magang");
+                    $pencariMagang -> setStatusMagang("tidak_magang");
                     $pencariMagang -> setRole(3);
+                    $pencariMagang->setFoto("imgae.jpg");
         $magang = $this->repository->save($pencariMagang , $sekolah);
         self::assertNotNull($magang);
+        self::assertEquals($pencariMagang->getUsername() , $magang->getUsername());
+        self::assertEquals($pencariMagang->getRole() , $magang->getRole());
     }
 
     public function testFindById()
     {
-        $pencariMagang = $this->repository->findById(12);
+        $pencariMagang = $this->repository->findById(17);
         self::assertNotNull($pencariMagang);
-        self::assertEquals(9 , $pencariMagang->getId());
+        self::assertEquals(17 , $pencariMagang->getId());
+
     }
     public function testFindByIdFailed()
     {
         $pencariMagang = $this->repository->findById(9);
        self::assertNull($pencariMagang);
     }
+
+    public function testUpdate()
+    {
+        $sekolah = new Sekolah();
+        $sekolah->id=24;
+        $pencariMagang = new PencariMagang($sekolah);
+        $pencariMagang->setUsername("zam baru update");
+        $pencariMagang->setPassword("password baru");
+        $pencariMagang->setEmail("mohammad bar");
+        $pencariMagang->setRole(3);
+        $pencariMagang->setId(15);
+        $pencariMagang->setIdSekolah(24);
+        $pencariMagang->setStatus("aktif");
+        $pencariMagang->setAgama("islam");
+        $pencariMagang->setNo_telp("0123123");
+        $pencariMagang->setToken("sadasdasds");
+        $pencariMagang->setCv("asdasd");
+        $pencariMagang->setResume("asdasd");
+        $pencariMagang->setStatusMagang("tidak_magang");
+        $pencariMagang->setFoto("aweaweaw.jpg");
+        $date = \date("Y-m-d");
+        $timestamp = new \DateTime();
+        $pencariMagang->setTanggalLahir($date);
+        $updated = $this->repository->update($pencariMagang);
+        var_dump($updated);
+        self::assertNotNull($updated);
+        self::assertEquals($pencariMagang->getUsername() , $updated->getUsername());
+        self::assertEquals($pencariMagang->getEmail() , $updated->getEmail());
+        self::assertEquals($pencariMagang->getPassword() , $updated->getPassword());
+        self::assertEquals($pencariMagang->getTanggalLahir() , $updated->getTanggalLahir());
+        self::assertEquals($pencariMagang->getToken() , $updated->getToken());
+        self::assertEquals($pencariMagang->getStatus() , $updated->getStatus());
+        self::assertEquals($pencariMagang->getRole() , $updated->getRole());
+        self::assertEquals($pencariMagang->getCv() , $updated->getCv());
+
+    }
+
+    public function testUpdateFailed()
+    {
+        $sekolah = new Sekolah();
+        $sekolah->id=24; // data not found
+        $pencariMagang = new PencariMagang($sekolah);
+        $pencariMagang->setId(17);
+        $pencariMagang->setUsername("zam baru update");
+        $pencariMagang->setPassword("password baru");
+        $pencariMagang->setEmail("mohammad bar");
+        $pencariMagang->setRole(3);
+        $pencariMagang->setId(13);
+        $pencariMagang->setStatus("aktif");
+        $pencariMagang->setAgama("islam");
+        $pencariMagang->setNo_telp("0123123");
+        $pencariMagang->setToken("sadasdasds");
+        $pencariMagang->setCv("asdasd");
+        $pencariMagang->setResume("asdasd");
+        $pencariMagang->setFoto("asdasd/jpd");
+        $pencariMagang->setStatusMagang("tidak_magang");
+        $date = \date("Y-m-d");
+        $timestamp = new \DateTime();
+        $pencariMagang->setTanggalLahir($date);
+        $updated = $this->repository->update($pencariMagang);
+        self::assertNull($updated);
+    }
+
+    public function testDeleteById()
+    {
+        $deleteById = $this->repository->deleteById(15);
+        self::assertTrue($deleteById);
+    }
+
+    public function testDeleteByIdFailed()
+    {
+        $deleteById = $this->repository->deleteById(123);
+        self::assertFalse($deleteById);
+    }
+
+
 }

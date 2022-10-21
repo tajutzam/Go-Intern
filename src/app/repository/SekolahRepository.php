@@ -12,9 +12,15 @@ class SekolahRepository
     /**
      * @param \PDO $connection
      */
+
     public function __construct(\PDO $connection)
     {
         $this->connection = $connection;
+    }
+
+    public function deleteAll(): void
+    {
+        $this->connection->exec("delete from sekolah");
     }
 
     public function findAll() : array{
@@ -42,7 +48,6 @@ class SekolahRepository
     }
 
     public function findById($id) : ?Sekolah {
-
         $query = "select * from sekolah where id = ?";
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$id]);
@@ -58,6 +63,7 @@ class SekolahRepository
             return null;
         }
     }
+
     public function save(Sekolah $sekolah) : Sekolah {
         $query = "insert into sekolah (nama_sekolah , jurusan ) values (? , ? )";
         $PDOStatement = $this->connection->prepare($query);
@@ -68,13 +74,7 @@ class SekolahRepository
         return $sekolah;
     }
 
-    public function deleteAll(): void
-    {
-        $this->connection->exec("delete from sekolah");
-    }
-
     public function  update(Sekolah $sekolah) : ?Sekolah{
-
         $sekolahFindById = $this->findById($sekolah->id);
         if($sekolahFindById==null){
             return null;
@@ -86,6 +86,17 @@ class SekolahRepository
                 $sekolah->id
             ]);
             return $sekolah;
+        }
+    }
+
+    public function deleteById($id) : bool {
+        try {
+            $PDOStatement = $this->connection->prepare("delete from sekolah where id = ?");
+            $PDOStatement->execute([$id]);
+            return true;
+        }catch (\PDOException $PDOException){
+            var_dump($PDOStatement);
+            return false;
         }
     }
 }

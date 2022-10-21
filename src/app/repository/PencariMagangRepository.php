@@ -9,15 +9,10 @@ use LearnPhpMvc\Domain\Sekolah;
 class PencariMagangRepository
 {
     public \PDO $connection ;
-
-    /**
-     * @param \PDO $connection
-     */
     public function __construct(\PDO $connection)
     {
         $this->connection = $connection;
     }
-
     public function findAll() : array{
         $query = "select * from pencari_magang";
         $PDOStatement = $this->connection->query($query);
@@ -49,24 +44,21 @@ class PencariMagangRepository
                 );
                 array_push($response, $item);
             }
-
         }else{
             http_response_code(404);
             $response['status'] = "data tidak ditemukan";
         }
         return $response;
     }
-
     public function deleteAll(){
         $this->connection->exec("delete from pencari_magang");
     }
-
     public function save(PencariMagang $pencariMagang , Sekolah $sekolah) : ?PencariMagang{
         $date = new DateTime();
         $timestamp = $date->getTimestamp();
         $dtNow = gmdate("Y-m-d\TH:i:s" , $timestamp);
         try {
-            $query = "INSERT INTO `pencari_magang`( `username`, `password`, `email`, `id_sekolah`, `no_telp`, `agama`, `tanggal_lahir`, `token`, `cv`, `resume`, `status`, `status_magang`, `role`, `crate_add`, `update_add`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $query = "INSERT INTO `pencari_magang`( `username`, `password`, `email`, `id_sekolah`, `no_telp`, `agama`, `tanggal_lahir`, `token`, `cv`, `resume`, `status`, `status_magang`, `role`, `crate_add`, `update_add` , `foto`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute(
                 [
@@ -84,16 +76,19 @@ class PencariMagangRepository
                     $pencariMagang -> isStatusMagang(),
                     $pencariMagang -> getRole() ,
                     $dtNow,
-                    $dtNow
+                    $dtNow,
+                    $pencariMagang->getFoto()
                 ]
             );
             return $pencariMagang;
         }catch (\PDOException $exception){
+            var_dump($exception);
             return null;
         }
     }
 
-    public function findById($id) : ?PencariMagang{
+    public function findById($id) : ?PencariMagang {
+        $sekolah = new Sekolah();
         $pencariMagang = new PencariMagang();
         $query = "select * from pencari_magang where id = ?";
         $PDOStatement = $this->connection->prepare($query);
@@ -121,6 +116,65 @@ class PencariMagangRepository
         }else{
             return null;
         }
+    }
+    public function update(PencariMagang $pencariMagang) : ?PencariMagang{
+        $date = new DateTime();
+        $timestamp = $date->getTimestamp();
+        $dtNow = gmdate("Y-m-d\TH:i:s" , $timestamp);
+        var_dump($pencariMagang->getId());
+        $magang = $this->findById($pencariMagang->getId());
+
+        if($magang==null){
+            return null;
+        }else{
+            try {
+                $query = "UPDATE `pencari_magang` SET `username`=?,`password`=?,`email`=?,`id_sekolah`=?,`no_telp`=?,`agama`=?,`tanggal_lahir`=?,`token`=?,`cv`=?,`resume`=?,`status`=?,`status_magang`=?,`role`=?,`update_add`=? , `foto` = ? WHERE id = ?";
+                $PDOStatement = $this->connection->prepare($query);
+                $PDOStatement->execute([
+                        $pencariMagang->getUsername(),
+                        $pencariMagang->getPassword(),
+                        $pencariMagang->getEmail(),
+                        $pencariMagang ->getIdSekolah(),
+                        $pencariMagang ->getNo_telp(),
+                        $pencariMagang->getAgama(),
+                        $pencariMagang->getTanggalLahir() ,
+                        $pencariMagang ->getToken() ,
+                        $pencariMagang->getCv() ,
+                        $pencariMagang->getResume(),
+                        $pencariMagang->getStatus() ,
+                        $pencariMagang->isStatusMagang(),
+                        $pencariMagang->getRole(),
+                        $dtNow,
+                        $pencariMagang->getFoto(),
+                        $pencariMagang->getId()
+                    ]
+                );
+                return $pencariMagang;
+            }catch (\PDOException $PDOException){
+                var_dump($PDOException);
+                return null;
+            }
+        }
+
+    }
+
+    public function deleteById($id) :bool{
+        $pencariMagang = $this->findById($id);
+        if($pencariMagang==null){
+            return false;
+        }else{
+            try {
+
+                $query = "delete from pencari_magang where id = ?";
+                $PDOStatement = $this->connection->prepare($query);
+                $PDOStatement->execute([$id]);
+                return true;
+            }catch (\PDOException $PDOException){
+                var_dump($PDOException);
+                return false;
+            }
+        }
+
     }
 
 }

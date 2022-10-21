@@ -72,5 +72,11 @@ class SekolahRepositoryTest extends TestCase
         self::assertNull($update);
     }
 
+    public function testDeleteByIdFailed()
+    {
+        $isDeleted = $this->repository->deleteById(123);
+        self::assertFalse($isDeleted);
+    }
+
 
 }
