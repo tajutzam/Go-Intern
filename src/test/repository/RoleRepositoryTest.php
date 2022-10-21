@@ -10,11 +10,11 @@ use PHPUnit\Framework\TestCase;
 class RoleRepositoryTest extends TestCase
 {
     public RoleRepository $repository;
+
     protected function setUp() : void
     {
         $this-> repository = new RoleRepository(Database::getConnection());
     }
-
     public function testSave()
     {
         $role = new Role();
