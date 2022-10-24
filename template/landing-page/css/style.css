@@ -23,7 +23,7 @@ body {
 }
 
 .jumbotron {
-  background-image: url("../assets/landing-page-image.png");
+  background-color: #F3F5FD;
   background-position: center;
   background-size: cover;
 }
