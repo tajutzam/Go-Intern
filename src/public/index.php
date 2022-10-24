@@ -3,12 +3,15 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use LearnPhpMvc\APP\Router;
+
 use LearnPhpMvc\controller\api\CompanyControllerApi;
 use LearnPhpMvc\controller\api\PencariMagang;
 use LearnPhpMvc\controller\CompanyController;
 use LearnPhpMvc\controller\HomeController;
 use LearnPhpMvc\controller\ProductController;
 use LearnPhpMvc\controller\LamarController;
+
+
 
 
 //api
@@ -29,3 +32,4 @@ Router::add('GET', '/formlamar', LamarController::class, 'formLamar');
 Router::add('GET', '/api/home', CompanyControllerApi::class, 'search');
 
 Router::run();
+

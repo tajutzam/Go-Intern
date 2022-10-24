@@ -1,7 +1,6 @@
 <?php
 
     namespace LearnPhpMvc\controller;
-    
 
     use LearnPhpMvc\APP\View;
 
@@ -14,10 +13,9 @@
             ];
 
             View::render("/home/index" , $model);
-            View::redirect("");
         }
+
         
-    
     }
 
 ?>

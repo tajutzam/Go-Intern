@@ -107,5 +107,6 @@ class PenyediaMagangRepository
             echo "data tidak ada";
             return null;
         }
+        return $penyediaMagang;
     }
 }
