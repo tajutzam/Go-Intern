@@ -10,9 +10,7 @@ use LearnPhpMvc\controller\CompanyController;
 use LearnPhpMvc\controller\HomeController;
 use LearnPhpMvc\controller\ProductController;
 use LearnPhpMvc\controller\LamarController;
-
-
-
+use LearnPhpMvc\controller\MagangController;
 
 //api
 Router::add('GET', '/api/test', ProductController::class, 'categories');
@@ -31,5 +29,7 @@ Router::add('GET', '/company', CompanyController::class, 'bestCompany');
 Router::add('GET', '/formlamar', LamarController::class, 'formLamar');
 Router::add('GET', '/api/home', CompanyControllerApi::class, 'search');
 
+
+Router::add("GET" , "/magang/search_magang", MagangController::class , "search_magang");
 Router::run();
 
