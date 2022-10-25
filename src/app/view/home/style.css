@@ -81,6 +81,53 @@ body {
   position: relative;
 }
 
+.jumbotron-magang {
+  
+  background-position: center;
+  background-size: cover;
+  height: 70vh;
+  background-color: #e7ea5c;
+  position: relative;
+}
+
+.jumbotron-magang .text-search-magang{
+  padding-top: 100px;
+}
+
+.search-box-magang{
+  height: 100px;
+  width: 60%;
+  background-color: white;
+  box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
+  margin: auto;
+  position: absolute;
+  z-index: 1000;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+  margin-top: -50px;
+}
+.lowongan-terbaru-text{
+  margin-top: 100px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.card {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+  box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
+  margin-bottom: 50px;
+}
+.card:hover{
+  background-color: #e7ea5c;
+  cursor: pointer;
+
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
 .jumbotron .kotak {
   position: absolute;
   bottom: 0;

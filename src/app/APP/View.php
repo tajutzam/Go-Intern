@@ -2,8 +2,12 @@
 
 namespace LearnPhpMvc\APP;
 
+use LearnPhpMvc\lib\ConfigShow;
+
 class View
 {
+
+
     public static function render(string $view, $model)
     {
         require __DIR__ . '/../view/home/' .'header.php';
@@ -20,4 +24,6 @@ class View
             exit();
         }
     }
+
+
 }
