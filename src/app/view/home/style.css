@@ -1,35 +1,27 @@
 .navbar {
-  background-color: #F3F5FD;
+  /* background-color: #f3f5fd; */
+  background-color: white;
 }
-
 .navbar a {
   font-size: 18px;
 }
-
 .navbar-change-bg {
   background-color: rgba(0, 0, 0, 0) !important;
 }
-
 a:hover {
   color: #004aad;
 }
-
 a {
   text-decoration: none;
   color: #353535;
 }
-
 body {
   background: url("http://localhost:8080/assets/newpts.png");
   background-attachment: fixed;
-
-  /* background-color: #F1F1F1; */
-  /* background-color: #F3F5FD; */
-  background-color: white;
+  background-color: #f3f5fd;
   font-family: "poppins-semibold";
-  margin: 0%;
+  margin: 0;
 }
-
 .jumbotron .kotak {
   width: 500px;
   height: 100%;
@@ -37,42 +29,34 @@ body {
   margin-bottom: 0px;
   background-color: #e7ea5c;
 }
-
 .info-smile .kotak-v2 {
   height: 400px;
   width: 480px;
   background-color: #e7ea5c;
   margin: 100px 0px 20px 10%;
 }
-
 .info-smile .kotak-v2 .cewek-senyum {
   margin-top: -150px;
   margin-left: 45px;
 }
-
 .info-smile .jasa-kami-text {
   margin: 20px 0px 20px 140px;
 }
-
 .info-smile .kami-membantu-text {
   margin: 100px 0px 20px 140px;
 }
-
 .d-flex a {
   color: #353535;
 }
-
 .d-flex a:hover {
   color: #004aad;
 }
-
 .jumbotron-v2 {
   background-image: url("http://localhost:8080/assets/landing-page.png");
   background-position: center;
   background-size: cover;
   height: 70vh;
 }
-
 .jumbotron {
   background-position: center;
   background-size: cover;
@@ -80,21 +64,83 @@ body {
   background-color: #f3f5fd;
   position: relative;
 }
-
+.header-login {
+  background-color: #e7ea5c;
+  position: relative;
+  height: 70vh;
+}
+.box-login {
+  height: auto;
+  width: 40%;
+  background-color: white;
+  box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
+  margin: auto;
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -50px;
+  padding: 20px;
+}
+.login-image {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-left: -100px;
+}
+.form-login {
+  margin: auto;
+}
+.lupa-password a {
+  text-decoration: none;
+  color: #4356ff;
+}
+.box-wraper-login {
+  position: absolute;
+  z-index: 10000;
+  margin-top: -50px;
+}
 .jumbotron-magang {
-  
   background-position: center;
   background-size: cover;
   height: 70vh;
   background-color: #e7ea5c;
   position: relative;
 }
-
-.jumbotron-magang .text-search-magang{
+.jumbotron-login {
+  background-position: center;
+  background-size: cover;
+  height: 70vh;
+  background-color: #e7ea5c;
+  position: relative;
+}
+.jumbotron-company-home {
+  background-position: center;
+  background-size: cover;
+  height: 80vh;
+  background-image: linear-gradient(to bottom right, #004aad, #66a6fc);
+  position: relative;
+}
+.jumbotron-company-none {
+  background-position: center;
+  background-size: cover;
+  height: 73vh;
+  position: relative;
+}
+.image-home {
+}
+.text-penyedia-home h1 {
+  margin-top: 10px;
+}
+.text-penyedia-none h1 {
+  padding-left: 20px;
+}
+.jumbotron-magang .text-search-magang {
   padding-top: 100px;
 }
-
-.search-box-magang{
+.search-box-magang {
   height: 100px;
   width: 60%;
   background-color: white;
@@ -102,13 +148,34 @@ body {
   margin: auto;
   position: absolute;
   z-index: 1000;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: -50px;
 }
-.lowongan-terbaru-text{
+.footer-bekerjasama {
+  width: 100%;
+  height: auto;
+  padding-top: 100px;
+  padding-bottom: 50px;
+  background-color: white;
+}
+.search-box-company {
+  height: 100px;
+  width: 60%;
+  background-color: white;
+  box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
+  margin: auto;
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -50px;
+}
+.lowongan-terbaru-text {
   margin-top: 100px;
   text-align: center;
   margin-bottom: 50px;
@@ -120,34 +187,36 @@ body {
   box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
   margin-bottom: 50px;
 }
-.card:hover{
+.zam-card:hover {
   background-color: #e7ea5c;
   cursor: pointer;
-
-  transform: scale(1.1);
   transition: 0.2s;
 }
-
+.baner-magang {
+  width: 100%;
+  height: 500px;
+  background-color: white;
+}
+.baner-magang .sub-judul-baner {
+  margin: 70px 0px 10px 70px;
+  letter-spacing: 2px;
+}
 .jumbotron .kotak {
   position: absolute;
   bottom: 0;
   right: 0;
 }
-
 .jumbotron .container .push-spaces {
   height: 100px;
 }
-
 .info-smile .row .kiri {
   margin-left: 80px;
   text-align: center;
 }
-
 .info-smile .row .kanan {
   margin-left: 80px;
   text-align: center;
 }
-
 .jumbotron .container .centered {
   position: absolute;
   top: 50%;
@@ -173,13 +242,15 @@ aside .card {
   transform: translate(-50%, -50%);
 }
 
-.jumbotron .text-judul-v1 {}
+.jumbotron .text-judul-v1 {
+}
 
 asides .box-company {
   margin-top: 150px;
 }
 
-asides .card {}
+asides .card {
+}
 
 .content-head {
   width: 100%;
@@ -236,12 +307,134 @@ asides .card {}
   border-radius: 8px;
 }
 
-@font-face {
-  font-family: "poppins-semibold";
-  src: url("../assets/fonts/Poppins-SemiBold.otf");
+.detail-box-magang {
+  height: auto;
+  width: 70%;
+  background-color: white;
+  box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
+  margin: auto;
+  position: relative;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -50px;
+  margin-bottom: 50px;
+}
+.detail-box-company {
+  height: auto;
+  width: 70%;
+  background-color: white;
+  box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
+  margin: auto;
+  position: relative;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -50px;
+  margin-bottom: 50px;
+}
+.text-judul-login {
+  font-family: poppins-bold !important;
+}
+.zam-btn:hover {
+  background-color: #004aad !important;
+}
+.p-butuh {
+  margin-left: 5%;
 }
 
+.list-skill {
+  margin-left: 3%;
+  margin-bottom: 60px;
+}
+
+.btn-apply-now {
+  width: 50%;
+  height: 60px;
+  font-size: 20px;
+  background-color: #4356ff;
+  color: white;
+}
+.text-penyedia-home {
+  position: absolute;
+  z-index: 9999;
+}
+.image-none {
+  padding-right: 10%;
+  padding-top: 8%;
+  z-index: 999;
+}
+.text-penyedia-none {
+}
+
+.durasi {
+  margin-left: 5%;
+}
+
+.btn-apply-now:hover {
+  background-color: #004aad;
+}
+.h1-selamat-datang {
+  margin-top: 40px !important;
+  margin-left: 20px !important;
+}
+
+/* fonts */
+@font-face {
+  font-family: "poppins-semibold";
+  src: url(localhost:8081/assets/Poppins-SemiBold.otf);
+}
+@font-face {
+  font-family: "poppins-bold";
+  src: url("../assets/fonts/Poppins-Bold.otf");
+}
+
+/* responsive */
 @media only screen and (max-width: 458px) {
+  .jumbotron-company-home {
+  }
+  .image-2 {
+    position: relative;
+    left: -400px !important;
+  }
+  .image-home {
+    height: 40vh !important;
+  }
+  .image-none {
+    height: 40vh !important;
+    position: absolute;
+    z-index: 9999;
+  }
+  .text-penyedia-home {
+    position: absolute;
+    z-index: 9999;
+  }
+
+  .box-login {
+    width: 80% !important ;
+  }
+  .h1-selamat-datang {
+    font-size: 60px !important;
+    margin-top: 40px !important;
+    margin-left: 30px !important;
+  }
+
+  .img1 {
+    margin-top: 200px;
+  }
+  .img2 {
+    margin-top: 100px;
+  }
+  .img3 {
+    margin-top: 200px;
+  }
+  .detail-box-magang {
+    width: 90% !important;
+  }
   .info-smile .kotak-v2 {
     margin: auto;
     margin-top: 200px;
@@ -249,9 +442,28 @@ asides .card {}
     margin-right: 20px;
     width: auto;
   }
+  .img-company-popular {
+    height: 200px !important;
+    margin-bottom: 10px;
+  }
+  .card {
+    width: 80% !important;
+  }
+  .login-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  .logo-magang-cls {
+    height: 150px !important;
+    margin-top: 100px !important;
+  }
 
-  .info-smile .kotak-v2 .cewek-senyum {
-    margin: auto;
+  .baner-magang .sub-judul-baner {
+    position: absolute;
+    z-index: 1000;
+
+    transition: 0.2s;
   }
 
   .info-smile .row .kiri {
@@ -273,53 +485,102 @@ asides .card {}
   .jumbotron .text-judul-v1 {
     position: relative;
     z-index: 1000;
-    font-size: 30px;
-    width: 300;
+    font-size: 30px !important;
+    width: 300px !important;
   }
-
+  .header-left {
+    width: 400px !important;
+  }
+  .baner-magang .sub-judul-baner:hover {
+    transform: scale(1.1);
+    transition: 0.2s;
+  }
   .jumbotron .header-left {
     width: 400px;
     position: relative;
     z-index: 1000;
   }
-
   .jumbotron .kotak {
-
   }
   a:hover {
     color: #004aad;
   }
 }
-
 @media only screen and (max-width: 768px) {
-
-  .content-head{
-    overflow-y: hidden;
-    overflow-x: hidden;
-  }
-
-  .content-head .judul-head{
-    position: relative;
-    z-index: 1000;
-    font-size: 30px;
-    width: 300;
-  }
-  .content-head .btn-left{
-    position: relative;
-    z-index: 1000;
-    
-  }
-
-  .content-head .laki{
-    position: absolute;
-    bottom: 0;
-    right: -1px;
+  .info-smile .kami-membantu-text {
+    margin-left: 20px !important;
   }
   .jumbotron .text-judul-v1 {
     position: relative;
     z-index: 1000;
+    font-size: 30px !important;
+    width: 300px !important;
+  }
+  .box-login {
+    width: 80% !important ;
+  }
+  .text-penyedia-home {
+    position: absolute;
+    z-index: 9999;
+  }
+  .image-home {
+    height: 80vh !important;
+  }
+  .h1-selamat-datang {
+    font-size: 60px !important;
+    margin-top: 40px !important;
+    margin-left: 30px !important;
+  }
+  .img1 {
+    margin-top: 200px;
+  }
+  .img2 {
+    margin-top: 100px;
+  }
+  .img3 {
+    margin-top: 200px;
+  }
+  .img-company-popular {
+    height: 200px !important;
+    margin-bottom: 10px;
+  }
+  .logo-magang-cls {
+    height: 150px !important;
+    margin-top: 100px !important;
+  }
+  .search-box-magang {
+    width: 80%;
+  }
+  .search-box-company {
+    width: 80%;
+  }
+  .content-head {
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  .baner-magang .sub-judul-baner {
+    position: absolute;
+    z-index: 1000;
+    transition: 0.2s;
+  }
+  .baner-magang .sub-judul-baner:hover {
+    transform: scale(1.1);
+    transition: 0.2s;
+  }
+  .content-head .judul-head {
+    position: relative;
+    z-index: 1000;
     font-size: 30px;
     width: 300;
+  }
+  .content-head .btn-left {
+    position: relative;
+    z-index: 1000;
+  }
+  .content-head .laki {
+    position: absolute;
+    bottom: 0;
+    right: -1px;
   }
 
   .jumbotron .header-left {
@@ -327,29 +588,19 @@ asides .card {}
     position: relative;
     z-index: 1000;
   }
-
   .info-smile .jasa-kami-text {
     margin: 20px;
   }
-
   .info-smile .kami-membantu-text {
-    margin: 20px;
   }
-
-  .jumbotron .kotak {}
-
   .info-smile .kotak-v2 .cewek-senyum {
-    margin: auto;
   }
-
   .info-smile .row .kiri {
     margin: 20px;
   }
-
   .info-smile .row .kanan {
     margin: 20px;
   }
-
   .info-smile .kotak-v2 {
     margin: auto;
     margin-top: 200px;

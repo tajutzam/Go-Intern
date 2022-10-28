@@ -6,26 +6,22 @@ use LearnPhpMvc\APP\View;
 
 class CompanyController
 {
-    public function search(): void
+    function index()
     {
-        $model=[
-            'title'=>"Belajar php mvc",
-            'content'=>"Go Intern"
+        $model = [
+            'title' => "Belajar php mvc",
+            'content' => "Go Intern"
         ];
-
-
-        View::render("company/company_search" , $model);
-        View::redirect("");
+        View::render("/company/index", $model, "getFooter");
     }
-    public function bestCompany(): void
+
+    function detailCompany()
     {
-        $model=[
-            'title'=>"Belajar php mvc",
-            'content'=>"Go Intern"
+        $model = [
+            'title' => "Belajar php mvc",
+            'content' => "Go Intern"
         ];
 
-
-        View::render("company/index" , $model);
-        View::redirect("");
+        View::render("/company/detail_company", $model, "getFooter");
     }
 }
