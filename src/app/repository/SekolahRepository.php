@@ -73,7 +73,7 @@ class SekolahRepository
         ]);
         return $sekolah;
     }
-
+    
     public function  update(Sekolah $sekolah) : ?Sekolah{
         $sekolahFindById = $this->findById($sekolah->id);
         if($sekolahFindById==null){

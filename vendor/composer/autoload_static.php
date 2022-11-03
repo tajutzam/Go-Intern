@@ -24,6 +24,7 @@ class ComposerStaticInit01eda7f36794053d74f5c763452fe09a
         array (
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'L' => 
         array (
@@ -54,6 +55,10 @@ class ComposerStaticInit01eda7f36794053d74f5c763452fe09a
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'LearnPhpMvc\\' => 
         array (
