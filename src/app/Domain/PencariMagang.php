@@ -16,6 +16,25 @@ class PencariMagang{
     private string $tanggalLahir;
     private int $id_sekolah;
     private string $foto;
+    private string $nama;
+
+    /**
+     * @return string
+     */
+    public function getNama(): string
+    {
+        return $this->nama;
+    }
+
+    /**
+     * @param string $nama
+     */
+    public function setNama(string $nama): void
+    {
+        $this->nama = $nama;
+    }
+
+
 
     /**
      * @return string

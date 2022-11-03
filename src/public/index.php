@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use LearnPhpMvc\APP\Router;
 
+use LearnPhpMvc\controller\api\AuthentikasiController;
 use LearnPhpMvc\controller\api\CompanyControllerApi;
 use LearnPhpMvc\controller\api\PencariMagang;
 use LearnPhpMvc\controller\CompanyController;
@@ -18,7 +19,14 @@ use LearnPhpMvc\controller\RegisterController;
 //api
 Router::add('GET', '/api/test', ProductController::class, 'categories');
 Router::add('POST', '/api/add', ProductController::class, 'postCategories');
-Router::add('GET', '/api/pencari-magang/all', PencariMagang::class, 'findAll');
+Router::add('GET', '/api/user/all', PencariMagang::class, 'findAll');
+Router::add('POST', '/api/login', AuthentikasiController::class, 'login');
+Router::add('POST', '/api/register', AuthentikasiController::class, 'register');
+Router::add('GET', '/api/verivication/{id}/{username}', AuthentikasiController::class, 'sendEmail');
+Router::add('POST', '/api/mobile/register', AuthentikasiController::class, 'registerMobile');
+
+
+
 
 //w=web
 Router::add('GET', '', HomeController::class, 'index');

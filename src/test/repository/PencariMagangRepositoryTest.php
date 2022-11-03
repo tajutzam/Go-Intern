@@ -51,6 +51,7 @@ class PencariMagangRepositoryTest extends TestCase
                     $pencariMagang -> setStatusMagang("tidak_magang");
                     $pencariMagang -> setRole(3);
                     $pencariMagang->setFoto("imgae.jpg");
+                    $pencariMagang->setNama('zam');
         $magang = $this->repository->save($pencariMagang , $sekolah);
         self::assertNotNull($magang);
         self::assertEquals($pencariMagang->getUsername() , $magang->getUsername());
@@ -142,6 +143,22 @@ class PencariMagangRepositoryTest extends TestCase
     {
         $deleteById = $this->repository->deleteById(123);
         self::assertFalse($deleteById);
+    }
+
+    public function testFindByUsername()
+    {
+        $byUsername = $this->repository->findByUsername('zam baru');
+        self::assertNotNull($byUsername);
+        var_dump($byUsername);
+        echo count($byUsername['body']);
+        self::assertEquals("oke" , $byUsername['status']);
+    }
+    public function testFindByUsernamefailed()
+    {
+        $byUsername = $this->repository->findByUsername('zam baruasdasd');
+        self::assertNotNull($byUsername);
+       var_dump($byUsername);
+        self::assertEquals("data tidak ditemukan" , $byUsername['status']);
     }
 
 

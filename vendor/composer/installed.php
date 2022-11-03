@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'zam/learn-php-mvc',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-Frontend-zam',
+        'version' => 'dev-Frontend-zam',
+        'reference' => '68d606cd7dcf98636377edff4134cfe16dd9e484',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -81,6 +81,15 @@
             'install_path' => __DIR__ . '/../phpdocumentor/type-resolver',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.6.5',
+            'version' => '6.6.5.0',
+            'reference' => '8b6386d7417526d1ea4da9edb70b8352f7543627',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'phpspec/prophecy' => array(
             'pretty_version' => 'v1.15.0',
@@ -308,9 +317,9 @@
             'dev_requirement' => true,
         ),
         'zam/learn-php-mvc' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-Frontend-zam',
+            'version' => 'dev-Frontend-zam',
+            'reference' => '68d606cd7dcf98636377edff4134cfe16dd9e484',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

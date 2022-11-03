@@ -5,6 +5,7 @@ namespace LearnPhpMvc\repository;
 use DateTime;
 use LearnPhpMvc\Domain\PencariMagang;
 use LearnPhpMvc\Domain\Sekolah;
+use LearnPhpMvc\dto\LoginRequest;
 
 class PencariMagangRepository
 {
@@ -17,8 +18,7 @@ class PencariMagangRepository
         $query = "select * from pencari_magang";
         $PDOStatement = $this->connection->query($query);
         $response = array();
-        $response['data'] = array();
-        var_dump($PDOStatement->rowCount());
+//        $response['data'] = array();
         if ($PDOStatement->rowCount()>0) {
             http_response_code(200);
             $response['status'] = "oke";
@@ -58,7 +58,7 @@ class PencariMagangRepository
         $timestamp = $date->getTimestamp();
         $dtNow = gmdate("Y-m-d\TH:i:s" , $timestamp);
         try {
-            $query = "INSERT INTO `pencari_magang`( `username`, `password`, `email`, `id_sekolah`, `no_telp`, `agama`, `tanggal_lahir`, `token`, `cv`, `resume`, `status`, `status_magang`, `role`, `crate_add`, `update_add` , `foto`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $query = "INSERT INTO `pencari_magang`( `username`, `password`, `email`, `id_sekolah`, `no_telp`, `agama`, `tanggal_lahir`, `token`, `cv`, `resume`, `status`, `status_magang`, `role`, `crate_add`, `update_add` , `foto` , `nama`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? , ?)";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute(
                 [
@@ -77,12 +77,13 @@ class PencariMagangRepository
                     $pencariMagang -> getRole() ,
                     $dtNow,
                     $dtNow,
-                    $pencariMagang->getFoto()
+                    $pencariMagang->getFoto() ,
+                    $pencariMagang->getNama()
                 ]
             );
             return $pencariMagang;
         }catch (\PDOException $exception){
-            var_dump($exception);
+
             return null;
         }
     }
@@ -123,7 +124,6 @@ class PencariMagangRepository
         $dtNow = gmdate("Y-m-d\TH:i:s" , $timestamp);
         var_dump($pencariMagang->getId());
         $magang = $this->findById($pencariMagang->getId());
-
         if($magang==null){
             return null;
         }else{
@@ -177,4 +177,60 @@ class PencariMagangRepository
 
     }
 
+    public function findByUsername($username) : array
+    {
+        $query = <<<SQL
+    select  id , username , password , nama  , role from pencari_magang where username = ?
+SQL;
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$username]);
+            $response = array();
+//        $response['data'] = array();
+            if ($PDOStatement->rowCount() > 0) {
+                http_response_code(200);
+                $response['status'] = "oke";
+                $response['body'] = array();
+                while ($result = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
+                    extract($result);
+                    $item = array(
+                        "id" => $id,
+                        "username" => $username,
+                        "nama" => $nama,
+                        "password" => $password ,
+                        "role" => $role
+                    );
+                    array_push($response['body'], $item);
+                }
+                $response['length'] = count($response['body']);
+                http_response_code(200);
+            } else {
+                http_response_code(404);
+                $response['status'] = "data tidak ditemukan";
+            }
+        return $response;
+    }
+    public function savePencariMagnag(PencariMagang $pencariMagang , Sekolah $sekolah) : ?PencariMagang{
+        try {
+            $query = <<< SQL
+    insert into pencari_magang (`username` , `email` , `password` , `nama` , `token` , `role` , `id_sekolah` , `tanggal_lahir`) values  
+    (? , ? , ? , ? , ? ,?  , ? , ?)
+SQL;
+            $sekolah = new Sekolah();
+            $sekolah->id = $pencariMagang->getIdSekolah();
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([
+                $pencariMagang->getUsername() ,
+                $pencariMagang->getEmail(),
+                $pencariMagang->getPassword(),
+                $pencariMagang->getNama() ,
+                $pencariMagang->getToken() ,
+                $pencariMagang->getRole() ,
+                $sekolah->id ,
+                $pencariMagang->getTanggalLahir(),
+            ]);
+            return $pencariMagang;
+        }catch (\PDOException $exception){
+            return null;
+        }
+    }
 }
