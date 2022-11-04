@@ -2,13 +2,16 @@
 
 namespace LearnPhpMvc\service;
 
+use Cassandra\Date;
 use LearnPhpMvc\Config\Url;
 use LearnPhpMvc\Domain\PencariMagang;
 use LearnPhpMvc\Domain\Sekolah;
 use LearnPhpMvc\dto\AktivasiAkunRequest;
+use LearnPhpMvc\dto\AktivasiAkunResponse;
 use LearnPhpMvc\dto\LoginRequest;
 use LearnPhpMvc\dto\RegisterPencariMagangRequest;
 use LearnPhpMvc\repository\PencariMagangRepository;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -18,10 +21,8 @@ class PencariMagangService
 {
 
     private PencariMagangRepository $pencariMagangRepository;
-    
-    /**
-     * @param PencariMagangRepository $pencariMagangRepository
-     */
+
+
     public function __construct(PencariMagangRepository $pencariMagangRepository)
     {
         $this->pencariMagangRepository = $pencariMagangRepository;
@@ -218,40 +219,83 @@ class PencariMagangService
         }
         return $response;
     }
-    public function VerivikasiAccount(AktivasiAkunRequest $request) : array {
 
+    public function sendMailVerivikasi(AktivasiAkunRequest $request) : array {
+        $aktivasiResponse = new AktivasiAkunResponse();
+        $path_info  = $_SERVER['PATH_INFO'];
+        $listOfUrl = explode("/" , $path_info);
+        $usernameAkunVerivication = $listOfUrl[3];
         $response = array();
-            global $error;
-            $mail = new PHPMailer();  // create a new object
-            $mail->IsSMTP(); // enable SMTP
-            $email_pengirim = "mohammadtajutzamzami07@gmail.com";
-            $nama_pengirim = "Go intern";
-            $email_penerima = $request->getEmail();
-            $subjek = "test";
-            $pesan = "Harap aktifasi akun anda , dengan klick link berikut <a> klick disini sayang </a>";
-            $mail->Host="smtp.gmail.com";
-            $mail->Username = $email_pengirim;
-            $mail->Password = "bhcysdyzkslqvagg";
-            $mail->Port =  465;
-            $mail->SMTPAuth = true;
-            $mail->SMTPSecure = 'ssl';
-            $mail->SMTPDebug = 2;
-            $mail->setFrom($email_pengirim  , $nama_pengirim);
-            $mail->addAddress($email_penerima);
-            $mail->Subject = $subjek;
-            $sendMail = $mail->send();
-            $mail->isHTML();
-            $mail->Body = $pesan;
-            if($sendMail){
-              http_response_code(200);
-              $response['status'] = 'oke';
-              $response['message'] = 'Sukses Aktifasi akun';
-            }else{
-              http_response_code(400);
-              $response['status'] = 'failed';
-              $response['message'] = 'Gagal Aktifasi akun';
+        $byUsername = $this->pencariMagangRepository->findByUsername($usernameAkunVerivication);
+
+        $id = $byUsername['body'][0]['id'];
+        if($byUsername['status']!= "oke"){
+            $response['status'] = "link tidak valid";
+        }else{
+            try {
+                $mail = new PHPMailer();  // create a new object
+                $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                $mail->Username = $email_pengirim;
+                $mail->Password = "coskgmkmkonrchpy";
+                $mail->IsSMTP(); // enable SMTP
+                $nama_pengirim = "Go intern";
+                $email_penerima = $request->getEmail();
+                $subjek = "Verifikasi Akun";
+                $mail->Host="smtp.gmail.com";
+                $mail->Port =  465;
+                $mail->SMTPAuth = true;
+                $mail->SMTPSecure = 'ssl';
+                $mail->SMTPDebug = 2;
+                $mail->setFrom($email_pengirim  , $nama_pengirim);
+                $mail->addAddress($email_penerima);
+                $mail->Subject = $subjek;
+                $expire_stamp = date('Y-m-d H:i:s', strtotime("+5 min"));
+                $now_stamp = date("Y-m-d H:i:s");
+
+                $linkActivation = Url::BaseUrl()."/api/aktifasi/$usernameAkunVerivication";
+                $pesan = <<<HTML
+                <h3>Aktivasi Akun</h3>
+                <p>Harap Aktivasi Akun anda dengan klcik button dibawah</p>
+                <p>Link Akan expired pada jam $expire_stamp </p>
+                <button type="submit"><a href="$linkActivation">Aktivasi Akun</a></button>
+HTML;
+                $aktivasiResponse->setExpired($expire_stamp);
+                $pencariMagang = new PencariMagang();
+                $pencariMagang->setUsername($usernameAkunVerivication);
+                $updateExpaired = $this->pencariMagangRepository->updateExpaired($aktivasiResponse , $pencariMagang);
+                $response['data'] = $updateExpaired;
+                $response['body'] = $aktivasiResponse->getExpired();
+                $mail->Body =  html_entity_decode($pesan);
+                $mail->isHTML(true);
+                $mail->send();
+                return $response;
+            }catch (\Exception $exception){
+                return $response;
             }
+        }
         return $response;
     }
+    public function verivikasiAkun() : array {
+        $path_info  = $_SERVER['PATH_INFO'];
+        $listOfUrl = explode("/" , $path_info);
+        $usernameAkunVerivication = $listOfUrl[3];
+        $response = array();
+        $now_stamp = date("Y-m-d H:i:s");
+        $byUsername = $this->pencariMagangRepository->findByUsername($usernameAkunVerivication);
 
+        if($byUsername['status']=="data tidak ditemukan"){
+            $response['status'] = "data tidak ditemukan";
+        }
+
+        else{
+            if($now_stamp >= $byUsername['body'][0]['expired_token']){
+                $response['status'] = "link expired";
+            }else{
+                $this->pencariMagangRepository->updatStatus($usernameAkunVerivication);
+                $response['status'] = "berhasil update";
+            }
+        }
+        return $response;
+    }
 }
+

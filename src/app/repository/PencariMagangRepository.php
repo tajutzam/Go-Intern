@@ -5,6 +5,7 @@ namespace LearnPhpMvc\repository;
 use DateTime;
 use LearnPhpMvc\Domain\PencariMagang;
 use LearnPhpMvc\Domain\Sekolah;
+use LearnPhpMvc\dto\AktivasiAkunResponse;
 use LearnPhpMvc\dto\LoginRequest;
 
 class PencariMagangRepository
@@ -180,7 +181,7 @@ class PencariMagangRepository
     public function findByUsername($username) : array
     {
         $query = <<<SQL
-    select  id , username , password , nama  , role from pencari_magang where username = ?
+    select  * from pencari_magang where username = ?
 SQL;
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$username]);
@@ -195,9 +196,21 @@ SQL;
                     $item = array(
                         "id" => $id,
                         "username" => $username,
-                        "nama" => $nama,
-                        "password" => $password ,
-                        "role" => $role
+                        "password" => $password,
+                        "email" => $email,
+                        "id_sekolah" => $id_sekolah,
+                        "no_telp" => $no_telp,
+                        "agama" => $agama,
+                        "tanggal_lahir" => $tanggal_lahir,
+                        "token" => $token,
+                        "cv" => $cv,
+                        "resume" => $resume,
+                        "status" => $status,
+                        "status_magang" => $status_magang,
+                        "role" => $role,
+                        "crate_add" => $crate_add,
+                        "update_add" => $update_add,
+                        "expired_token" =>$expired_token
                     );
                     array_push($response['body'], $item);
                 }
@@ -232,5 +245,27 @@ SQL;
         }catch (\PDOException $exception){
             return null;
         }
+    }
+    public function updateExpaired(AktivasiAkunResponse $aktivasiAkunResponse , PencariMagang $pencariMagang) : array{
+        $query = <<<SQL
+        update pencari_magang set expired_token=? where username=?
+SQL;
+        try {
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$aktivasiAkunResponse->getExpired() , $pencariMagang->getUsername()]);
+            $response = array();
+            $response['status']="oke";
+            return $response;
+        }catch (\Exception $exception){
+            $response['status'] = $exception->getMessage();
+            return $response;
+        }
+    }
+    public function updatStatus($username){
+        $query = <<<SQL
+        update pencari_magang set status = "aktif" where username = ?
+SQL;
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$username]);
     }
 }

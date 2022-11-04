@@ -109,4 +109,6 @@ class PenyediaMagangRepository
         }
         return $penyediaMagang;
     }
+
+
 }
