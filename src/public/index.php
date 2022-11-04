@@ -22,8 +22,9 @@ Router::add('POST', '/api/add', ProductController::class, 'postCategories');
 Router::add('GET', '/api/user/all', PencariMagang::class, 'findAll');
 Router::add('POST', '/api/login', AuthentikasiController::class, 'login');
 Router::add('POST', '/api/register', AuthentikasiController::class, 'register');
-Router::add('GET', '/api/verivication/{id}/{username}', AuthentikasiController::class, 'sendEmail');
+Router::add('GET', '/api/verivication/{id}', AuthentikasiController::class, 'sendEmail');
 Router::add('POST', '/api/mobile/register', AuthentikasiController::class, 'registerMobile');
+Router::add("GET" , "/api/aktifasi/{id}", AuthentikasiController::class , 'verivikasiAkun');
 
 
 

@@ -155,7 +155,7 @@ class PencariMagangRepositoryTest extends TestCase
     }
     public function testFindByUsernamefailed()
     {
-        $byUsername = $this->repository->findByUsername('zam baruasdasd');
+        $byUsername = $this->repository->findByUsername('barasu');
         self::assertNotNull($byUsername);
        var_dump($byUsername);
         self::assertEquals("data tidak ditemukan" , $byUsername['status']);

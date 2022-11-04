@@ -26,16 +26,17 @@ class PencariMagang
         //get dari database dan masukan kedalam array , gunakan fetch_assoc
         $all = $this->service->findAll();
         $data = array();
-        $data['body']=$all;
-        if($all['body']['status']=='oke'){
+        $data['body'] = $all;
+        if ($all['body']['status'] == 'oke') {
             http_response_code(200);
-        }else{
+        } else {
             http_response_code(404);
         }
         echo json_encode($data);
     }
 
-    public function login() : array{
+    public function login(): array
+    {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
@@ -48,5 +49,4 @@ class PencariMagang
         echo json_encode($arr);
         return $arr;
     }
-
 }

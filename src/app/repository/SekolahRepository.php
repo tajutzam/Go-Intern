@@ -23,48 +23,51 @@ class SekolahRepository
         $this->connection->exec("delete from sekolah");
     }
 
-    public function findAll() : array{
+    public function findAll(): array
+    {
         $query = "select id , nama_sekolah , jurusan from sekolah";
         $PDOStatement = $this->connection->query($query);
         $response = array();
-        $response['data']=array();
-        if ($PDOStatement->rowCount()>0){
+        $response['data'] = array();
+        if ($PDOStatement->rowCount() > 0) {
             http_response_code(200);
             $response['status'] = "ok";
-            while ($row = $PDOStatement->fetch(\PDO::FETCH_ASSOC)){
+            while ($row = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
                 extract($row);
                 $s = array(
-                    "id" => $id ,
-                    "nama_sekolah" =>$nama_sekolah,
-                    "jurusan" =>$jurusan
+                    "id" => $id,
+                    "nama_sekolah" => $nama_sekolah,
+                    "jurusan" => $jurusan
                 );
                 array_push($response['data'], $s);
             }
-        }else{
+        } else {
             http_response_code(404);
             $response['status'] = "data tidak ditemukan";
         }
         return $response;
     }
 
-    public function findById($id) : ?Sekolah {
+    public function findById($id): ?Sekolah
+    {
         $query = "select * from sekolah where id = ?";
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$id]);
         $sekolah = new Sekolah();
-        if($PDOStatement->rowCount()>0){
-            while($row = $PDOStatement->fetch(\PDO::FETCH_ASSOC)){
+        if ($PDOStatement->rowCount() > 0) {
+            while ($row = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
                 $sekolah->id = $row['id'];
-                $sekolah->sekolah=$row['nama_sekolah'];
-                $sekolah->jurusan=$row['jurusan'];
+                $sekolah->sekolah = $row['nama_sekolah'];
+                $sekolah->jurusan = $row['jurusan'];
             }
             return $sekolah;
-        }else{
+        } else {
             return null;
         }
     }
 
-    public function save(Sekolah $sekolah) : Sekolah {
+    public function save(Sekolah $sekolah): Sekolah
+    {
         $query = "insert into sekolah (nama_sekolah , jurusan ) values (? , ? )";
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([
@@ -73,15 +76,16 @@ class SekolahRepository
         ]);
         return $sekolah;
     }
-    
-    public function  update(Sekolah $sekolah) : ?Sekolah{
+
+    public function  update(Sekolah $sekolah): ?Sekolah
+    {
         $sekolahFindById = $this->findById($sekolah->id);
-        if($sekolahFindById==null){
+        if ($sekolahFindById == null) {
             return null;
-        }else{
+        } else {
             $PDOStatement = $this->connection->prepare("update sekolah set nama_sekolah = ? , jurusan = ? where id = ?");
             $PDOStatement->execute([
-                $sekolah->sekolah ,
+                $sekolah->sekolah,
                 $sekolah->jurusan,
                 $sekolah->id
             ]);
@@ -89,12 +93,13 @@ class SekolahRepository
         }
     }
 
-    public function deleteById($id) : bool {
+    public function deleteById($id): bool
+    {
         try {
             $PDOStatement = $this->connection->prepare("delete from sekolah where id = ?");
             $PDOStatement->execute([$id]);
             return true;
-        }catch (\PDOException $PDOException){
+        } catch (\PDOException $PDOException) {
             var_dump($PDOStatement);
             return false;
         }

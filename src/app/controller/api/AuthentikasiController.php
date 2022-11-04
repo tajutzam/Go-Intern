@@ -20,7 +20,8 @@ class AuthentikasiController
     }
 
 
-    public function login() : array{
+    public function login(): array
+    {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
@@ -33,7 +34,8 @@ class AuthentikasiController
         echo json_encode($arr);
         return $arr;
     }
-    public function register() : array{
+    public function register(): array
+    {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
@@ -60,7 +62,8 @@ class AuthentikasiController
         return $arr;
     }
 
-    public function registerMobile(){
+    public function registerMobile()
+    {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
@@ -80,19 +83,35 @@ class AuthentikasiController
         $arr = $this->service->registerMobile($request);
         echo json_encode($arr);
     }
-
-    public function sendEmail() {
+    public function sendEmail()
+    {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $path_info  = $_SERVER['PATH_INFO'];
+        $listOfUrl = explode("/", $path_info);
+        $usernameAkunVerivication = $listOfUrl[3];
+        var_dump($usernameAkunVerivication);
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $request = new AktivasiAkunRequest();
-        $request->setEmail($jsonData['email']);
-
-
-//        echo $_GET['']
-        $arr = $this->service->VerivikasiAccount($request);
+        $byUsername = $this->service->findByUsername($usernameAkunVerivication);
+        if ($byUsername['status'] != "oke") {
+            echo "akun tidak tersedia";
+        } else {
+            $request->setEmail($byUsername['body'][0]['email']);
+            $arr = $this->service->sendMailVerivikasi($request);
+            echo json_encode($arr);
+        }
+        //        echo $_GET['']
+    }
+    public function verivikasiAkun()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $arr = $this->service->verivikasiAkun();
         echo json_encode($arr);
     }
 }

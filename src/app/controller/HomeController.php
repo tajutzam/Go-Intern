@@ -1,16 +1,18 @@
 <?php
 
-    namespace LearnPhpMvc\controller;
+namespace LearnPhpMvc\controller;
 
-    use LearnPhpMvc\APP\View;
+use LearnPhpMvc\APP\View;
 
-    class HomeController{
-        function index(){
-            $model=[
-                'title'=>"Belajar php mvc",
-                'content'=>"Go Intern"
-            ];
-            
-            View::render("/home/index" , $model,"getFooter3");
-        }
+class HomeController
+{
+    function index()
+    {
+        $model = [
+            'title' => "Belajar php mvc",
+            'content' => "Go Intern"
+        ];
+
+        View::render("/home/index", $model, "getFooter3");
     }
+}

@@ -8,6 +8,25 @@ class AktivasiAkunRequest
     private string $token;
     private string $email;
     private string $username;
+    private string $exparedAkun;
+
+    /**
+     * @return string
+     */
+    public function getExparedAkun(): string
+    {
+        return $this->exparedAkun;
+    }
+
+    /**
+     * @param string $exparedAkun
+     */
+    public function setExparedAkun(string $exparedAkun): void
+    {
+        $this->exparedAkun = $exparedAkun;
+    }
+
+
 
     /**
      * @return string
