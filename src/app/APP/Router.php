@@ -25,7 +25,6 @@ class Router
             'controller' => $controller,
             'function' => $function
         ];
-
     }
 
     public static function run(): void
@@ -37,7 +36,7 @@ class Router
         $method = $_SERVER['REQUEST_METHOD'];
         foreach (self::$routes as $route) {
 
-            $routeRegex = "@^" . preg_replace_callback('/\{\w+(:([^}]+))?}/', fn($m) => isset($m[2]) ? "({$m[2]})" : '(\w+)', $route['path']) . "$@";
+            $routeRegex = "@^" . preg_replace_callback('/\{\w+(:([^}]+))?}/', fn ($m) => isset($m[2]) ? "({$m[2]})" : '(\w+)', $route['path']) . "$@";
             if (preg_match($routeRegex, $path, $variables) && $method == $route['method']) {
                 $controller = new $route['controller'];
                 $function = $route['function'];
@@ -46,13 +45,8 @@ class Router
                 call_user_func_array([$controller, $function], $variables);
                 return;
             }
-
-
-
         }
         http_response_code(400);
         echo "404";
-
     }
-
 }
