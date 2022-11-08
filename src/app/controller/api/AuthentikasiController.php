@@ -19,7 +19,6 @@ class AuthentikasiController
         $this->service = new PencariMagangService($repository);
     }
 
-
     public function login(): array
     {
         header("Access-Control-Allow-Origin: *");
@@ -54,8 +53,10 @@ class AuthentikasiController
         $request->setResume($jsonData['resume']);
         $request->setFoto($jsonData['foto']);
         $request->setRole($jsonData['role']);
-        $request->setIdSekolah($jsonData['id_sekolah']);
+//        $request->setIdSekolah($jsonData['id_sekolah']);
         $request->setEmail($jsonData['email']);
+        $token =  substr(sha1(time()), 0, 5);
+    
         $request->setToken($jsonData['token']);
         $arr = $this->service->register($request);
         echo json_encode($arr);
@@ -71,11 +72,12 @@ class AuthentikasiController
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $request = new RegisterPencariMagangRequest();
 
-        $request->setIdSekolah($jsonData['id_sekolah']);
+//        $request->setIdSekolah($jsonData['id_sekolah']);
         $request->setUsername($jsonData['username']);
         $request->setPassword($jsonData['passsword']);
         $request->setEmail($jsonData['email']);
-        $request->setToken($jsonData['token']);
+        $token =  substr(sha1(time()), 0, 20);
+        $request->setToken($token);
         $request->setTanggalLahir($jsonData['tanggal_lahir']);
         $request->setRole($jsonData['role']);
         $request->setNamaDepan($jsonData['nama_depan']);
@@ -92,7 +94,7 @@ class AuthentikasiController
         $path_info  = $_SERVER['PATH_INFO'];
         $listOfUrl = explode("/", $path_info);
         $usernameAkunVerivication = $listOfUrl[3];
-        var_dump($usernameAkunVerivication);
+       
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $request = new AktivasiAkunRequest();
         $byUsername = $this->service->findByUsername($usernameAkunVerivication);
@@ -102,8 +104,7 @@ class AuthentikasiController
             $request->setEmail($byUsername['body'][0]['email']);
             $arr = $this->service->sendMailVerivikasi($request);
             echo json_encode($arr);
-        }
-        //        echo $_GET['']
+        }        //        echo $_GET['']
     }
     public function verivikasiAkun()
     {

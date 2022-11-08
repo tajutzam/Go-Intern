@@ -5,6 +5,7 @@ namespace LearnPhpMvc\service;
 use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\dto\LoginRequest;
 use LearnPhpMvc\dto\RegisterPencariMagangRequest;
+use LearnPhpMvc\dto\UpdatePencariMagangRequest;
 use LearnPhpMvc\repository\PencariMagangRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -106,6 +107,27 @@ class PencariMagangServiceTest extends TestCase
         $request->setSkill("adasdas, asdasd , asdasd");
         $arr = $this->service->register($request);
         self::assertEquals("terjadi kesalahan" , $arr['status']);
+    }
+
+    public function testUpdateUserByIdSuccess()
+    {
+        $request = new UpdatePencariMagangRequest();
+        $byUsername = $this->service->findById(19);
+        $request->setUsername($byUsername->getUsername());
+        $request->setPassword($byUsername->getPassword());
+        $request->setNama("zam");
+        $request->setEmail("Asdas");
+        $request->setAgama("Asdas");
+        $request->setTanggalLahir("asdasd");
+        $request->setFoto("asdasdasd");
+        $request->setCv("dasdasdakso");
+        $request->setResume("asdasdsa");
+        $request->setId(19);
+        $request->setNo_telp("Asdasd");
+        $request->setId_sekolah(12);
+        $updateData = $this->service->updateData($request);
+        self::assertEquals("Berhasil Update data" , $updateData['message']);
+        self::assertEquals("ok" , $updateData['status']);
     }
 
 

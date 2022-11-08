@@ -4,21 +4,21 @@ namespace LearnPhpMvc\Domain;
 
 class PenyediaMagang
 {
-    private int $id;
-    private string $username;
-    private string $password;
-    private string $email;
-    private string $nama_perushaan;
-    private string $alama_perushaan;
-    private string $no_telp;
-    private string $status;
-    private int $lokasi ;
-    private int $jenis_usaha;
-    private string $foto;
-    private string $token;
-    private int $role;
-    private string $create_at;
-    private string $update_at;
+    private ?int $id;
+    private ?string $username;
+    private ?string $password;
+    private ?string $email;
+    private ?string $nama_perushaan;
+    private ?string $alama_perushaan;
+    private ?string $no_telp;
+    private ?string $status;
+    private ?int $lokasi ;
+    private ?int $jenis_usaha;
+    private ?string $foto;
+    private ?string $token;
+    private ?int $role;
+    private ?string $create_at;
+    private ?string $update_at;
 
     /**
      * @return string

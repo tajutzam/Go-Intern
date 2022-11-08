@@ -1,7 +1,6 @@
 <!-- panggil view di controller -->
 <?php
 require_once __DIR__ . "/../../../../vendor/autoload.php";
-
 use LearnPhpMvc\config\Url;
 ?>
 <div class="jumbotron" style="overflow: hidden;">
@@ -16,7 +15,7 @@ use LearnPhpMvc\config\Url;
             <!-- jika belum , login dulu -->
             <a href=<?= Url::BaseUrl() . "/magang" ?>>
                 <button class="btn btn-primary mt-3">
-                    <p style="font-family: poppins-semibold ; margin-top: 10px; margin-bottom: 10px;">Lamar Sekarang</p>
+                    <p style="font-family: poppins-semibold ; margin-top: 10px; margin-bottom: 10px;">Install Sekarang</p>
                 </button>
             </a>
         </div>

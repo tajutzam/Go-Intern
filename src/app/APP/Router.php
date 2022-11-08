@@ -29,7 +29,7 @@ class Router
 
     public static function run(): void
     {
-        // $path = "/";
+         $path = "";
         if (isset($_SERVER['PATH_INFO'])) {
             $path = $_SERVER['PATH_INFO'];
         }
@@ -40,7 +40,7 @@ class Router
             if (preg_match($routeRegex, $path, $variables) && $method == $route['method']) {
                 $controller = new $route['controller'];
                 $function = $route['function'];
-                var_dump($variables);
+             
                 array_shift($variables);
                 call_user_func_array([$controller, $function], $variables);
                 return;

@@ -5,7 +5,6 @@ use LearnPhpMvc\Config\Url;
 ?>
 <!-- Url::BaseUrl()."/assets/logo.png -->
 <!-- config for base url -->
-
 <body>
   <!-- navbar -->
   <nav class="navbar navbar-expand-lg">
@@ -18,7 +17,7 @@ use LearnPhpMvc\Config\Url;
       </button>
       <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="margin-right:30px ;">
-          <li class="nav-item mb-2">
+          <li class="nav-item mb-2" hidden>
             <a href=<?= Url::BaseUrl() . "/magang" ?> style="margin-right:30px ; font-size: 20px">
               Magang
             </a>
