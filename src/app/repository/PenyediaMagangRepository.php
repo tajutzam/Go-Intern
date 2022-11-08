@@ -4,6 +4,7 @@ namespace LearnPhpMvc\repository;
 
 use DateTime;
 use LearnPhpMvc\Domain\PenyediaMagang;
+use LearnPhpMvc\dto\AktivasiAkunResponse;
 
 class PenyediaMagangRepository
 {
@@ -14,7 +15,6 @@ class PenyediaMagangRepository
     {
         $this->connection = $connection;
     }
-
 
     public function findAll(): array
     {
@@ -57,28 +57,30 @@ class PenyediaMagangRepository
         $date = new DateTime();
         $timestamp = $date->getTimestamp();
         $dtNow = gmdate("Y-m-d\TH:i:s", $timestamp);
+
+        // set default value for penyedia magang
+        $penyediaMagang->setStatus('tidak-aktif');
+        $penyediaMagang->setRole(5);
         try {
-            $query = "INSERT INTO `penyedia_magang`(`nama_perusahaan`, `alamat_perusahaan`, `email`, `no_telp`, `password`, `username`, `token`, `role`, `jenis_usaha`, `status`, `create_at`, `update_at`, `lokasi`, `foto`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $query = "INSERT INTO `penyedia_magang`(`nama_perusahaan`, `email`, `no_telp`, `password`, `username`, `token`, `role`, `status`, `create_at`, `update_at`) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? )";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute([
                 $penyediaMagang->getNamaPerushaan(),
-                $penyediaMagang->getAlamaPerushaan(),
                 $penyediaMagang->getEmail(),
                 $penyediaMagang->getNoTelp(),
                 $penyediaMagang->getPassword(),
                 $penyediaMagang->getUsername(),
                 $penyediaMagang->getToken(),
                 $penyediaMagang->getRole(),
-                $penyediaMagang->getJenisUsaha(),
                 $penyediaMagang->getStatus(),
                 $dtNow,
                 $dtNow,
-                $penyediaMagang->getLokasi(),
-                $penyediaMagang->getFoto()
             ]);
+            $penyediaMagang->setId($this->connection->lastInsertId());
             return $penyediaMagang;
         } catch (\PDOException $exception) {
-            var_dump($exception);
+          
+            
             return null;
         }
     }
@@ -110,5 +112,118 @@ class PenyediaMagangRepository
             return null;
         }
         return $penyediaMagang;
+    }
+
+    public function findByUsername(PenyediaMagang $penyediaMagang): array
+    {
+        $response = array();
+        $query = <<<SQL
+        select * from penyedia_magang where username = ?
+SQL;
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$penyediaMagang->getUsername()]);
+        if ($PDOStatement->rowCount() > 0) {
+            while ($row = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
+                extract($row);
+                $item = array(
+                    "id" => $id,
+                    "username" => $username,
+                    "password" => $password,
+                    "nama_perushaan" => $nama_perusahaan,
+                    "alamat" => $alamat_perusahaan,
+                    "email" => $email,
+                    "no_telp" => $no_telp,
+                    "role" => $role,
+                    "jenis_usaha" => $jenis_usaha,
+                    "status" => $status,
+                    "create_at" => $create_at,
+                    "update_at" => $update_at,
+                    "token" => $token,
+                    "foto" => $foto,
+                    "expired_token" => $expired_token
+                );
+                array_push($response, $item);
+            }
+            $response['status'] = 'oke';
+            $response['message'] = 'data ditemukan';
+            return $response;
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'data tidak ditemukan';
+            return $response;
+        }
+
+     
+    }
+    public function findByEmail(PenyediaMagang $penyediaMagang): ?PenyediaMagang
+    {
+        $query = <<<SQL
+        select * from penyedia_magang where email = ?
+SQL;
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$penyediaMagang->getEmail()]);
+        if ($PDOStatement->rowCount() > 0) {
+            while ($row = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
+                extract($row);
+                $penyediaMagang->setId($id);
+                $penyediaMagang->setUsername($username);
+                $penyediaMagang->setPassword($password);
+                $penyediaMagang->setNamaPerushaan($nama_perusahaan);
+                $penyediaMagang->setEmail($email);
+                $penyediaMagang->setNoTelp($no_telp);
+                $penyediaMagang->setRole($role);
+                $penyediaMagang->setStatus($status);
+                $penyediaMagang->setCreateAt($create_at);
+                $penyediaMagang->setUpdateAt($update_at);
+            }
+            return $penyediaMagang;
+        } else {
+            return null;
+        }
+    }
+
+    public function updateExpaired(AktivasiAkunResponse $aktivasiAkunResponse, PenyediaMagang $penyediaMagang): array
+    {
+        $query = <<<SQL
+        update penyedia_magang set expired_token=? where username=?
+SQL;
+        try {
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$aktivasiAkunResponse->getExpired(), $penyediaMagang->getUsername()]);
+            $response = array();
+            $response['status'] = "oke";
+            return $response;
+        } catch (\Exception $exception) {
+            $response['status'] = $exception->getMessage();
+            return $response;
+        }
+    }
+
+    public function updateStatus(PenyediaMagang $penyediaMagang): array
+    {
+        $queryUpdate = "select status from penyedia_magang where username = ?";
+        $PDOUpdate =  $this->connection->prepare($queryUpdate);
+        $response = array();
+        $PDOUpdate->execute([$penyediaMagang->getUsername()]);
+        if ($PDOUpdate->rowCount() > 0) {
+            $query = <<<SQL
+            update penyedia_magang set status='aktif' where username=?
+    SQL;
+            try {
+                $PDOStatement = $this->connection->prepare($query);
+                $PDOStatement->execute([$penyediaMagang->getUsername()]);
+                $response['status'] = "oke";
+                return $response;
+            } catch (\Exception $exception) {
+                $response['status'] = $exception->getMessage();
+            
+                
+                return $response;
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal update status';
+            return $response;
+        }
     }
 }

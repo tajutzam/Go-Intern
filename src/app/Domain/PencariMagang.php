@@ -12,7 +12,7 @@ class PencariMagang{
     private string $username;
     private string $password;
     private string $email;
-    private string $no_telp;
+    private int $no_telp;
     private string $tanggalLahir;
     private int $id_sekolah;
     private string $foto;

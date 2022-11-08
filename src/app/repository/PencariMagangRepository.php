@@ -7,6 +7,8 @@ use LearnPhpMvc\Domain\PencariMagang;
 use LearnPhpMvc\Domain\Sekolah;
 use LearnPhpMvc\dto\AktivasiAkunResponse;
 use LearnPhpMvc\dto\LoginRequest;
+use PDO;
+use PDOStatement;
 
 class PencariMagangRepository
 {
@@ -20,9 +22,10 @@ class PencariMagangRepository
         $query = "select * from pencari_magang";
         $PDOStatement = $this->connection->query($query);
         $response = array();
+        $response['length'] = 0;
+        $response['datum'] = array();
         //        $response['data'] = array();
         if ($PDOStatement->rowCount() > 0) {
-            http_response_code(200);
             $response['status'] = "oke";
             while ($result = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
                 extract($result);
@@ -42,12 +45,13 @@ class PencariMagangRepository
                     "status_magang" => $status_magang,
                     "role" => $role,
                     "crate_add" => $crate_add,
-                    "update_add" => $update_add
+                    "update_add" => $update_add,
+                    "expired_token" => $expired_token
                 );
-                array_push($response, $item);
+                array_push($response['datum'], $item);
             }
+            $response['length'] = $PDOStatement->rowCount();
         } else {
-            http_response_code(404);
             $response['status'] = "data tidak ditemukan";
         }
         return $response;
@@ -62,14 +66,15 @@ class PencariMagangRepository
         $timestamp = $date->getTimestamp();
         $dtNow = gmdate("Y-m-d\TH:i:s", $timestamp);
         try {
-            $query = "INSERT INTO `pencari_magang`( `username`, `password`, `email`, `id_sekolah`, `no_telp`, `agama`, `tanggal_lahir`, `token`, `cv`, `resume`, `status`, `status_magang`, `role`, `crate_add`, `update_add` , `foto` , `nama`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? , ?)";
+            $this->connection->beginTransaction();
+            $query = "INSERT INTO `pencari_magang`( `username`, `password`, `email`, `no_telp`, `agama`, `tanggal_lahir`, `token`, `cv`, `resume`, `status`, `status_magang`, `role`, `crate_add`, `update_add` , `foto` , `nama`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,? , ?)";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute(
                 [
                     $pencariMagang->getUsername(),
                     $pencariMagang->getPassword(),
                     $pencariMagang->getEmail(),
-                    $sekolah->id,
+
                     $pencariMagang->getNo_telp(),
                     $pencariMagang->getAgama(),
                     $pencariMagang->getTanggalLahir(),
@@ -85,6 +90,8 @@ class PencariMagangRepository
                     $pencariMagang->getNama()
                 ]
             );
+            $this->connection->commit();
+
             return $pencariMagang;
         } catch (\PDOException $exception) {
 
@@ -117,6 +124,8 @@ class PencariMagangRepository
                 $pencariMagang->setRole($row['role']);
                 $pencariMagang->setCreate_at($row['crate_add']);
                 $pencariMagang->setUpdate_at($row['update_add']);
+                $pencariMagang->setNama($row['nama']);
+                $pencariMagang->setFoto($row['foto']);
             }
             return $pencariMagang;
         } else {
@@ -128,8 +137,9 @@ class PencariMagangRepository
         $date = new DateTime();
         $timestamp = $date->getTimestamp();
         $dtNow = gmdate("Y-m-d\TH:i:s", $timestamp);
-        var_dump($pencariMagang->getId());
+        $now_stamp = date("Y-m-d H:i:s");
         $magang = $this->findById($pencariMagang->getId());
+        $this->connection->beginTransaction();
         if ($magang == null) {
             return null;
         } else {
@@ -151,21 +161,23 @@ class PencariMagangRepository
                         $pencariMagang->getStatus(),
                         $pencariMagang->isStatusMagang(),
                         $pencariMagang->getRole(),
-                        $dtNow,
+                        $now_stamp ,
                         $pencariMagang->getFoto(),
                         $pencariMagang->getId()
                     ]
                 );
                 return $pencariMagang;
+                $this->connection->commit();
             } catch (\PDOException $PDOException) {
-                var_dump($PDOException);
+                $this->connection->rollBack();
                 return null;
             }
         }
     }
-
+    
     public function deleteById($id): bool
     {
+        $this->connection->beginTransaction();
         $pencariMagang = $this->findById($id);
         if ($pencariMagang == null) {
             return false;
@@ -175,9 +187,10 @@ class PencariMagangRepository
                 $query = "delete from pencari_magang where id = ?";
                 $PDOStatement = $this->connection->prepare($query);
                 $PDOStatement->execute([$id]);
+                $this->connection->commit();
                 return true;
             } catch (\PDOException $PDOException) {
-                var_dump($PDOException);
+                $this->connection->rollBack();
                 return false;
             }
         }
@@ -190,6 +203,49 @@ class PencariMagangRepository
 SQL;
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$username]);
+        //        $response['data'] = array();
+        if ($PDOStatement->rowCount() > 0) {
+            http_response_code(200);
+            $response['status'] = "oke";
+            $response['body'] = array();
+            while ($result = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
+                extract($result);
+                $item = array(
+                    "id" => $id,
+                    "username" => $username,
+                    "password" => $password,
+                    "email" => $email,
+                    "id_sekolah" => $id_sekolah,
+                    "no_telp" => $no_telp,
+                    "agama" => $agama,
+                    "tanggal_lahir" => $tanggal_lahir,
+                    "token" => $token,
+                    "cv" => $cv,
+                    "resume" => $resume,
+                    "status" => $status,
+                    "status_magang" => $status_magang,
+                    "role" => $role,
+                    "crate_add" => $crate_add,
+                    "update_add" => $update_add,
+                    "expired_token" => $expired_token
+                );
+                array_push($response['body'], $item);
+            }
+            $response['length'] = count($response['body']);
+            http_response_code(200);
+        } else {
+            http_response_code(404);
+            $response['status'] = "data tidak ditemukan";
+        }
+        return $response;
+    }
+    public function findByToken($token): array
+    {
+        $query = <<<SQL
+    select  * from pencari_magang where token = ?
+SQL;
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$token]);
         $response = array();
         //        $response['data'] = array();
         if ($PDOStatement->rowCount() > 0) {
@@ -227,15 +283,18 @@ SQL;
         }
         return $response;
     }
+
+
+    
     public function savePencariMagnag(PencariMagang $pencariMagang, Sekolah $sekolah): ?PencariMagang
     {
         try {
             $query = <<< SQL
-    insert into pencari_magang (`username` , `email` , `password` , `nama` , `token` , `role` , `id_sekolah` , `tanggal_lahir`) values  
-    (? , ? , ? , ? , ? ,?  , ? , ?)
+    insert into pencari_magang (`username` , `email` , `password` , `nama` , `token` , `role` , `tanggal_lahir`) values  
+    (? , ? , ? , ? , ? ,?  , ? )
 SQL;
             $sekolah = new Sekolah();
-            $sekolah->id = $pencariMagang->getIdSekolah();
+
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute([
                 $pencariMagang->getUsername(),
@@ -244,7 +303,6 @@ SQL;
                 $pencariMagang->getNama(),
                 $pencariMagang->getToken(),
                 $pencariMagang->getRole(),
-                $sekolah->id,
                 $pencariMagang->getTanggalLahir(),
             ]);
             return $pencariMagang;
@@ -275,5 +333,83 @@ SQL;
 SQL;
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$username]);
+    }
+
+    public function findByUsernameLike(PencariMagang $pencariMagang): array
+    {
+        $response = array();
+        $query = "SELECT * FROM pencari_magang WHERE username LIKE CONCAT('%',?,'%') ";
+        $PDOStatement = $this->connection->prepare($query);
+        $parameter = $pencariMagang->getUsername();
+        
+        $PDOStatement->execute([$parameter]);
+        if ($PDOStatement->rowCount() > 0) {
+            $response['status'] = "ok";
+            $response['body'] = array();
+            while ($result = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
+                extract($result);
+                $item = array(
+                    "id" => $id,
+                    "username" => $username,
+                    "password" => $password,
+                    "email" => $email,
+                    "id_sekolah" => $id_sekolah,
+                    "no_telp" => $no_telp,
+                    "agama" => $agama,
+                    "tanggal_lahir" => $tanggal_lahir,
+                    "token" => $token,
+                    "cv" => $cv,
+                    "resume" => $resume,
+                    "status" => $status,
+                    "status_magang" => $status_magang,
+                    "role" => $role,
+                    "crate_add" => $crate_add,
+                    "update_add" => $update_add,
+                    "expired_token" => $expired_token
+                );
+                array_push($response['body'], $item);
+            }
+        } else {
+            $response['status'] = "data tidak ditemukan";
+        }
+        return $response;
+    }
+
+    public function findByStatusAktiv():array{
+        $query = "select * from pencari_magang where status = 'aktif'";
+        $PDOStatement = $this->connection->query($query);
+        $response = array();
+        $response['data'] = array();
+        $response['length']=0;
+        if ($PDOStatement->rowCount() > 0) {
+            $response['status'] = "oke";
+            $response['length'] = $PDOStatement->rowCount();
+            while ($result = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
+                extract($result);
+                $item = array(
+                    "id" => $id,
+                    "username" => $username,
+                    "password" => $password,
+                    "email" => $email,
+                    "id_sekolah" => $id_sekolah,
+                    "no_telp" => $no_telp,
+                    "agama" => $agama,
+                    "tanggal_lahir" => $tanggal_lahir,
+                    "token" => $token,
+                    "cv" => $cv,
+                    "resume" => $resume,
+                    "status" => $status,
+                    "status_magang" => $status_magang,
+                    "role" => $role,
+                    "crate_add" => $crate_add,
+                    "update_add" => $update_add,
+                    "expired_token" => $expired_token
+                );
+                array_push($response['data'], $item);
+            }
+        } else {
+            $response['status'] = "data tidak ditemukan";
+        }
+        return $response;
     }
 }

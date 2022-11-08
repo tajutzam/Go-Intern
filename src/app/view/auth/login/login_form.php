@@ -18,21 +18,20 @@ use LearnPhpMvc\config\Url;
 <div class="box-login">
     <h3 style="" class="text-center text-judul-login">Login go-intern</h3>
     <div class="text-center mb-5">Hey , Masukan username dan password mu untuk masuk</div>
-    <form action="" method="post" class="form-login w-75">
+    <form action=<?= Url::BaseUrl()."/login/post" ?> method="post" class="form-login w-75">
         <div class="mb-5">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username">
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username" name="username">
         </div>
         <div class="mb-5">
-            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password">
+            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password" name="password">
         </div>
-
         <div class="lupa-password ">
             <p> <span>Lupa Password</span> <a class="" href=""><span style="color: #4356FF;"></span>Klick Saya</a>
             </p>
         </div>
-        <a href="">
-            <div class="btn btn-primary w-100">Login</div>
-        </a>
+        <?php
+        ?>
+        <button type="submit" class="btn-primary w-100">Login</button>
         <p class="mt-3 text-center">Tidak punya akun ? <a href=""> <span style="color: #4356FF;">Daftar sekarang</span></a> </p>
     </form>
 

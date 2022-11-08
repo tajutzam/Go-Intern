@@ -67,10 +67,8 @@ class RoleRepository
             return null;
         }
     }
-
     public function update(Role $role): ?Role
     {
-
         $query = "update role set role = ? where id = ?";
         $roleUser = $this->findById($role->getId());
         if ($roleUser == null) {

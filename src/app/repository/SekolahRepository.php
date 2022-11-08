@@ -100,7 +100,8 @@ class SekolahRepository
             $PDOStatement->execute([$id]);
             return true;
         } catch (\PDOException $PDOException) {
-            var_dump($PDOStatement);
+         
+            
             return false;
         }
     }

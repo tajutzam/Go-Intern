@@ -26,32 +26,48 @@ class PenyediaMagangRepositoryTest extends TestCase
         $all = $this->repository->findAll();
         assertEquals("oke", $all['status']);
     }
+    
+    // $penyediaMagang->getNamaPerushaan(),
+    // $penyediaMagang->getEmail(),
+    // $penyediaMagang->getNoTelp(),
+    // $penyediaMagang->getPassword(),
+    // $penyediaMagang->getUsername(),
+    // $penyediaMagang->getToken(),
+    // $penyediaMagang->getRole(),
+    // $penyediaMagang->getStatus(),
 
     public function testSaveSucces()
     {
         $penyediaMagang = new PenyediaMagang();
 
-        $penyediaMagang->setNamaPerushaan("Polije bondowoso");
+        $penyediaMagang->setNamaPerushaan("Polije bondowosos");
                 $penyediaMagang->setAlamaPerushaan("jl. mastrip");
-                $penyediaMagang->setEmail("polije@gmail.com");
+                $penyediaMagang->setEmail("polije@gmaislw.com");
                 $penyediaMagang->setNoTelp("123123123");
                 $penyediaMagang->setPassword("rahasia");
-                $penyediaMagang->setUsername("username");
-                $penyediaMagang->setToken("ASDasd");
-                $penyediaMagang->setRole(3);
+                $penyediaMagang->setUsername("baru");
+                $penyediaMagang->setToken("");
+                $penyediaMagang->setRole(5);
                 $penyediaMagang->setJenisUsaha(1);
                 $penyediaMagang->setStatus("aktif");
                 $penyediaMagang->setLokasi(1);
-                $penyediaMagang->setFoto("foto");
+                $penyediaMagang->setFoto("");
         $saved = $this->repository->save($penyediaMagang);
         var_dump($saved);
         self::assertNotNull($saved);
     }
-
     public function testFindById()
     {
 
     }
+    public function testFindByUsername()
+    {
+        $penyedia_magang = new PenyediaMagang();
+        $penyedia_magang->setUsername("username");
+        $magang = $this->repository->findByUsername($penyedia_magang);
+        var_dump($magang);
+    }
 
+    
 
 }

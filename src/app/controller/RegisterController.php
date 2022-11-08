@@ -3,6 +3,7 @@
 namespace LearnPhpMvc\controller;
 
 use LearnPhpMvc\APP\View;
+use LearnPhpMvc\Config\Url;
 
 
 class RegisterController
@@ -17,5 +18,8 @@ class RegisterController
 
         View::render("/auth/register/register_form", $model, "getFooter3");
         View::redirect("");
+    }
+    function postRegister(){
+        $url = Url::BaseApi()."/api/penyedia/register/akun";
     }
 }

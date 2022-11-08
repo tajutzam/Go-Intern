@@ -3,6 +3,7 @@
 namespace LearnPhpMvc\controller;
 
 use LearnPhpMvc\APP\View;
+use LearnPhpMvc\Config\Url;
 
 class HomeController
 {
@@ -12,7 +13,7 @@ class HomeController
             'title' => "Belajar php mvc",
             'content' => "Go Intern"
         ];
-
+//
         View::render("/home/index", $model, "getFooter3");
     }
 }
