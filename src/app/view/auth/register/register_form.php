@@ -17,30 +17,34 @@ use LearnPhpMvc\config\Url;
         </div>
     </div>
 </div>
-<div class="box-login">
-    <h3 style="" class="text-center text-judul-login mb-5">Register go-intern</h3>
-    <form action="register_form.php" method="post" class="form-login w-75">
+<div class="box-register">
+    <h3 class="text-center text-judul-login mb-5">Register go-intern</h3>
+    <form action=<?= Url::BaseUrl() . "/register/post" ?> method="post" class="form-login w-75">
         <div class="mb-4">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username">
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username" name="usernameRegister">
         </div>
         <div class="mb-4">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Email">
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Email" name="emailRegister">
         </div>
         <div class="row">
             <div class="col-6">
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nama Depan">
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nama Depan Perusahaan" name="namadepanRegister">
             </div>
             <div class="col-6 mb-4">
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nama Belakang">
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nama Belakang Perusahaan" name="namabelakangRegister">
             </div>
         </div>
         <div class="mb-4">
-            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password">
+            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password" name="passwordRegister">
         </div>
         <div class="mb-4">
-            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Konfirmasi Password">
+            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Konfirmasi Password" name="konfirmasiPasswordRegister">
         </div>
-        <div class="row mb-3">
+
+        <div class="mb-4">
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="No Hp" name="nohpRegister">
+        </div>
+        <!-- <div class="row mb-3">
             <div class="col-8">
                 <select class="form-select" aria-label="Default select example" id="id_select">
                     <option value="0" selected>Pilih Role</option>
@@ -48,8 +52,8 @@ use LearnPhpMvc\config\Url;
                     <option value="2">Penyedia Magang</option>
                 </select>
             </div>
-        </div>
-        <div id="form-pencari">
+        </div> -->
+        <!-- <div id="form-pencari">
             <div class="mb-4">
                 <input type="file" class="form-control" id="cv" placeholder="Masukan CV">
             </div>
@@ -64,7 +68,7 @@ use LearnPhpMvc\config\Url;
                 <textarea class="form-control" placeholder="Pisahkan Skill Dengan , " id="floatingTextarea"></textarea>
                 <label for="" class="form-label">Alamat</label>
             </div>
-        </div>
+        </div> -->
         <div id="form-penyedia">
             <div class="row mb-3">
                 <div class="col-8">
@@ -77,13 +81,10 @@ use LearnPhpMvc\config\Url;
                 </div>
             </div>
             <div class="form-floating mb-5">
-                <textarea class="form-control" placeholder="Pisahkan Skill Dengan , " id="floatingTextarea"></textarea>
+                <textarea class="form-control" placeholder="Alamat Perusahaan , " id="floatingTextarea" name="alamat"></textarea>
                 <label for="" class="form-label">Alamat</label>
             </div>
         </div>
-
-        <a href="">
-            <div class="btn btn-primary w-100">Submit</div>
-        </a>
+        <button type="submit" class="btn btn-primary w-100" name="submit" value="submit">Submit</button>
     </form>
 </div>

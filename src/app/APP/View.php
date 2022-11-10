@@ -3,6 +3,7 @@
 namespace LearnPhpMvc\APP;
 
 
+use LearnPhpMvc\Config\Url;
 use LearnPhpMvc\lib\ConfigShow;
 
 class View
@@ -22,7 +23,8 @@ class View
     }
     public static function redirect(string $url)
     {
-        header("location:$url");
+        $url = Url::BaseUrl()."/" . "$url";
+        header('Location:' . $url);
         if (getenv('mode') != 'test') {
             exit();
         }

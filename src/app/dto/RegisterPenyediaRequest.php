@@ -19,6 +19,8 @@ class RegisterPenyediaRequest
 
     private string $token;
 
+    private string $alamat;
+
     
 
 
@@ -179,6 +181,26 @@ class RegisterPenyediaRequest
     public function setToken($token)
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of alamat
+     */ 
+    public function getAlamat()
+    {
+        return $this->alamat;
+    }
+
+    /**
+     * Set the value of alamat
+     *
+     * @return  self
+     */ 
+    public function setAlamat($alamat)
+    {
+        $this->alamat = $alamat;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 require_once __DIR__ . "/../../../../vendor/autoload.php";
 
 use LearnPhpMvc\config\Url;
+use LearnPhpMvc\Session\MySession;
+
 ?>
 
 <footer class="text-center text-lg-start text-muted mt" style="">
@@ -74,33 +76,33 @@ use LearnPhpMvc\config\Url;
 </script>
 
 <script>
-    var e = document.getElementById("id_select");
-    var value = e.value;
-    const margin_top_value = document.getElementById('id1');
+    // var e = document.getElementById("id_select");
+    // var value = e.value;
+    // const margin_top_value = document.getElementById('id1');
 
-    function onChange() {
-        console.log(margin_top_value);
+    // function onChange() {
+    //     console.log(margin_top_value);
 
-        value = e.value;
-        const a = document.getElementById('form-pencari');
-        const b = document.getElementById('form-penyedia');
-        if (value == "0") {
-            a.hidden = true;
-            b.hidden = true;
-            margin_top_value.style.marginTop = "500px";
-        }
-        if (value == "1") {
-            a.hidden = false;
-            b.hidden = true;
-            margin_top_value.style.marginTop = "800px";
-        } else if (value == "2") {
-            a.hidden = true;
-            b.hidden = false;
-            margin_top_value.style.marginTop = "650px";
-        }
-    }
-    e.onchange = onChange;
-    onChange();
+    //     value = e.value;
+    //     const a = document.getElementById('form-pencari');
+    //     const b = document.getElementById('form-penyedia');
+    //     if (value == "0") {
+    //         a.hidden = true;
+    //         b.hidden = true;
+    //         margin_top_value.style.marginTop = "500px";
+    //     }
+    //     if (value == "1") {
+    //         a.hidden = false;
+    //         b.hidden = true;
+    //         margin_top_value.style.marginTop = "800px";
+    //     } else if (value == "2") {
+    //         a.hidden = true;
+    //         b.hidden = false;
+    //         margin_top_value.style.marginTop = "650px";
+    //     }
+    // }
+    // e.onchange = onChange;
+    // onChange();
     // pencari magang 
     // penyedia magang
 </script>
@@ -109,13 +111,30 @@ use LearnPhpMvc\config\Url;
     const login = document.getElementById('login');
     const logout = document.getElementById('btn-logout');
     const img_profile = document.getElementById('profile-img')
-    if (<?php echo $_SERVER['PATH_INFO'] == '/company/home' ?>) {
+    if (<?php echo  MySession::getCurrentSession()['status'] == true?>) {
+        console.log("ok");
         login.hidden = true;
         register.hidden = true;
         logout.hidden = false;
         img_profile.hidden = false;
     }
+    $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
 </script>
+
+
 </body>
 
 </html>

@@ -62,7 +62,7 @@ class PenyediaMagangRepository
         $penyediaMagang->setStatus('tidak-aktif');
         $penyediaMagang->setRole(5);
         try {
-            $query = "INSERT INTO `penyedia_magang`(`nama_perusahaan`, `email`, `no_telp`, `password`, `username`, `token`, `role`, `status`, `create_at`, `update_at`) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? )";
+            $query = "INSERT INTO `penyedia_magang`(`nama_perusahaan`, `email`, `no_telp`, `password`, `username`, `token`, `role`, `status`, `create_at`, `update_at` , `alamat_perusahaan`) VALUES (?, ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute([
                 $penyediaMagang->getNamaPerushaan(),
@@ -75,12 +75,11 @@ class PenyediaMagangRepository
                 $penyediaMagang->getStatus(),
                 $dtNow,
                 $dtNow,
+                $penyediaMagang->getAlamaPerushaan()
             ]);
             $penyediaMagang->setId($this->connection->lastInsertId());
             return $penyediaMagang;
         } catch (\PDOException $exception) {
-          
-            
             return null;
         }
     }
@@ -152,8 +151,6 @@ SQL;
             $response['message'] = 'data tidak ditemukan';
             return $response;
         }
-
-     
     }
     public function findByEmail(PenyediaMagang $penyediaMagang): ?PenyediaMagang
     {

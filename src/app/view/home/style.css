@@ -84,6 +84,22 @@ body {
   margin-top: -50px;
   padding: 20px;
 }
+
+.box-register {
+  height: auto;
+  width: 40%;
+  background-color: white;
+  box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
+  margin: auto;
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -50px;
+  padding: 20px;
+}
 .login-image {
   position: absolute;
   bottom: 0;
@@ -383,6 +399,11 @@ asides .card {
   margin-left: 20px !important;
 }
 
+
+.footer-bekerjasama{
+  margin-top: 700px;
+}
+
 /* fonts */
 @font-face {
   font-family: "poppins-semibold";
@@ -415,6 +436,10 @@ asides .card {
   }
 
   .box-login {
+    width: 80% !important ;
+  }
+
+  .box-register {
     width: 80% !important ;
   }
   .h1-selamat-datang {
@@ -505,6 +530,11 @@ asides .card {
   a:hover {
     color: #004aad;
   }
+
+
+  .footer-bekerjasama{
+    margin-top: 600px;
+  }
 }
 @media only screen and (max-width: 768px) {
   .info-smile .kami-membantu-text {
@@ -517,6 +547,10 @@ asides .card {
     width: 300px !important;
   }
   .box-login {
+    width: 80% !important ;
+  }
+
+  .box-register {
     width: 80% !important ;
   }
   .text-penyedia-home {
