@@ -3,7 +3,7 @@ require_once __DIR__ . "/../../../../vendor/autoload.php";
 
 use LearnPhpMvc\config\Url;
 ?>
-<div id="id1" class="footer-bekerjasama">
+<div class="footer-bekerjasama">
     <div class="judul text-center">
         <h2> Kami Bekerja Sama Dengan</h2>
     </div>

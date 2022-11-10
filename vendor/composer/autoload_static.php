@@ -30,6 +30,10 @@ class ComposerStaticInit01eda7f36794053d74f5c763452fe09a
         array (
             'LearnPhpMvc\\' => 12,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -64,6 +68,10 @@ class ComposerStaticInit01eda7f36794053d74f5c763452fe09a
         array (
             0 => __DIR__ . '/../..' . '/src/app',
             1 => __DIR__ . '/../..' . '/src/test',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

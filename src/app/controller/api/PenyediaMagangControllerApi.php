@@ -67,7 +67,7 @@ class PenyediaMagangControllerApi
     }
     public function regristasiAkun()
     {
-        http_response_code(200);
+        
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
@@ -81,38 +81,38 @@ class PenyediaMagangControllerApi
         $request->setRole($jsonData['role']);
         $request->setToken($jsonData['token']);
         $request->setNama_perusahaan($jsonData['nama_perusahaan']);
+        $request->setAlamat($jsonData['alamat']);
         $responseRegister = $this->service->register($request);
         echo json_encode($responseRegister);
     }
 
-    public function register()
-    {
-        http_response_code(200);
-        header("Access-Control-Allow-Origin: *");
-        header("Content-Type: application/json; charset=UTF-8");
-        header("Access-Control-Allow-Methods: POST");
-        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-        $jsonData = json_decode(file_get_contents("php://input"), true);
-        $request = new RegisterPenyediaRequest();
-        $request->setUsername($jsonData['username']);
-        $request->setPassword(password_hash($jsonData['password'], PASSWORD_BCRYPT));
-        $request->setEmail($jsonData['email']);
-        $request->setNo_telp($jsonData['no_telp']);
-        $request->setRole($jsonData['role']);
-        $request->setToken($jsonData['token']);
-        $responseRegister = $this->service->register($request);
-        echo json_encode($responseRegister);
-    }
+    // public function register()
+    // {
+    //     http_response_code(200);
+    //     header("Access-Control-Allow-Origin: *");
+    //     header("Content-Type: application/json; charset=UTF-8");
+    //     header("Access-Control-Allow-Methods: POST");
+    //     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    //     $jsonData = json_decode(file_get_contents("php://input"), true);
+    //     $request = new RegisterPenyediaRequest();
+    //     $request->setUsername($jsonData['username']);
+    //     $request->setPassword(password_hash($jsonData['password'], PASSWORD_BCRYPT));
+    //     $request->setEmail($jsonData['email']);
+    //     $request->setNo_telp($jsonData['no_telp']);
+    //     $request->setRole($jsonData['role']);
+    //     $request->setToken($jsonData['token']);
+    //     $request->setAlamat($jsonData['alamat']);
+    //     $responseRegister = $this->service->register($request);
+    //     echo json_encode($responseRegister);
+    // }
 
     public function login()
     {
-
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $jsonData = json_decode(file_get_contents("php://input"), true);
-
         $loginRequest = new LoginRequest();
         $loginRequest->username = $jsonData['username'];
         $loginRequest->password = $jsonData['password'];

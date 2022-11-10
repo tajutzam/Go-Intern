@@ -4,18 +4,24 @@
 namespace LearnPhpMvc\controller;
 
 use LearnPhpMvc\APP\View;
+use LearnPhpMvc\Config\Url;
+use LearnPhpMvc\Session\MySession;
 
 class PenyediaMagangController
 {
-
-    function home()
+    static function home()
     {
-        $model = [
-            'title' => "Isi Data Lamaran",
-            'content' => "Go Intern"
-        ];
-
-        View::render("/penyedia/index", $model, "getFooter3");
-        View::redirect("");
+        $isLogin = MySession::getCurrentSession();
+        if($isLogin['status'] != false){
+            $model = [
+                'title' => "Isi Data Lamaran",
+                'content' => "Go Intern" , 
+                'result' => $isLogin
+            ];
+            View::render("/penyedia/index", $model, "getFooter3");
+            View::redirect("/home/index");
+        }else{
+            LoginController::formLogin();
+        }
     }
 }

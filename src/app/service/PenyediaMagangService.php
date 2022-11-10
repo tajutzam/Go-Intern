@@ -43,27 +43,36 @@ class PenyediaMagangService
             $domain->setNoTelp($registerPenyediaRequest->getNo_telp()); // 
             $domain->setRole($registerPenyediaRequest->getRole());
             $domain->setToken($registerPenyediaRequest->getToken());
-
+            $domain->setAlamaPerushaan($registerPenyediaRequest->getAlamat());
+            
             if ($domain->getUsername() != null && $domain->getPassword() != null && $domain->getEmail() != null && $domain->getNamaPerushaan() != null && $domain->getNoTelp() != null && $domain->getRole() != null && $domain->getToken() != null) {
                 if (
                     $domain->getUsername() != "" && $domain->getPassword() != "" && $domain->getEmail() != "" && $domain->getNamaPerushaan() != "" && $domain->getNoTelp() != "" && $domain->getRole() != "" && $domain->getToken()
                 ) {
-                    http_response_code(200);
-                    $this->repository->save($domain);
-                    $item = array(
-                        "id" => $domain->getId(),
-                        "nama_perusahaan" => $domain->getNamaPerushaan(),
-                        "username" => $domain->getUsername(),
-                        "password" => $domain->getPassword(),
-                        "email" => $domain->getEmail(),
-                        "no_telp" => $domain->getNoTelp(),
-                        "role" => $domain->getRole(),
-                        "token" => $domain->getToken(),
-                        "status" => $domain->getStatus()
-                    );
-                    $reponse['status'] = 'ok';
-                    $reponse['message'] = 'berhasil regristasi';
-                    array_push($reponse, $item);
+                    $domainResponse =  $this->repository->save($domain);
+                    if($domainResponse==null){
+                        http_response_code(400);
+                        $response['status'] = "failed";
+                        $response['message'] = "Username sudah digunakan";
+                        return $response;
+                    }else{
+                        // http_response_code(200);
+                        $item = array(
+                            "id" => $domainResponse->getId(),
+                            "nama_perusahaan" => $domain->getNamaPerushaan(),
+                            "username" => $domain->getUsername(),
+                            "password" => $domain->getPassword(),
+                            "email" => $domain->getEmail(),
+                            "no_telp" => $domain->getNoTelp(),
+                            "role" => $domain->getRole(),
+                            "token" => $domain->getToken(),
+                            "status" => $domain->getStatus() , 
+                            "alamat" => $domainResponse->getAlamaPerushaan()
+                        );
+                        $reponse['status'] = 'ok';
+                        $reponse['message'] = 'berhasil regristasi';
+                        array_push($reponse, $item);
+                    } 
                 } else {
                     http_response_code(400);
                     $reponse['status'] = 'failed';
@@ -89,6 +98,7 @@ class PenyediaMagangService
         $response = $this->repository->findByUsername($request);
         return $response;
     }
+    
     // send email after regristation
     public function sendMailVerivikasi(AktivasiAkunRequest $request): array
     {
@@ -96,7 +106,6 @@ class PenyediaMagangService
         $path_info = $_SERVER['PATH_INFO'];
         $listOfUrl = explode("/", $path_info);
         $usernameAkunVerivication = $listOfUrl[4];
-
         $response = array();
         $penyediaMagang = new PenyediaMagang();
         $penyediaMagang->setUsername($usernameAkunVerivication);
@@ -169,9 +178,7 @@ HTML;
         $penyediaMagang = new PenyediaMagang();
         $penyediaMagang->setUsername($usernameAkunVerivication);
         $byUsername = $this->repository->findByUsername($penyediaMagang);
-
         $tokenDb = $byUsername[0]['token'];
-
         if ($byUsername['status'] == "data tidak ditemukan") {
             http_response_code(404);
             $response['status'] = "data tidak ditemukan";

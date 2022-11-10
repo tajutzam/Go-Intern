@@ -16,6 +16,7 @@ use LearnPhpMvc\controller\LoginController;
 use LearnPhpMvc\controller\MagangController;
 use LearnPhpMvc\controller\PenyediaMagangController;
 use LearnPhpMvc\controller\RegisterController;
+use LearnPhpMvc\Domain\Role;
 
 //api
 Router::add('GET', '/api/test', ProductController::class, 'categories');
@@ -43,6 +44,7 @@ Router::add("GET" , "/api/penyediamagang/all" , PenyediaMagangControllerApi::cla
 Router::add('GET', '/api/penyedia/verivication/{id}', PenyediaMagangControllerApi::class, 'sendEmail');
 Router::add("POST" , "/api/penyedia/login" , PenyediaMagangControllerApi::class , "login");
 
+
 //w=web
 Router::add('GET', '/', HomeController::class, 'index');
 Router::add('GET', '/hello', HomeController::class, 'hello', [AuthMiddleware::class]);
@@ -62,7 +64,7 @@ Router::add("GET", "/login", LoginController::class, "formLogin");
 Router::add("POST" , "/login/post" , LoginController::class , "postLogin");
 // register controler 
 Router::add("GET", "/register", RegisterController::class, "formRegister");
-
+Router::add("POST" , "/register/post" , RegisterController::class , "postRegister");
 
 // penyedia controller
 Router::add("GET", "/company/home", PenyediaMagangController::class, "home");

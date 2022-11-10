@@ -3,7 +3,7 @@
         'name' => 'zam/learn-php-mvc',
         'pretty_version' => 'dev-Frontend-zam',
         'version' => 'dev-Frontend-zam',
-        'reference' => '68d606cd7dcf98636377edff4134cfe16dd9e484',
+        'reference' => '0e6ed2ce110cd4c86fe13d6ed1cebb2e5a36c413',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -18,6 +18,15 @@
             'install_path' => __DIR__ . '/../doctrine/instantiator',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'firebase/php-jwt' => array(
+            'pretty_version' => 'v6.3.1',
+            'version' => '6.3.1.0',
+            'reference' => 'ddfaddcb520488b42bca3a75e17e9dd53c3667da',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../firebase/php-jwt',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
             'pretty_version' => '1.11.0',
@@ -319,7 +328,7 @@
         'zam/learn-php-mvc' => array(
             'pretty_version' => 'dev-Frontend-zam',
             'version' => 'dev-Frontend-zam',
-            'reference' => '68d606cd7dcf98636377edff4134cfe16dd9e484',
+            'reference' => '0e6ed2ce110cd4c86fe13d6ed1cebb2e5a36c413',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
