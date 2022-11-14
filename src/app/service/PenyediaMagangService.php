@@ -44,35 +44,41 @@ class PenyediaMagangService
             $domain->setRole($registerPenyediaRequest->getRole());
             $domain->setToken($registerPenyediaRequest->getToken());
             $domain->setAlamaPerushaan($registerPenyediaRequest->getAlamat());
-            
+
             if ($domain->getUsername() != null && $domain->getPassword() != null && $domain->getEmail() != null && $domain->getNamaPerushaan() != null && $domain->getNoTelp() != null && $domain->getRole() != null && $domain->getToken() != null) {
                 if (
                     $domain->getUsername() != "" && $domain->getPassword() != "" && $domain->getEmail() != "" && $domain->getNamaPerushaan() != "" && $domain->getNoTelp() != "" && $domain->getRole() != "" && $domain->getToken()
                 ) {
-                    $domainResponse =  $this->repository->save($domain);
-                    if($domainResponse==null){
-                        http_response_code(400);
-                        $response['status'] = "failed";
-                        $response['message'] = "Username sudah digunakan";
+                    if (preg_match('/\s/', $registerPenyediaRequest->getUsername())) {
+                        $response['status'] = 'failed';
+                        $response['message'] = 'username tidak boleh mengandung spasi';
                         return $response;
-                    }else{
-                        // http_response_code(200);
-                        $item = array(
-                            "id" => $domainResponse->getId(),
-                            "nama_perusahaan" => $domain->getNamaPerushaan(),
-                            "username" => $domain->getUsername(),
-                            "password" => $domain->getPassword(),
-                            "email" => $domain->getEmail(),
-                            "no_telp" => $domain->getNoTelp(),
-                            "role" => $domain->getRole(),
-                            "token" => $domain->getToken(),
-                            "status" => $domain->getStatus() , 
-                            "alamat" => $domainResponse->getAlamaPerushaan()
-                        );
-                        $reponse['status'] = 'ok';
-                        $reponse['message'] = 'berhasil regristasi';
-                        array_push($reponse, $item);
-                    } 
+                    } else {
+                        $domainResponse =  $this->repository->save($domain);
+                        if ($domainResponse == null) {
+                            http_response_code(400);
+                            $response['status'] = "failed";
+                            $response['message'] = "Username sudah digunakan";
+                            return $response;
+                        } else {
+                            // http_response_code(200);
+                            $item = array(
+                                "id" => $domainResponse->getId(),
+                                "nama_perusahaan" => $domain->getNamaPerushaan(),
+                                "username" => $domain->getUsername(),
+                                "password" => $domain->getPassword(),
+                                "email" => $domain->getEmail(),
+                                "no_telp" => $domain->getNoTelp(),
+                                "role" => $domain->getRole(),
+                                "token" => $domain->getToken(),
+                                "status" => $domain->getStatus(),
+                                "alamat" => $domainResponse->getAlamaPerushaan()
+                            );
+                            $reponse['status'] = 'ok';
+                            $reponse['message'] = 'berhasil regristasi';
+                            array_push($reponse, $item);
+                        }
+                    }
                 } else {
                     http_response_code(400);
                     $reponse['status'] = 'failed';
@@ -98,7 +104,7 @@ class PenyediaMagangService
         $response = $this->repository->findByUsername($request);
         return $response;
     }
-    
+
     // send email after regristation
     public function sendMailVerivikasi(AktivasiAkunRequest $request): array
     {

@@ -10,13 +10,27 @@ use Firebase\JWT\Key;
 use LearnPhpMvc\APP\View;
 use LearnPhpMvc\Config\Url;
 use LearnPhpMvc\Domain\ResponseJson\PencariMagangResponse;
+use LearnPhpMvc\dto\LoginRequest;
 use LearnPhpMvc\helper\ModelMapper;
+use LearnPhpMvc\service\PenyediaMagangService;
 use LearnPhpMvc\Session\MySession;
 class LoginController
 {
+   
+
+    
+    static public PenyediaMagangService $service;
+   
+
+    public function __construct()
+    {
+    self::$service = new PenyediaMagangService();
+    }
+
     static function formLogin()
     {
         $isLogin = MySession::getCurrentSession();
+       
         $model = [
             'title' => "Isi Data Lamaran",
             'content' => "Go Intern",
@@ -39,7 +53,7 @@ class LoginController
             // 'result' => $this->postLogin() != null ? $this->postLogin() : ""
         ];
         $newData = array();
-        View::render("/auth/login/login_form", $model, "getFooter2");
+        View::render("/auth/login/login_form", $model, "getFooter3");
     }
     static function postLogin()
     {
@@ -97,9 +111,10 @@ class LoginController
                     );
                     $jwt =  JWT::encode($payload, $key, 'HS256');
                     // set cockie
-                    setcookie("GO-INTERN-COCKIE", $jwt);
+                    setcookie("GO-INTERN-COCKIE", $jwt , 0 , "/");
+                    // // View::render("/penyedia/index", $model, "getFooter3");
                     // View::render("/penyedia/index", $model, "getFooter3");
-                    View::render("/penyedia/index", $model, "getFooter3");
+                    View::redirect("company/home");
                 } else {
                     echo "<script>alert('".$response['message']."')</script>";
                     self::formLogin();

@@ -23,7 +23,7 @@ use LearnPhpMvc\config\Url;
         </div>
         <div class="image-none col-lg-6 d-flex justify-content-end col-md-8 col-sm-8">
             <h2 class="text-penyedia-none" style="color: #353535; font-size: 50px;">Go intern for <br> company <br>
-                <a href="">
+                <a href=<?= Url::BaseUrl()."/company/home/dashboard" ?>>
                     <button class="btn btn-primary">Manage sekarang</button>
                 </a>
             </h2>

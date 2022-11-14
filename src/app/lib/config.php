@@ -10,7 +10,6 @@ class ConfigShow
     }
 
 
-
     public function noFunction()
     {
     }

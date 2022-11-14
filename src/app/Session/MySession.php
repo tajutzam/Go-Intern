@@ -16,6 +16,7 @@ class MySession
             if ($_COOKIE['GO-INTERN-COCKIE']) {
                 $jwt = $_COOKIE['GO-INTERN-COCKIE'];
                 $payload = JWT::decode($jwt, new Key($key, 'HS256'));
+
                 $username = $payload->username;
                 $id = $payload->id;
                 $nama_perusahaan = $payload->nama_perusahaan;
@@ -32,13 +33,14 @@ class MySession
                     "no_telp" => $no_telp,
                     "foto" => $foto,
                     "jenis_usaha" => $jenis_usaha,
-                    "email" => $email ,
+                    "email" => $email,
                     "token" => $token
                 );
 
-                array_push($response , $item);
+                array_push($response, $item);
                 $response['status']  = true;
             } else {
+                $response['coockie'] = $_COOKIE;
                 $response['status'] = false;
                 $response['message'] = 'harap login terlebih dahulu';
             }

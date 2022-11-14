@@ -5,20 +5,15 @@ namespace LearnPhpMvc\controller;
 use LearnPhpMvc\APP\View;
 use LearnPhpMvc\Config\Url;
 
-
 class RegisterController
 {
-
     function formRegister()
     {
-
         $model = [
             'title' => "Isi Data Lamaran",
             'content' => "Go Intern"
         ];
-
         View::render("/auth/register/register_form", $model, "getFooter3");
-        View::redirect("");
     }
     function postRegister()
     {
@@ -66,7 +61,6 @@ class RegisterController
                 $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 curl_close($curl);
                 $response = json_decode($json_response, true);
-
                 // http://192.168.0.9:8080/api/penyedia/verivication/Zamz
                 if ($response['status'] == "ok") {
                     $urlSendMail =  Url::BaseApi() . "/api/penyedia/verivication/$username";
@@ -76,6 +70,11 @@ class RegisterController
 alert('Berhasil Regristasi , Harap aktvasi akun anda terlebih dahulu untuk login');
 window.location.href='/login';
 </script>";
+                } else {
+                    echo "<script>
+                    alert('" . $response['message'] . "');
+                    window.location.href='/register';
+                    </script>";
                 }
             }
         } else {

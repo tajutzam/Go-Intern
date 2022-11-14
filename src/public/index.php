@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use LearnPhpMvc\APP\Router;
 
 use LearnPhpMvc\controller\api\AuthentikasiController;
+use LearnPhpMvc\controller\api\KategoriControllerApi;
 use LearnPhpMvc\controller\api\PencariMagangControllerApi;
 use LearnPhpMvc\controller\api\PenyediaMagangControllerApi;
 use LearnPhpMvc\controller\api\SkillController;
@@ -36,6 +37,7 @@ Router::add("POST" , "/api/skill/update" , SkillController::class , "update");
 Router::add("GET" , "/api/skill/findById/{id}", SkillController::class , "findById");
 Router::add("GET" , "/api/pencarimagang/aktif/user" , PencariMagangControllerApi::class, "findByStatusAktif");
 Router::add("DELETE" , "/api/skill/delete", SkillController::class , "deleteSkillById" );
+Router::add("GET" , "/api/kategori/all" , KategoriControllerApi::class  , "findAll");
 
 
 Router::add("GET" , "/api/aktifasi/penyedia/{username}/{token}", PenyediaMagangControllerApi::class , 'verivikasiAkun');
@@ -58,6 +60,7 @@ Router::add('GET', '/formlamar', LamarController::class, 'formLamar');
 Router::add("GET", "/company/detail", CompanyController::class, "detailCompany");
 
 Router::add("GET", "/magang", MagangController::class, "search_magang");
+Router::add("GET" , "/magang/findall" , MagangController::class , "findAll");
 Router::add("GET", "/magang/cari/nama", MagangController::class, "hasil_cari");
 Router::add("GET", "/magang/detail", MagangController::class, "detailMagang");
 Router::add("GET", "/login", LoginController::class, "formLogin");
@@ -65,7 +68,11 @@ Router::add("POST" , "/login/post" , LoginController::class , "postLogin");
 // register controler 
 Router::add("GET", "/register", RegisterController::class, "formRegister");
 Router::add("POST" , "/register/post" , RegisterController::class , "postRegister");
+Router::add("POST" , "/company/home/dashboard/tambah/magang/update" , PenyediaMagangController::class , "updateData");
 
 // penyedia controller
 Router::add("GET", "/company/home", PenyediaMagangController::class, "home");
+Router::add("GET" , "/company/home/dashboard" , PenyediaMagangController::class , "dashboardPenyedia");
+Router::add("GET" , "/company/home/dashboard/tambah/magang" , PenyediaMagangController::class , "formTambahData");
+Router::add("POST" , "/company/home/dashboard/tambah/magang/save" , PenyediaMagangController::class , "tambahDataPost");
 Router::run();

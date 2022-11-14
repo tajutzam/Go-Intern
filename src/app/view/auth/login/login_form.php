@@ -35,7 +35,6 @@ if ($model['status'] == "failed") {
         </div>
 
         <div class="input-group mb-5">
-
             <input type="password" name="passwordIn"  class="input form-control" id="password" placeholder="Password" required="true" aria-label="password" aria-describedby="basic-addon1">
             <div class="input-group-append">
                 <span class="input-group-text" onclick="password_show_hide();">

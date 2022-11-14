@@ -50,7 +50,7 @@ class SkillController{
         $byid = $this->service->findByid();
         echo  json_encode($byid);
     }
-
+    
     public function deleteSkillById(){
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
@@ -60,6 +60,5 @@ class SkillController{
         $responseDeleted = $this->service->deleteById($jsonData['id']);
         echo json_encode($responseDeleted);
     }
-
 
 }

@@ -7,7 +7,7 @@ use LearnPhpMvc\Session\MySession;
 
 ?>
 
-<footer class="text-center text-lg-start text-muted mt" style="">
+<footer class="text-center text-lg-start text-muted mt">
     <!-- Section: Social media -->
     <section class="d-flex justify-content-center justify-content-lg-between  border-bottom"></section>
     <!-- Section: Social media -->
