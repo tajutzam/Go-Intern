@@ -68,6 +68,7 @@ body {
   background-color: #e7ea5c;
   position: relative;
   height: 70vh;
+ 
 }
 .box-login {
   height: auto;
@@ -92,7 +93,7 @@ body {
   box-shadow: 5px 8px rgba(128, 128, 128, 0.178);
   margin: auto;
   position: absolute;
-  z-index: 1000;
+  z-index: 1000000;
   left: 0;
   right: 0;
   margin-left: auto;
@@ -173,9 +174,17 @@ body {
 .footer-bekerjasama {
   width: 100%;
   height: auto;
-  padding-top: 100px;
+  /* padding-top: 100px; */
   padding-bottom: 50px;
   background-color: white;
+}
+.footer-bekerjasamaRegister {
+  width: 100%;
+  height: auto;
+  /* padding-top: 100px; */
+  padding-bottom: 50px;
+  background-color: white;
+  margin-top: 700px;
 }
 .search-box-company {
   height: 100px;
@@ -401,9 +410,8 @@ asides .card {
 
 
 .footer-bekerjasama{
-  margin-top: 700px;
+  
 }
-
 /* fonts */
 @font-face {
   font-family: "poppins-semibold";
@@ -532,9 +540,7 @@ asides .card {
   }
 
 
-  .footer-bekerjasama{
-    margin-top: 600px;
-  }
+
 }
 @media only screen and (max-width: 768px) {
   .info-smile .kami-membantu-text {

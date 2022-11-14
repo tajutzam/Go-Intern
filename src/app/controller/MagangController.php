@@ -4,9 +4,20 @@
 namespace LearnPhpMvc\controller;
 
 use LearnPhpMvc\APP\View;
+use LearnPhpMvc\service\MagangService;
 
 class MagangController
 {
+   
+
+   
+    private MagangService $service;
+
+    public function __construct()
+    {
+        $this->service = new MagangService();
+    }
+
 
     function search_magang()
     {
@@ -40,4 +51,5 @@ class MagangController
         View::render("/magang/hasil_cari", $model, "getFooter");
         View::redirect("");
     }
+    
 }

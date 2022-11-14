@@ -21,10 +21,10 @@ class HomeController
                 'content' => "Go Intern" , 
                 'result' => $isLogin
             ];
-            View::render("/penyedia/index", $model, "getFooter3");
+            View::render("/penyedia/index", $model, "getFooter2");
             View::redirect("/home/index");
         }else{
-            View::render("/home/index", $model, "getFooter3");
+            View::render("/home/index", $model, "getFooter2");
         }
     }
 }
