@@ -122,4 +122,15 @@ class MagangRepository
         }
         
     }
+
+    public function deleteById(Magang $magang) : bool{
+        try {
+            $query = "delete from magang where id= ? ";
+            $PDOstatement = $this->connection->prepare($query);
+            $PDOstatement->execute([$magang->getId()]);
+            return true;
+        } catch (\PDOException $th) {
+           return false;
+        }
+}
 }

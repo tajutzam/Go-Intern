@@ -92,4 +92,20 @@ class MagangService
         // $magang->set
         // $this->repository->updateMagang();
     }
+
+    public function deleteById(MagangRequest $magangRequest) : array {
+        $magang = new Magang();
+        $magang->setId($magangRequest->getId());
+        $response = array();
+        $result = $this->repository->deleteById($magang);
+        if($result){
+            $response['status'] ="oke";
+            $response['message']= "berhasil delete";
+        }else{
+            $response['status'] = "failed";
+            $response['message'] = "gagal hapus data magang";
+
+        }
+        return $response;
+    }
 }

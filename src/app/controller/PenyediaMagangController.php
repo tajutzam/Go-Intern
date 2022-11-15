@@ -57,29 +57,35 @@ class PenyediaMagangController
 
     function formTambahData()
     {
+
         $isLogin = MySession::getCurrentSession();
         $magangRequest = new MagangRequest();
         $magangRequest->setPenyedia($isLogin[0]['id']);
         $dataMagang = $this->service->showMagang($magangRequest);
-
-
-
-        for ($i = 0; $i < sizeof($dataMagang['body']); $i++) {
-            # code...
-            $syaratRequest = new SyaratRequest();
-            $syaratRequest->setId_magang($dataMagang['body'][$i]['id']);
-            $dataMagang['body'][$i]['syarat'] = array();
-            $dataSyarat = $this->syaratService->showSyarat($syaratRequest);
-            array_push($dataMagang['body'][$i]['syarat'], $dataSyarat['body']);
+        
+        if ($dataMagang['status'] == "oke") {
+            var_dump($dataMagang['body']);
+            for ($i = 0; $i < sizeof($dataMagang['body']); $i++) {
+                # code...
+                $syaratRequest = new SyaratRequest();
+                $syaratRequest->setId_magang($dataMagang['body'][$i]['id']);
+                $dataMagang['body'][$i]['syarat'] = array();
+                $dataSyarat = $this->syaratService->showSyarat($syaratRequest);
+                array_push($dataMagang['body'][$i]['syarat'], $dataSyarat['body']);
+            }
+            $model = [
+                "title" => "Dashboard Penyedia",
+                "result" => $isLogin,
+                "magang" => $dataMagang
+            ];
+            View::renderDashboard("tambah_magang", $model);
+        } else {
+            $model = [
+                "title" => "Dashboard Penyedia",
+                "result" => $isLogin,
+            ];
+            View::renderDashboard("tambah_magang", $model);
         }
-
-
-        $model = [
-            "title" => "Dashboard Penyedia",
-            "result" => $isLogin,
-            "magang" => $dataMagang
-        ];
-        View::renderDashboard("tambah_magang", $model);
     }
     function tambahDataPost()
     {
@@ -124,7 +130,6 @@ class PenyediaMagangController
             View::redirect("login");
         }
     }
-
     public function updateData()
     {
         // cek session apakah , user sudah login atau belum
@@ -141,7 +146,6 @@ class PenyediaMagangController
                 $jumlah_maksimal = $_POST['jumlah_maksimalUpdate'];
                 $deskripsi = $_POST['deskripsiUpdate'];
                 $syarat = $_POST['syaratUpdate'];
-
                 // pecah variable syarat menjadi array 
                 $syaratResult = explode(",", $syarat); // array
                 $syaratDataOld = array();
@@ -160,7 +164,6 @@ class PenyediaMagangController
                         }
                     }
                 }
-
                 // inisialisasi length untuk batas perulahan
                 $lengthOfValueNotNull = 0;
                 $lenthDataOld = 0;
@@ -198,12 +201,10 @@ class PenyediaMagangController
                 } else {
                     // lakukan perulangan dari syarat tersebut
                     foreach ($syaratResult as $key => $value) {
-
                         if ($value == "") {
                             // todo not update or insert but send notification        
                         } else {
                             // ambil data jika value dari array tidak null   
-
                             if ($lengthOfValueNotNull < $lenthDataOld) {
                                 // todo delete data and insert data
                                 $syaratRequest = new SyaratRequest();
@@ -300,6 +301,18 @@ class PenyediaMagangController
                 }
             }
         } {
+        }
+    }
+    public function deleteMagang()
+    {
+        $path = $_SERVER['PATH_INFO'];
+        $idTemp = explode("/", $path);
+        $id = $idTemp[7];
+        if ($id != null) {
+            $magangRequest = new MagangRequest();
+            $magangRequest->setId($id);
+            $response = $this->service->deleteById($magangRequest);
+            echo "<script>alert('" . $response['message'] . "');window.location.href='/company/home/dashboard/tambah/magang'</script>";
         }
     }
 }
