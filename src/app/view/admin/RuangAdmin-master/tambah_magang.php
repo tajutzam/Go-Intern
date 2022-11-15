@@ -47,76 +47,86 @@ if (isset($_SESSION['succes'])) {
                         <th>Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <?php
-                    for ($i = 0; $i < sizeof($model['magang']['body']); $i++) {
+                    if (!isset($model['magang']['body'])) {
                     ?>
                         <tr>
-                            <td><?= $i + 1 ?></td>
-                            <td><?= $model['magang']['body'][$i]['posisi_magang'] ?></td>
-                            <td><?= $model['magang']['body'][$i]['kategori'] ?></td>
-                            <td><?= $model['magang']['body'][$i]['lama_magang'] . " Bulan" ?></td>
-                            <td><?= $model['magang']['body'][$i]['status'] ?></td>
-                            <td><?= $model['magang']['body'][$i]['jumlah_maksimal'] ?></td>
-                            <td><?= $model['magang']['body'][$i]['jumlah_saatini'] ?></td>
-                            <td><?= $model['magang']['body'][$i]['deskripsi'] ?></td>
-                            <td>
-                                <!-- var_dump($model['magang']['body'][0]['syarat'][0]['body']) -->
-                                <?php
-                                for ($j = $count; $j < sizeof($model['magang']['body']); $j++) { 
-                                    if($model['magang']['body'][$i]['syarat'][0] !=null){
-                                        for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
-                                            # code...
+                            <td>Tidak ada data magang Silahkan tambah data</td>
+                        </tr>
+                        <?php } else {
+                            
+                        for ($i = 0; $i < sizeof($model['magang']['body']); $i++) {
+                        ?>
+                            <tr>
+                                <td><?= $i + 1 ?></td>
+                                <td hidden><?= $model['magang']['body'][$i]['id'] ?></td>
+                                <td><?= $model['magang']['body'][$i]['posisi_magang'] ?></td>
+                                <td><?= $model['magang']['body'][$i]['kategori'] ?></td>
+                                <td><?= $model['magang']['body'][$i]['lama_magang'] . " Bulan" ?></td>
+                                <td><?= $model['magang']['body'][$i]['status'] ?></td>
+                                <td><?= $model['magang']['body'][$i]['jumlah_maksimal'] ?></td>
+                                <td><?= $model['magang']['body'][$i]['jumlah_saatini'] ?></td>
+                                <td><?= $model['magang']['body'][$i]['deskripsi'] ?></td>
+                                <td>
+                                    <!-- var_dump($model['magang']['body'][0]['syarat'][0]['body']) -->
+                                    <?php
+                                    for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
+                                        if ($model['magang']['body'][$i]['syarat'][0] != null) {
+                                            for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
+                                                # code...
                                                 if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
                                                     echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
                                                 }
                                             }
-                                        
-                                    }
-                                }
-                                ?>
-                            </td>
-                            <td hidden><?= $model['magang']['body'][$i]['id'] ?></td>
-                            <td>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <a href="" local data-toggle="modal" 
-                                        data-target="#exampleModalScrollableUpdate" 
-                                        id="select" data-id="<?= $model['magang']['body'][$i]['id'] ?>"
-                                        data-posisi="<?= $model['magang']['body'][$i]['posisi_magang'] ?>" 
-                                        data-kategori="<?= $model['magang']['body'][$i]['id_kategori'] ?>"
-                                        data-lama_magang="<?= $model['magang']['body'][$i]['lama_magang'] ?>" 
-                                        data-status="<?= $model['magang']['body'][$i]['status'] ?>" 
-                                        data-jumlah-maksimal="<?= $model['magang']['body'][$i]['jumlah_maksimal'] ?>"
-                                        data-jumlah-saatini="<?= $model['magang']['body'][$i]['jumlah_saatini'] ?>" 
-                                        data-deskripsi="<?= $model['magang']['body'][$i]['deskripsi'] ?>" data-syarat="<?php
-                                        for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
-
-                                        // if($model['magang'])
-                                        if($model['magang']['body'][$i]['syarat'][0] !=null){
-                                            for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
-                                                # code...
-                    
-                                                    if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
-                                                        echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
-                                                    }   
-                                                
-                                            }
                                         }
-                                            }
-                                            ?>" ;>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </a>
+                                    }
+                                    ?>
+                                </td>
+                                <td hidden><?= $model['magang']['body'][$i]['id'] ?></td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <a href="" 
+                                            local data-toggle="modal"
+                                             data-target="#exampleModalScrollableUpdate" 
+                                             id="select" 
+                                             
+                                             data-id="<?= $model['magang']['body'][$i]['id'] ?>"
+                                             data-posisi="<?= $model['magang']['body'][$i]['posisi_magang'] ?>" 
+                                              data-kategori="<?= $model['magang']['body'][$i]['id_kategori'] ?>" 
+                                              data-lama_magang="<?= $model['magang']['body'][$i]['lama_magang'] ?>"
+                                               data-status="<?= $model['magang']['body'][$i]['status'] ?>" 
+                                               data-jumlah-maksimal="<?= $model['magang']['body'][$i]['jumlah_maksimal'] ?>"
+                                                data-jumlah-saatini="<?= $model['magang']['body'][$i]['jumlah_saatini'] ?>"
+                                                 data-deskripsi="<?= $model['magang']['body'][$i]['deskripsi'] ?>" 
+                                                 data-syarat="<?php
+                                                   for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
+                                                    // if($model['magang'])
+                                                    if ($model['magang']['body'][$i]['syarat'][0] != null) {
+                                                        for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
+                                                            # code...
+                                                            if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
+                                                                echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                ?>" ;>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-6" id="deleteData" data-id="<?= $model['magang']['body'][$i]['id'] ?>">
+                                            <a href="<?= Url::BaseUrl()."/company/home/dashboard/tambah/magang/delete/"?>"id="linkDelete">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <a href="">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                     <?php }
+                    }
                     ?>
 
                 </tbody>

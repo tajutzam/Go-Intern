@@ -75,4 +75,5 @@ Router::add("GET", "/company/home", PenyediaMagangController::class, "home");
 Router::add("GET" , "/company/home/dashboard" , PenyediaMagangController::class , "dashboardPenyedia");
 Router::add("GET" , "/company/home/dashboard/tambah/magang" , PenyediaMagangController::class , "formTambahData");
 Router::add("POST" , "/company/home/dashboard/tambah/magang/save" , PenyediaMagangController::class , "tambahDataPost");
+Router::add("GET" , "/company/home/dashboard/tambah/magang/delete/([0-9a-zA-Z]*)" , PenyediaMagangController::class , "deleteMagang");
 Router::run();
