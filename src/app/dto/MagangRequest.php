@@ -21,6 +21,8 @@ class MagangRequest
 
         private int $id;
 
+        private int $salary;
+
 
 
         /**
@@ -179,6 +181,26 @@ class MagangRequest
         public function setId($id)
         {
                 $this->id = $id;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of salary
+         */ 
+        public function getSalary()
+        {
+                return $this->salary;
+        }
+
+        /**
+         * Set the value of salary
+         *
+         * @return  self
+         */ 
+        public function setSalary($salary)
+        {
+                $this->salary = $salary;
 
                 return $this;
         }

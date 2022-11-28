@@ -122,13 +122,13 @@
                       <?=$model['magang'][0]['id']?>
                     </td>
                     <td>
-                    <?=$model['magang'][0]['posisi_magang']?>
+                      <?=$model['magang'][0]['posisi_magang']?>
                     </td>
                     <td>
-                    <?=$model['magang'][0]['status']?>
+                      <?=$model['magang'][0]['status']?>
                     </td>
                     <td>
-                    <?=$model['magang'][0]['penyedia']?>
+                      <?=$model['magang'][0]['penyedia']?>
                     </td>
                     <td>
                       <a href="" class="btn btn-warning">detail</a>

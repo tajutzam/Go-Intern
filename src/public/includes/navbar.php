@@ -1,6 +1,10 @@
 <?php
 
 use LearnPhpMvc\Config\Url;
+use LearnPhpMvc\Session\MySession;
+
+$session = MySession::getCurrentSession();
+
 
 ?>
 <!-- Sidebar -->
@@ -18,7 +22,8 @@ use LearnPhpMvc\Config\Url;
     <li class="nav-item active">
         <a class="nav-link" href="index.html">
             <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
-            <span>Selamat pagi , <?php echo $model['result'][0]['nama_perusahaan'] ?></span></a>
+            <span>Selamat pagi , <?php echo $model['result'][0]['nama_perusahaan'] ?></span>
+        </a>
     </li>
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
@@ -34,7 +39,7 @@ use LearnPhpMvc\Config\Url;
                 <h6 class="collapse-header">Data Primary</h6>
                 <a class="collapse-item" href="alerts.html">Data Magang</a>
                 <a class="collapse-item" href="alerts.html">Data Pemagang</a>
-                <a class="collapse-item" href="alerts.html">Data Profile</a>   
+                <a class="collapse-item" href="alerts.html">Data Profile</a>
             </div>
         </div>
     </li>
@@ -46,7 +51,7 @@ use LearnPhpMvc\Config\Url;
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Forms</h6>
-                <a class="collapse-item" href="<?= Url::BaseUrl()."/company/home/dashboard/tambah/magang" ?>">Form Magang</a>
+                <a class="collapse-item" href="<?= Url::BaseUrl() . "/company/home/dashboard/tambah/magang" ?>">Form Magang</a>
                 <a class="collapse-item" href="form_advanceds.html">Form Pemagang</a>
                 <a class="collapse-item" href="form_advanceds.html">Form Lamaran</a>
             </div>
@@ -92,7 +97,7 @@ use LearnPhpMvc\Config\Url;
     </li>
     <li class="nav-item">
         <a class="nav-link" href="charts.html">
-        <i class="fa-solid fa-right-from-bracket"></i>
+            <i class="fa-solid fa-right-from-bracket"></i>
             <span>Logout</span>
         </a>
     </li>
@@ -248,18 +253,19 @@ use LearnPhpMvc\Config\Url;
                 </li>
                 <div class="topbar-divider d-none d-sm-block"></div>
                 <li class="nav-item dropdown no-arrow">
+                    <!-- show modal proffile -->
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="img-profile rounded-circle" src="https://picsum.photos/200/300" style="max-width: 60px">
+                        <img class="img-profile rounded-circle" src="<?=Url::BaseUrl()."/image/penyedia/".$session[0]['foto'] ?>" style="max-width: 60px">
                         <span class="ml-2 d-none d-lg-inline text-white small"><?= $model['result'][0]['nama_perusahaan'] ?></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modalProfile" id="#modalScroll">
+                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
                         </a>
                         <a class="dropdown-item" href="#">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
+                            Authentication Setting
                         </a>
                         <a class="dropdown-item" href="#">
                             <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -275,8 +281,6 @@ use LearnPhpMvc\Config\Url;
             </ul>
         </nav>
         <!-- Topbar -->
-
-
 
         <!-- Modal Logout -->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -298,3 +302,66 @@ use LearnPhpMvc\Config\Url;
                 </div>
             </div>
         </div>
+   
+ <div class="modal fade" id="modalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Data Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?= Url::BaseUrl() . "/company/home/dashboard/update/data" ?>" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username harus diawali dengan hurus besar" value="<?= $model['result'][0]['username'] ?>" name="usernameUpdate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Nama Perusahaan</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Nama Lengkap" value="<?= $model['result'][0]['nama_perusahaan'] ?>" name="namaPerusahaanUpdate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">No telp</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan No Telp" value="<?= $model['result'][0]['no_telp'] ?>" name="no_telpUpdate">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Alamat Perusahaan</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Alamat Perusahaan" value="<?= $model['result'][0]['alamat'] ?>" name="alamatUpdate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Email" value="<?= $model['result'][0]['email'] ?>" name="emailUpdate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Jenis Usaha</label>
+                        <select class="custom-select" id="inputGroupSelect01" name="jenisUsahaUpdate" aria-label="Default select example" >
+                            < <?php
+                                $url = Url::BaseApi() . "/api/jenisusaha/findall";
+                                $data = file_get_contents($url);
+                                $decoded = json_decode($data, true);
+                                for ($i = 0; $i < sizeof($decoded['body']); $i++) {
+                                ?> <option value=<?= $decoded['body'][$i]['id'] ?>><?= $decoded['body'][$i]['jenis'] ?></option>
+                            <?php }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3">
+                            Image
+                        </div>
+                        <div class="col-9">
+                            <input type="file" name="image" accept="image/jpg , image/png , image/jpeg">      
+                        </div>
+                    </div>  
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="simpan-profile">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    

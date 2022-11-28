@@ -23,21 +23,6 @@ class PenyediaMagangServiceTest extends TestCase
     {
         $this->service = new PenyediaMagangService();
     }
-//
-//    function testRegisterSuccess()
-//    {
-//        $request = new RegisterPenyediaRequest();
-//        $request->setEmail('mohammadtajutzamzasmis07@gmail.com');
-//        $request->setUsername('Synzs');
-//        $request->setJenis_usaha(1);
-//        $request->setNama_perusahaan('polije');
-//        $request->setNo_telp('0823123');
-//        $request->setRole(5);
-//        $request->setPassword("rahasia");
-//        $request->setToken('asdasdasdasdasda');
-//        $response =  $this->service->register($request);
-//        assertEquals("ok", $response['status']);
-//    }
 
     public function testFindByUsename()
     {

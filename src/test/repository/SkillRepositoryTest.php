@@ -6,12 +6,14 @@ use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\Domain\Skill;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertEquals;
+
 class SkillRepositoryTest extends TestCase
 {
     private SkillRepository $repository;
-    protected function setUp() : void
+    protected function setUp(): void
     {
-        $this->repository= new SkillRepository(Database::getConnection());
+        $this->repository = new SkillRepository(Database::getConnection());
     }
 
     public function testSave()
@@ -31,7 +33,7 @@ class SkillRepositoryTest extends TestCase
         $bySkill = $this->repository->findBySkill($skill);
         var_dump($bySkill);
         self::assertNotNull($bySkill);
-        self::assertEquals("Backend developer" , $bySkill->getSkill());
+        self::assertEquals("Backend developer", $bySkill->getSkill());
     }
 
     public function testFindBySkillNull()
@@ -73,5 +75,12 @@ class SkillRepositoryTest extends TestCase
         $deleteId = $this->repository->deletebyId($skill);
         var_dump($deleteId);
         self::assertFalse($deleteId);
+    }
+    public function testFIndByPencariMagang()
+    {
+        $skill = new Skill();
+        $skill->setPencari_magang(103);
+        $response =   $this->repository->findByPencariMagang($skill);
+        assertEquals('ok' , $response['status']);
     }
 }

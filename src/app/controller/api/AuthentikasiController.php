@@ -7,6 +7,7 @@ use LearnPhpMvc\dto\AktivasiAkunRequest;
 use LearnPhpMvc\dto\LoginRequest;
 use LearnPhpMvc\dto\RegisterPencariMagangRequest;
 use LearnPhpMvc\repository\PencariMagangRepository;
+use LearnPhpMvc\repository\SkillRepository;
 use LearnPhpMvc\service\PencariMagangService;
 
 class AuthentikasiController
@@ -16,7 +17,8 @@ class AuthentikasiController
     public function __construct()
     {
         $repository = new PencariMagangRepository(Database::getConnection());
-        $this->service = new PencariMagangService($repository);
+        $skillRepository = new SkillRepository(Database::getConnection());
+        $this->service = new PencariMagangService($repository, $skillRepository);
     }
 
     public function login(): array
@@ -53,10 +55,10 @@ class AuthentikasiController
         $request->setResume($jsonData['resume']);
         $request->setFoto($jsonData['foto']);
         $request->setRole($jsonData['role']);
-//        $request->setIdSekolah($jsonData['id_sekolah']);
+        $request->setJenis_kelamin($jsonData['jenis_kelamin']);
+        //        $request->setIdSekolah($jsonData['id_sekolah']);
         $request->setEmail($jsonData['email']);
         $token =  substr(sha1(time()), 0, 5);
-    
         $request->setToken($jsonData['token']);
         $arr = $this->service->register($request);
         echo json_encode($arr);
@@ -71,8 +73,6 @@ class AuthentikasiController
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $request = new RegisterPencariMagangRequest();
-
-//        $request->setIdSekolah($jsonData['id_sekolah']);
         $request->setUsername($jsonData['username']);
         $request->setPassword($jsonData['passsword']);
         $request->setEmail($jsonData['email']);
@@ -82,7 +82,10 @@ class AuthentikasiController
         $request->setRole($jsonData['role']);
         $request->setNamaDepan($jsonData['nama_depan']);
         $request->setNamaBelakang($jsonData['nama_belakang']);
+        $request->setJenis_kelamin($jsonData['jenis_kelamin']);
         $arr = $this->service->registerMobile($request);
+        
+
         echo json_encode($arr);
     }
     public function sendEmail()
@@ -94,7 +97,6 @@ class AuthentikasiController
         $path_info  = $_SERVER['PATH_INFO'];
         $listOfUrl = explode("/", $path_info);
         $usernameAkunVerivication = $listOfUrl[3];
-       
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $request = new AktivasiAkunRequest();
         $byUsername = $this->service->findByUsername($usernameAkunVerivication);

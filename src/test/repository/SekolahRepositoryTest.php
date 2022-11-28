@@ -6,6 +6,8 @@ use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\Domain\Sekolah;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertNotNull;
+
 class SekolahRepositoryTest extends TestCase
 {
     public SekolahRepository $repository;
@@ -71,12 +73,18 @@ class SekolahRepositoryTest extends TestCase
         $update = $this->repository->update($sekolah);
         self::assertNull($update);
     }
-
+    
     public function testDeleteByIdFailed()
     {
         $isDeleted = $this->repository->deleteById(123);
         self::assertFalse($isDeleted);
     }
-
+    
+    public function testFindBySekolah(){
+        $sekolah = new Sekolah();
+        $sekolah->sekolah = ' Smkn baru 2';
+        $response = $this->repository->findBySekolah($sekolah);
+        assertNotNull($response);
+    }
 
 }

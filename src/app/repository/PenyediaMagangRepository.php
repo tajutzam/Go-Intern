@@ -62,7 +62,7 @@ class PenyediaMagangRepository
         $penyediaMagang->setStatus('tidak-aktif');
         $penyediaMagang->setRole(5);
         try {
-            $query = "INSERT INTO `penyedia_magang`(`nama_perusahaan`, `email`, `no_telp`, `password`, `username`, `token`, `role`, `status`, `create_at`, `update_at` , `alamat_perusahaan`) VALUES (?, ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )";
+            $query = "INSERT INTO `penyedia_magang`(`nama_perusahaan`, `email`, `no_telp`, `password`, `username`, `token`, `role`, `status`, `create_at`, `update_at` , `alamat_perusahaan` , `jenis_usaha`) VALUES (?, ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute([
                 $penyediaMagang->getNamaPerushaan(),
@@ -75,11 +75,13 @@ class PenyediaMagangRepository
                 $penyediaMagang->getStatus(),
                 $dtNow,
                 $dtNow,
-                $penyediaMagang->getAlamaPerushaan()
+                $penyediaMagang->getAlamaPerushaan(),
+                $penyediaMagang->getJenisUsaha()
             ]);
             $penyediaMagang->setId($this->connection->lastInsertId());
             return $penyediaMagang;
         } catch (\PDOException $exception) {
+            echo $exception->getMessage();
             return null;
         }
     }
@@ -213,14 +215,46 @@ SQL;
                 return $response;
             } catch (\Exception $exception) {
                 $response['status'] = $exception->getMessage();
-            
-                
                 return $response;
             }
         } else {
             $response['status'] = 'failed';
             $response['message'] = 'gagal update status';
             return $response;
+        }
+    }
+    public function updateData(PenyediaMagang $penyediaMagang): ?PenyediaMagang
+    {
+        $query = "update penyedia_magang set nama_perusahaan = ? , alamat_perusahaan = ? , email = ? , no_telp = ?  , username = ? , jenis_usaha = ?  where id = ?  ";
+        $Pdostatement = $this->connection->prepare($query);
+        try {
+            $Pdostatement->execute([
+                $penyediaMagang->getNamaPerushaan(),
+                $penyediaMagang->getAlamaPerushaan(),
+                $penyediaMagang->getEmail(),
+                $penyediaMagang->getNoTelp(),
+                $penyediaMagang->getUsername(),
+                $penyediaMagang->getJenisUsaha(),
+
+                $penyediaMagang->getId()
+            ]);
+            return $penyediaMagang;
+        } catch (\PDOException $th) {
+            var_dump($th);
+            return null;
+        }
+    }
+
+    public function updatePathFoto(PenyediaMagang $penyediaMagang): bool
+    {
+        $query = "update penyedia_magang set foto = ? where id = ? ";
+        try {
+            $responseStatement =  $this->connection->prepare($query);
+            $responseStatement->execute([$penyediaMagang->getFoto(), $penyediaMagang->getId()]);
+            return true;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
         }
     }
 }

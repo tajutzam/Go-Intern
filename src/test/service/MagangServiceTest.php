@@ -54,4 +54,10 @@ class MagangServiceTest extends TestCase
         assertNotNull($response);
         assertEquals("oke" , $response['status']);
     }
+
+    function testShowOnMobile(){
+        $response = $this->service->showMagangOnMobile();
+        var_dump($response);
+        assertEquals(200 , http_response_code());
+    }
 }

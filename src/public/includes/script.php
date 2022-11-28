@@ -10,13 +10,13 @@ use LearnPhpMvc\Config\Url;
 <script src=<?= Url::BaseUrl() . "/includes/jquery-easing/jquery.easing.min.js" ?>></script>
 <script src=<?= Url::BaseUrl() . "/includes/js/ruang-admin.min.js" ?>></script>
 <script src=<?= Url::BaseUrl() . "/includes/chart.js/Chart.min.js" ?>></script>
-
-
+<script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script> -->
 
 <script>
     $(document).ready(function() {
         $(document).on('click', '#select', function() {
-            
+
             var item_id = $(this).data('id');
             console.log(item_id);
             var item_posisi = $(this).data('posisi');
@@ -27,6 +27,8 @@ use LearnPhpMvc\Config\Url;
             var item_jumlah_saatini = $(this).data('jumlah-saatini');
             var item_deskripsi = $(this).data('deskripsi');
             var item_skill = $(this).data('syarat');
+            var item_salary = $(this).data('salary');
+            console.log(item_skill);
             var data = [
                 item_id, item_posisi, item_kategori, item_lama_magang, item_status, item_jumlah_maksimal, item_jumlah_saatini, item_deskripsi, item_skill
             ];
@@ -40,18 +42,12 @@ use LearnPhpMvc\Config\Url;
             $('#jumlah_saatini_update').val(item_jumlah_saatini);
             $('#deskripsi_update').val(item_deskripsi);
             $('#syarat_update').val(item_skill).change();
+            $('#salary_update').val(item_salary);
         })
 
-
+        $('#table-magang').DataTable();
     })
 
-    // $(document).ready(function() {
-    //     $(document).on('click', '#deleteData', function() {
-    //         var link = document.getElementById('linkDelete');
-    //         console.log(link);
-    //         var item_id = $(this).data('id');
-    //         console.log(item_id);
-    //         link.href = "<?= Url::BaseUrl() . "/company/home/dashboard/tambah/magang/delete/" ?>" + item_id;
-    //     })
-    // })
+
+  
 </script>

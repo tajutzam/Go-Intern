@@ -24,10 +24,11 @@ class RegisterController
             $username = $_POST['usernameRegister'];
             $email = $_POST['emailRegister'];
             $password = $_POST['passwordRegister'];
-            $konfirmasiPassword = $_POST['konfirmasiPasswordRegister'];
+            // $konfirmasiPassword = $_POST['konfirmasiPasswordRegister'];  
             $namdepan = $_POST['namadepanRegister'];
             $namabelakang = $_POST['namabelakangRegister'];
-            $jenisUsaha = 1;
+            $jenisUsaha = $_POST['jenis_usaha'];
+            var_dump($jenisUsaha);
             $alamt =  $_POST['alamat'];
             $nohpRegister = $_POST['nohpRegister'];
             if ("" == trim($_POST['submit'])) {
@@ -43,10 +44,11 @@ class RegisterController
                     "no_telp" => $nohpRegister,
                     "role" => 5,
                     "token" => $token,
-                    "alamat" => $alamt
+                    "alamat" => $alamt,
+                    "jenisUsaha" => $jenisUsaha
                 );
-                var_dump($dataRegister);
                 $content = json_encode($dataRegister); // buat menjadi json
+                var_dump($content);
                 $curl = curl_init($urlRegister);
                 curl_setopt($curl, CURLOPT_HEADER, false);
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -58,7 +60,7 @@ class RegisterController
                 curl_setopt($curl, CURLOPT_POST, true);
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
                 $json_response = curl_exec($curl);
-                $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                $status = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
                 curl_close($curl);
                 $response = json_decode($json_response, true);
                 // http://192.168.0.9:8080/api/penyedia/verivication/Zamz
@@ -71,6 +73,7 @@ alert('Berhasil Regristasi , Harap aktvasi akun anda terlebih dahulu untuk login
 window.location.href='/login';
 </script>";
                 } else {
+                    var_dump($response);
                     echo "<script>
                     alert('" . $response['message'] . "');
                     window.location.href='/register';

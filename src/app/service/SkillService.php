@@ -32,13 +32,16 @@ class SkillService
         try {
             if($bySkill==null){
                 $this->repository->save($skill);
+                http_response_code(200);
                 $response['status'] = "ok";
                 $response['message'] = "berhasil menambahkan skill";
             }else{
+                http_response_code(400);
                 $response['status'] = "failed";
                 $response['message'] = "Skill sudah ada pada ";
             }
         }catch (\Exception $exception){
+            http_response_code(500);
             $response['status'] = "failed";
             $response['message'] = $exception->getMessage();
         }
@@ -110,4 +113,18 @@ class SkillService
         }
         return $response;
     }
+
+    public function findByPencariMagang(int $idPencariMagang):array{
+        
+        $skill = new Skill();
+        $skill->setPencari_magang($idPencariMagang);
+        $response = $this->repository->findByPencariMagang($skill);
+        if($response['status'] == 'ok'){
+            http_response_code(200);
+        }else{
+            http_response_code(404);
+        }
+        return $response;
+    }
+    
 }

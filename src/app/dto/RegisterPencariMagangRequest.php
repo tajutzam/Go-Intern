@@ -20,7 +20,7 @@ class RegisterPencariMagangRequest
     private string $token;
     private string $foto;
     private string $tanggal_lahir;
-
+    private string $jenis_kelamin;
     /**
      * @return string
      */
@@ -290,5 +290,23 @@ class RegisterPencariMagangRequest
         $this->alamat = $alamat;
     }
 
+    /**
+     * Get the value of jenis_kelamin
+     */ 
+    public function getJenis_kelamin()
+    {
+        return $this->jenis_kelamin;
+    }
 
+    /**
+     * Set the value of jenis_kelamin
+     *
+     * @return  self
+     */ 
+    public function setJenis_kelamin($jenis_kelamin)
+    {
+        $this->jenis_kelamin = $jenis_kelamin;
+
+        return $this;
+    }
 }

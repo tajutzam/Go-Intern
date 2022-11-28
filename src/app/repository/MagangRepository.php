@@ -14,7 +14,6 @@ class MagangRepository
         $this->connection = $connection;
     }
 
-
     public function findAll(): array
     {
         $query = "select * from magang";
@@ -49,11 +48,13 @@ class MagangRepository
 
     public function addMagang(Magang $magang): ?Magang
     {
-        $query = "insert into magang (posisi_magang , status , penyedia , lama_magang , jumlah_maksimal , jumlah_saatini , deskripsi , kategori) values (? , 'kosong' , ? , ? , ? , 0 , ? , ?)";
+        date_default_timezone_set('Asia/Jakarta');
+        $date = date("Y-m-d H:i:s");
+        $query = "insert into magang (posisi_magang , status , penyedia , lama_magang , jumlah_maksimal , jumlah_saatini , deskripsi , kategori , salary ) values (? , 'kosong' , ? , ? , ? , 0 , ? , ? , ? )";
         $PDOstatment = $this->connection->prepare($query);
         try {
             $this->connection->beginTransaction();
-            $PDOstatment->execute([$magang->getPosisi_magang(), $magang->getPenyedia(), $magang->getLama_magang(), $magang->getJumlah_maksimal(), $magang->getDeskripsi(), $magang->getKategori()]);
+            $PDOstatment->execute([$magang->getPosisi_magang(), $magang->getPenyedia(), $magang->getLama_magang(), $magang->getJumlah_maksimal(), $magang->getDeskripsi(), $magang->getKategori(), $magang->getSalary()]);
             $magang->setId($this->connection->lastInsertId());
             $this->connection->commit();
             return $magang;
@@ -64,10 +65,11 @@ class MagangRepository
             return null;
         }
     }
+
     public function showMagang(Magang $magang): array
     {
         $response = array();
-        $querry = "select magang.id , kategori.id as kategoriid , magang.posisi_magang , penyedia_magang.nama_perusahaan , kategori.kategori , magang.status , magang.lama_magang , magang.jumlah_maksimal , magang.jumlah_saatini , magang.create_at , magang.deskripsi  from magang join penyedia_magang on magang.penyedia = penyedia_magang.id join kategori on kategori.id = magang.kategori where penyedia_magang.id = ?";
+        $querry = "select magang.id , kategori.id as kategoriid , magang.posisi_magang , penyedia_magang.nama_perusahaan , kategori.kategori , magang.status , magang.lama_magang , magang.jumlah_maksimal , magang.jumlah_saatini , magang.create_at , magang.deskripsi , magang.salary , magang.jumlah_saatini , magang.jumlah_maksimal from magang join penyedia_magang on magang.penyedia = penyedia_magang.id join kategori on kategori.id = magang.kategori where penyedia_magang.id = ?";
         $PDOstatement =  $this->connection->prepare($querry);
         $PDOstatement->execute([$magang->getPenyedia()]);
         if ($PDOstatement->rowCount() > 0) {
@@ -76,7 +78,6 @@ class MagangRepository
             $response['body'] = array();
             http_response_code(200);
             while ($row = $PDOstatement->fetch(PDO::FETCH_ASSOC)) {
-
                 $item = array(
                     "id" => $row['id'],
                     "id_kategori" => $row['kategoriid'],
@@ -89,7 +90,9 @@ class MagangRepository
                     "jumlah_saatini" => $row['jumlah_saatini'],
                     "create_at" => $row['create_at'],
                     "deskripsi" => $row['deskripsi'],
-                    // "syarat" => $row['syarat'],
+                    "salary" => $row['salary'],
+                    
+                    
                 );
                 array_push($response['body'], $item);
             }
@@ -100,37 +103,76 @@ class MagangRepository
         }
         return $response;
     }
-
-    public function updateMagang(Magang $magang) : ?Magang{
+    public function updateMagang(Magang $magang): ?Magang
+    {
         try {
-            
+
             $now_stamp = date("Y-m-d H:i:s");
             $query = "update magang set posisi_magang  = ? , kategori = ? , lama_magang = ? , jumlah_maksimal = ? , deskripsi = ?  where id = ? ";
             $PDOstatement = $this->connection->prepare($query);
             $PDOstatement->execute([
-                $magang->getPosisi_magang() , 
-                $magang->getKategori() , 
+                $magang->getPosisi_magang(),
+                $magang->getKategori(),
                 $magang->getLama_magang(),
-                $magang->getJumlah_maksimal() , 
+                $magang->getJumlah_maksimal(),
                 $magang->getDeskripsi(),
                 $magang->getId()
             ]);
-            return $magang;        
+            return $magang;
         } catch (\PDOException $th) {
             var_dump($th);
             return null;
         }
-        
     }
 
-    public function deleteById(Magang $magang) : bool{
+    public function deleteById(Magang $magang): bool
+    {
         try {
             $query = "delete from magang where id= ? ";
             $PDOstatement = $this->connection->prepare($query);
             $PDOstatement->execute([$magang->getId()]);
             return true;
         } catch (\PDOException $th) {
-           return false;
+            return false;
         }
-}
+    }
+
+    public function showMagangOnMobile(): array
+    {
+        $query =  "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status = 'kosong' ";
+        $responseData = array();
+        try {
+            $response = $this->connection->query($query);
+            if ($response->rowCount() > 0) {
+                $responseData['status'] = 'oke';
+                $responseData['message'] = 'data ditemukan';
+                $responseData['body'] = array();
+                while ($row = $response->fetch(PDO::FETCH_ASSOC)) {
+                    $item = array(
+                        "posisi_magang" => $row['posisi_magang'],
+                        "foto" => $row['foto'],
+                        "id_penyedia" => $row['penyedia_id'],
+                        "salary" => $row['salary'],
+                        "alamat_perusahaan" => $row['alamat_perusahaan'],
+                        "nama_perusahaan" => $row['nama_perusahaan'],
+                        "email" => $row['email'],
+                        "lama_magang" => $row['lama_magang'],
+                        "id_magang" => $row['magang_id'],
+                        "jumlah_maksimal" => $row['jumlah_maksimal'],
+                        "deskripsi" => $row['deskripsi'],
+                        "kategori" => $row['kategori'] , 
+                        "create_at" => $row['create_at'],
+                        "lowongan_tersedia" => $row['jumlah_maksimal'] - $row['jumlah_saatini']
+                    );
+                    array_push($responseData['body'], $item);
+                }
+            } else {
+                $responseData['status'] = "failed";
+                $responseData['message'] = "data magang kosong";
+            }
+        } catch (\PDOException $th) {
+            var_dump($th);
+        }
+        return $responseData;
+    }
 }

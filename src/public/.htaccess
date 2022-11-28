@@ -7,10 +7,13 @@ Options All -Indexes
 
 # Turning on the rewrite engine is necessary for the following rules and features.
 # FollowSymLinks must be enabled for this to work.
+
+
 <IfModule mod_rewrite.c>
 	Options +FollowSymlinks
 	RewriteEngine On
-
+	php_value post_max_size 10M
+	php_value upload_max_filesize 20M
 	# If you installed CodeIgniter in a subfolder, you will need to
 	# change the following line to match the subfolder you need.
 	# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
@@ -39,6 +42,7 @@ Options All -Indexes
 </IfModule>
 
 <IfModule !mod_rewrite.c>
+	
 	# If we don't have mod_rewrite installed, all 404's
 	# can be sent to index.php, and everything works as normal.
 	ErrorDocument 404 index.php

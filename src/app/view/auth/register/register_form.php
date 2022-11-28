@@ -20,18 +20,21 @@ use LearnPhpMvc\config\Url;
 <div class="box-register">
     <h3 class="text-center text-judul-login mb-5">Register go-intern</h3>
     <form action=<?= Url::BaseUrl() . "/register/post" ?> method="post" class="form-login w-75 needs-validation" novalidate>
-        <div class="mb-4">
+        <div class=" mb-4">
             <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username" name="usernameRegister" required>
+        
         </div>
-        <div class="mb-4">
-            <input type="text" class="form-control" id="validationCustom01" required name="emailRegister" />
+        <div class=" mb-4">
+            <input type="email" class="form-control" id="validationCustom01" required name="emailRegister" placeholder="Masukan email"/>
+          
         </div>
         <div class="row">
-            <div class="col-6">
-                <input type="text" class="form-control" id="validationCustom01" required placeholder="Nama Depan Perusahaan" name="namadepanRegister">
+            <div class="  col-6">
+                <input type="text" class="form-control" id="validationCustom01" required placeholder="Nama Depan" name="namadepanRegister">
+               
             </div>
             <div class="col-6 mb-4">
-                <input type="text" class="form-control" id="validationCustom01" required placeholder="Nama Belakang Perusahaan" name="namabelakangRegister">
+                <input type="text" class="form-control" id="validationCustom01" required placeholder="Nama Belakang" name="namabelakangRegister">
             </div>
         </div>
         <div class="input-group mb-4">
@@ -44,7 +47,7 @@ use LearnPhpMvc\config\Url;
             </div>
         </div>
         <div class="input-group mb-4">
-            <input type="password" name="=konfirmasiPasswordRegister" class="input form-control" id="password2" placeholder="Password" required="true" aria-label="password" aria-describedby="basic-addon1">
+            <input type="password" name="=konfirmasiPasswordRegister" class="input form-control" id="password2" placeholder="Password" required aria-label="password" aria-describedby="basic-addon1">
             <div class="input-group-append">
                 <span class="input-group-text" onclick="showHide2();">
                     <i class="fas fa-eye" id="show_eye1"><img src=<?= Url::BaseUrl() . "/assets/eye.svg" ?> alt="" srcset=""></i>
@@ -54,47 +57,29 @@ use LearnPhpMvc\config\Url;
         </div>
 
         <div class="mb-4">
-            <input type="text" class="form-control" id="validationCustom01" required placeholder="No Hp" name="nohpRegister">
+            <input type="number" class="form-control" id="validationCustom01" required placeholder="No Hp" name="nohpRegister">
         </div>
-        <!-- <div class="row mb-3">
-            <div class="col-8">
-                <select class="form-select" aria-label="Default select example" id="id_select">
-                    <option value="0" selected>Pilih Role</option>
-                    <option value="1">Pencari Magang</option>
-                    <option value="2">Penyedia Magang</option>
-                </select>
-            </div>
-        </div> -->
-        <!-- <div id="form-pencari">
-            <div class="mb-4">
-                <input type="file" class="form-control" id="cv" placeholder="Masukan CV">
-            </div>
-            <div class="mb-4">
-                <input type="file" class="form-control" id="resume" placeholder="Masukan Resume">
-            </div>
-            <div class="form-floating mb-5">
-                <textarea class="form-control" placeholder="Pisahkan Skill Dengan , " id="floatingTextarea"></textarea>
-                <label for="" class="form-label">Skill</label>
-            </div>
-            <div class="form-floating mb-5">
-                <textarea class="form-control" placeholder="Pisahkan Skill Dengan , " id="floatingTextarea"></textarea>
-                <label for="" class="form-label">Alamat</label>
-            </div>
-        </div> -->
         <div id="form-penyedia">
             <div class="row mb-3">
                 <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" id="id_select">
-                        <option value="0" selected>Jenis Usaha</option>
-                        <option value="1">Pendidikan</option>
-                        <option value="2">It</option>
-                        <option value="2">Multimedia</option>
+                    <?php
+                    $url = Url::BaseApi() . "/api/jenisusaha/findall";
+                    $decode = file_get_contents($url, true);
+                    $decodeData = json_decode($decode , true);
+                    ?>
+                    <select class="form-select" aria-label="Default select example" id="id_select" name="jenis_usaha" required>
+                    <?php
+                    foreach ($decodeData['body'] as $key => $value) {
+                      ?>
+                      <option value="<?=$value['id'] ?>"><?=$value['jenis'] ?></option>
+                    <?php }
+                    ?>
                     </select>
                 </div>
             </div>
-            <div class="form-floating mb-5">
-                <textarea class="form-control" placeholder="Alamat Perusahaan , " id="validationCustom01" name="alamat" required></textarea>
-                <label for="" class="form-label">Alamat</label>
+            <div class="mb-5">
+                <textarea class="form-control" placeholder="Masukan Alamat Perusahaan , " id="validationCustom01" name="alamat" required></textarea>
+              
             </div>
         </div>
         <button type="submit" class="btn btn-primary w-100" name="submit" value="submit">Submit</button>

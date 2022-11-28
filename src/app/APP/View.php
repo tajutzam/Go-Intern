@@ -25,9 +25,10 @@ class View
 
     public static function renderDashboard(string $view, $model)
     {
-        $model;
+     
         require __DIR__."/../../public/includes/header.php";
         require __DIR__."/../../public/includes/style.php";
+        $model;
         require __DIR__."/../../public/includes/navbar.php";
         require __DIR__."/../view/admin/RuangAdmin-master/$view.php";
         require __DIR__."/../../public/includes/script.php";

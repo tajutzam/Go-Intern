@@ -4,6 +4,8 @@ use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\Domain\Magang;
 use LearnPhpMvc\repository\MagangRepository;
 use PHPUnit\Framework\TestCase;
+
+use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotNull;
 
 class MagangRepositoryTest extends TestCase
@@ -39,5 +41,10 @@ class MagangRepositoryTest extends TestCase
      $result = $this->repository->updateMagang($magang);
      var_dump($result);
      assertNotNull($magang); 
+    }
+
+    function testShowOnMobile(){
+       $responseData =  $this->repository->showMagangOnMobile();
+       assertEquals("oke" , $responseData['status']);
     }
 }
