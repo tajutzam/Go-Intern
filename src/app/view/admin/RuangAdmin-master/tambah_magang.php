@@ -1,17 +1,13 @@
 <?php
-
 use LearnPhpMvc\APP\View;
 use LearnPhpMvc\Config\Url;
-
 $count = 0;
-
 ?>
 <h2 class="ml-2">Data Magang</h2>
 
 <?php
 if (isset($_SESSION['succes'])) {
-
-
+    
 ?>
     <div class="card-body">
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -31,8 +27,9 @@ if (isset($_SESSION['succes'])) {
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable" id="#modalScroll">Tambah Data</button>
         </div>
+
         <div class="table-responsive">
-            <table class="table align-items-center table-flush">
+            <table class="table align-items-center table-flush table-magang" id="table-magang">
                 <thead class="thead-light">
                     <tr>
                         <th>No</th>
@@ -43,8 +40,9 @@ if (isset($_SESSION['succes'])) {
                         <th>Jumlah Maksimal</th>
                         <th>Jumlah Saat ini</th>
                         <th>Desripsi Magang</th>
-                        <th>Syarat</th>
                         <th>Action</th>
+                        <th hidden>Action</th>
+                        
                     </tr>
                 </thead>
 
@@ -52,25 +50,24 @@ if (isset($_SESSION['succes'])) {
                     <?php
                     if (!isset($model['magang']['body'])) {
                     ?>
-                        <tr>
+                        <!-- <tr>
                             <td>Tidak ada data magang Silahkan tambah data</td>
-                        </tr>
+                        </tr> -->
                         <?php } else {
-                            
+
                         for ($i = 0; $i < sizeof($model['magang']['body']); $i++) {
                         ?>
                             <tr>
                                 <td><?= $i + 1 ?></td>
-                                <td hidden><?= $model['magang']['body'][$i]['id'] ?></td>
+                               
                                 <td><?= $model['magang']['body'][$i]['posisi_magang'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['kategori'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['lama_magang'] . " Bulan" ?></td>
-                                <td><?= $model['magang']['body'][$i]['status'] ?></td>
+                                <td><span class="badge badge-warning py-1 px-3"><?= $model['magang']['body'][$i]['status'] ?></span></td>
                                 <td><?= $model['magang']['body'][$i]['jumlah_maksimal'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['jumlah_saatini'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['deskripsi'] ?></td>
-                                <td>
-                                    <!-- var_dump($model['magang']['body'][0]['syarat'][0]['body']) -->
+                                <td hidden>
                                     <?php
                                     for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
                                         if ($model['magang']['body'][$i]['syarat'][0] != null) {
@@ -84,41 +81,27 @@ if (isset($_SESSION['succes'])) {
                                     }
                                     ?>
                                 </td>
-                                <td hidden><?= $model['magang']['body'][$i]['id'] ?></td>
+                                
                                 <td>
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <a href="" 
-                                            local data-toggle="modal"
-                                             data-target="#exampleModalScrollableUpdate" 
-                                             id="select" 
-                                             
-                                             data-id="<?= $model['magang']['body'][$i]['id'] ?>"
-                                             data-posisi="<?= $model['magang']['body'][$i]['posisi_magang'] ?>" 
-                                              data-kategori="<?= $model['magang']['body'][$i]['id_kategori'] ?>" 
-                                              data-lama_magang="<?= $model['magang']['body'][$i]['lama_magang'] ?>"
-                                               data-status="<?= $model['magang']['body'][$i]['status'] ?>" 
-                                               data-jumlah-maksimal="<?= $model['magang']['body'][$i]['jumlah_maksimal'] ?>"
-                                                data-jumlah-saatini="<?= $model['magang']['body'][$i]['jumlah_saatini'] ?>"
-                                                 data-deskripsi="<?= $model['magang']['body'][$i]['deskripsi'] ?>" 
-                                                 data-syarat="<?php
-                                                   for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
-                                                    // if($model['magang'])
-                                                    if ($model['magang']['body'][$i]['syarat'][0] != null) {
-                                                        for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
-                                                            # code...
-                                                            if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
-                                                                echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
-                                                            }
+                                            <a href="" local data-toggle="modal" data-target="#exampleModalScrollableUpdate" id="select" data-id="<?= $model['magang']['body'][$i]['id'] ?>" data-posisi="<?= $model['magang']['body'][$i]['posisi_magang'] ?>" data-kategori="<?= $model['magang']['body'][$i]['id_kategori'] ?>" data-lama_magang="<?= $model['magang']['body'][$i]['lama_magang'] ?>" data-status="<?= $model['magang']['body'][$i]['status'] ?>" data-jumlah-maksimal="<?= $model['magang']['body'][$i]['jumlah_maksimal'] ?>" data-jumlah-saatini="<?= $model['magang']['body'][$i]['jumlah_saatini'] ?>" data-deskripsi="<?= $model['magang']['body'][$i]['deskripsi'] ?>" data-salary = "<?= $model['magang']['body'][$i]['salary'] ?>" data-syarat="<?php for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
+                                                if ($model['magang']['body'][$i]['syarat'][0] != null) {
+                                                    for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
+                                                        # code...
+                                                        if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
+                                                            echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
                                                         }
                                                     }
                                                 }
-                                                ?>" ;>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                            }
+                                            ?>" ;>
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                         </div>
                                         <div class="col-lg-6" id="deleteData" data-id="<?= $model['magang']['body'][$i]['id'] ?>">
-                                            <a href="<?= Url::BaseUrl()."/company/home/dashboard/tambah/magang/delete/"?>"id="linkDelete">
+                                            <?= $model[''] ?>
+                                            <a href="<?= Url::BaseUrl() . "/company/home/dashboard/tambah/magang/delete/" . $model['magang']['body'][$i]['id'] ?>" id="linkDelete">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </div>
@@ -176,6 +159,10 @@ if (isset($_SESSION['succes'])) {
                     <div class="mb-4">
                         <label for="exampleInputEmail1" class="form-label">Jumlah Maksimal</label>
                         <input type="number" class="form-control" placeholder="Jumlah maksimal lowongan" id="exampleInputEmail1" aria-describedby="emailHelp" name="jumlah_maksimal" required="true">
+                    </div>
+                    <div class="mb-4">
+                        <label for="exampleInputEmail1" class="form-label">Salary</label>
+                        <input type="number" class="form-control" placeholder="Masukan Salary Tanpa titik" id="exampleInputEmail1" aria-describedby="emailHelp" name="salary" required="true">
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Syarat</label>
@@ -236,6 +223,10 @@ if (isset($_SESSION['succes'])) {
                         <label for="exampleInputEmail1" class="form-label">Jumlah Maksimal</label>
                         <input type="number" id="jumlah_maksimal_update" class="form-control" placeholder="Jumlah maksimal lowongan" aria-describedby="emailHelp" name="jumlah_maksimalUpdate" required="true">
                     </div>
+                    <div class="mb-4">
+                        <label for="exampleInputEmail1" class="form-label">Salary</label>
+                        <input type="number" id="salary_update" class="form-control" placeholder="Jumlah maksimal lowongan" aria-describedby="emailHelp" name="jumlah_maksimalUpdate" required="true">
+                    </div>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Syarat</label>
                         <textarea class="form-control" id="syarat_update" rows="3" placeholder="Pisahkan dengan (Koma)" name="syaratUpdate" required="true"></textarea>
@@ -254,3 +245,6 @@ if (isset($_SESSION['succes'])) {
         </div>
     </div>
 </div>
+<?php
+
+?>

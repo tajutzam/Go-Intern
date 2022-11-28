@@ -6,7 +6,7 @@ class SkillRequest
 {
 
     private string $skill;
-    private string $pencari_magang;
+    private int $pencari_magang;
     private int $id;
 
     /**
@@ -53,7 +53,7 @@ class SkillRequest
     /**
      * @param string $pencari_magang
      */
-    public function setPencariMagang(string $pencari_magang): void
+    public function setPencariMagang(int $pencari_magang): void
     {
         $this->pencari_magang = $pencari_magang;
     }

@@ -4,7 +4,9 @@ namespace LearnPhpMvc\service;
 
 use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\Domain\Magang;
+use LearnPhpMvc\Domain\Syarat;
 use LearnPhpMvc\dto\MagangRequest ;
+use LearnPhpMvc\dto\SyaratRequest;
 use LearnPhpMvc\repository\MagangRepository;
 
 
@@ -12,10 +14,12 @@ class MagangService
 {
 
     private MagangRepository $repository;
+    private SyaratService $syaratService;
 
     public function __construct()
     {
         $this->repository = new MagangRepository(Database::getConnection());
+        $this->syaratService = new SyaratService();
     }
 
 
@@ -26,7 +30,6 @@ class MagangService
 
     public function addMagang(MagangRequest $magangRequest): array
     {
-
         $response = array();
         $magang = new Magang();
         $magang->setPosisi_magang($magangRequest->getPosisi_magang());
@@ -35,11 +38,12 @@ class MagangService
         $magang->setLama_magang($magangRequest->getLama_magang());
         $magang->setDeskripsi($magangRequest->getDeskripsi());
         $magang->setKategori($magangRequest->getKategori());
+        $magang->setSalary($magangRequest->getSalary());
         $resultOfSave =  $this->repository->addMagang($magang);
         if($resultOfSave == null ){
             $response['status'] = 'failed';
             $response['message']='terjadi kesalahan';
-            return $response;
+          
         }else{  
             $response['status'] = 'oke';
             $response['message'] = 'Berhasil menambahkan data';
@@ -49,11 +53,13 @@ class MagangService
                 'posisi_magang' => $resultOfSave->getPosisi_magang(),
                 'penyedia' => $resultOfSave->getPenyedia() , 
                 'lama_magang' => $resultOfSave->getLama_magang() , 
-                'jumlah_maksimal' => $resultOfSave->getJumlah_maksimal()
+                'jumlah_maksimal' => $resultOfSave->getJumlah_maksimal(),
+                'salary' => $magang->getSalary()
             );
             array_push($response['body'] , $item);
             return $response;
         }
+        return $response;
     }
 
     public function showMagang(MagangRequest $magangRequest) : array {
@@ -105,6 +111,16 @@ class MagangService
             $response['status'] = "failed";
             $response['message'] = "gagal hapus data magang";
 
+        }
+        return $response;
+    }
+
+    public function showMagangOnMobile() : array {
+        $response = $this->repository->showMagangOnMobile();
+        if($response['status'] == "oke"){
+            http_response_code(200);
+        }else{
+            http_response_code(404);
         }
         return $response;
     }

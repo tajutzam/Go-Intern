@@ -6,6 +6,8 @@ use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\Domain\PenyediaMagang;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotNull;
+use function PHPUnit\Framework\assertNull;
 
 class PenyediaMagangRepositoryTest extends TestCase
 {
@@ -68,6 +70,31 @@ class PenyediaMagangRepositoryTest extends TestCase
         var_dump($magang);
     }
 
-    
+    public function testUpdate(){
+        $penyedia = new PenyediaMagang();
+        $penyedia->setNamaPerushaan("baru");
+        $penyedia->setAlamaPerushaan("jalan polije , jember ");
+        $penyedia->setEmail("mohammadtajutzamzami07@gmail.com");
+        $penyedia->setNoTelp("07123123131");
+        $penyedia->setUsername("Zam");
+        $penyedia->setJenisUsaha(1);
+        $penyedia->setFoto("adasdasdsadsad");
+        $penyedia->setId(39);
+        $updated = $this->repository->updateData($penyedia);
+        assertNotNull($updated);
+    }
 
+    public function testUpdateFailed(){
+        $penyedia = new PenyediaMagang();
+        $penyedia->setNamaPerushaan("baru");
+        $penyedia->setAlamaPerushaan("jalan polije , jember ");
+        $penyedia->setEmail("mohammadtajutzamzami07@gmail.com");
+        $penyedia->setNoTelp("07123123131");
+        $penyedia->setUsername("Zam");
+        $penyedia->setJenisUsaha(1);
+        $penyedia->setFoto("adasdasdsadsad"); 
+        $updated = $this->repository->updateData($penyedia);
+        assertNull($updated);
+    }
+    
 }

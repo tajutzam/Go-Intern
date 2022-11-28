@@ -9,6 +9,7 @@ use LearnPhpMvc\Domain\PenyediaMagang;
 use LearnPhpMvc\dto\AktivasiAkunRequest;
 use LearnPhpMvc\dto\AktivasiAkunResponse;
 use LearnPhpMvc\dto\LoginRequest;
+use LearnPhpMvc\dto\PenyediaMagangRequest;
 use LearnPhpMvc\dto\RegisterPenyediaRequest;
 use LearnPhpMvc\repository\PenyediaMagangRepository;
 use PDOException;
@@ -44,7 +45,7 @@ class PenyediaMagangService
             $domain->setRole($registerPenyediaRequest->getRole());
             $domain->setToken($registerPenyediaRequest->getToken());
             $domain->setAlamaPerushaan($registerPenyediaRequest->getAlamat());
-
+            $domain->setJenisUsaha($registerPenyediaRequest->getJenis_usaha());
             if ($domain->getUsername() != null && $domain->getPassword() != null && $domain->getEmail() != null && $domain->getNamaPerushaan() != null && $domain->getNoTelp() != null && $domain->getRole() != null && $domain->getToken() != null) {
                 if (
                     $domain->getUsername() != "" && $domain->getPassword() != "" && $domain->getEmail() != "" && $domain->getNamaPerushaan() != "" && $domain->getNoTelp() != "" && $domain->getRole() != "" && $domain->getToken()
@@ -72,7 +73,8 @@ class PenyediaMagangService
                                 "role" => $domain->getRole(),
                                 "token" => $domain->getToken(),
                                 "status" => $domain->getStatus(),
-                                "alamat" => $domainResponse->getAlamaPerushaan()
+                                "alamat" => $domainResponse->getAlamaPerushaan(),
+                                "jenis_usaha" => $domainResponse->getJenisUsaha()
                             );
                             $reponse['status'] = 'ok';
                             $reponse['message'] = 'berhasil regristasi';
@@ -238,5 +240,41 @@ HTML;
             $response['message'] = 'harap cek username atau password anda';
         }
         return $response;
+    }
+
+    public function updateDataProfile(PenyediaMagangRequest $penyediaMagangRequest): array
+    {
+        $response = array();
+        $penyedia = new PenyediaMagang();
+        $penyedia->setNamaPerushaan($penyediaMagangRequest->getNamaPerushaan());
+        $penyedia->setAlamaPerushaan($penyediaMagangRequest->getAlamatPerushaan());
+        $penyedia->setEmail($penyediaMagangRequest->getEmail());
+        $penyedia->setNoTelp($penyediaMagangRequest->getNoTelp());
+        $penyedia->setUsername($penyediaMagangRequest->getUsername());
+        $penyedia->setJenisUsaha($penyediaMagangRequest->getJenisUsaha());
+        $penyedia->setId($penyediaMagangRequest->getId());
+        $updatedData = $this->repository->updateData($penyedia);
+        if ($updatedData == null) {
+            $response['status'] = "failed";
+            $response['message'] = "gagal memperbarui data profile";
+            echo "<script>alert('gagal memperbarui data profile')</script>";
+        } else {
+            $response['status'] = "oke";
+            $response['message'] = "berhasil memperbarui data profile";
+            unset($_COOKIE['GO-INTERN-COCKIE']); 
+            setcookie('GO-INTERN-COCKIE', null, -1, '/'); 
+            echo "<script>alert('Berhasil Memperbarui data profile');window.location.href='/login'</script>";
+        }
+        return $response;
+    }
+
+    public function updatePathPhoto(PenyediaMagangRequest $penyediaMagangRequest){
+        
+        $penyedia = new PenyediaMagang();
+        $penyedia->setFoto($penyediaMagangRequest->getFoto());
+        $penyedia->setId($penyediaMagangRequest->getId());
+        $response = $this->repository->updatePathFoto($penyedia);
+        return $response;
+        
     }
 }

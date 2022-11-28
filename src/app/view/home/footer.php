@@ -68,7 +68,7 @@ use LearnPhpMvc\Session\MySession;
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <!-- modal script -->
 <script>
-    const myModal = new bootstrap.Modal(document.getElementById('myModal'), options)
+    const myModal = new bootstrap.Modal(document.getElementById('myModal'))
 </script>
 <!-- end modal script -->
 <script>
@@ -76,35 +76,7 @@ use LearnPhpMvc\Session\MySession;
 </script>
 
 <script>
-    // var e = document.getElementById("id_select");
-    // var value = e.value;
-    // const margin_top_value = document.getElementById('id1');
 
-    // function onChange() {
-    //     console.log(margin_top_value);
-
-    //     value = e.value;
-    //     const a = document.getElementById('form-pencari');
-    //     const b = document.getElementById('form-penyedia');
-    //     if (value == "0") {
-    //         a.hidden = true;
-    //         b.hidden = true;
-    //         margin_top_value.style.marginTop = "500px";
-    //     }
-    //     if (value == "1") {
-    //         a.hidden = false;
-    //         b.hidden = true;
-    //         margin_top_value.style.marginTop = "800px";
-    //     } else if (value == "2") {
-    //         a.hidden = true;
-    //         b.hidden = false;
-    //         margin_top_value.style.marginTop = "650px";
-    //     }
-    // }
-    // e.onchange = onChange;
-    // onChange();
-    // pencari magang 
-    // penyedia magang
 </script>
 <script>
     const register = document.getElementById('register');
@@ -133,8 +105,6 @@ use LearnPhpMvc\Session\MySession;
     });
 });
 </script>
-
-
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 
 namespace LearnPhpMvc\repository;
 
+use LearnPhpMvc\Domain\PencariMagang;
 use LearnPhpMvc\Domain\Skill;
 use PDO;
 
@@ -123,5 +124,29 @@ SQL;
 
             return false;
         }
+    }
+
+    public function findByPencariMagang(Skill $skill) : array{
+        $query = "select * from skill where pencari_magang = ?";
+        $result = $this->connection->prepare($query);
+        $result->execute([$skill->getPencari_magang()]);
+       
+        $response = array();
+        $response['skills'] = array();
+        if($result->rowCount() > 0 ){
+            $response['status'] = "ok";
+            while($row = $result->fetch(PDO::FETCH_ASSOC)){
+                $items = array(
+                    "id" => $row['id'] , 
+                    "skill" => $row['skill'],
+                    "pencari_magang" => $row['pencari_magang']
+                );
+
+                array_push($response['skills'] , $items);
+            }
+        }else{
+            $response['status'] = 'failed';
+        }
+        return $response;
     }
 }

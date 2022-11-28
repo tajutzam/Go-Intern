@@ -3,9 +3,12 @@
 namespace LearnPhpMvc\service;
 
 use Cassandra\Date;
+use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\Config\Url;
 use LearnPhpMvc\Domain\PencariMagang;
+use LearnPhpMvc\Domain\Penghargaan;
 use LearnPhpMvc\Domain\Sekolah;
+use LearnPhpMvc\Domain\Skill;
 use LearnPhpMvc\dto\AktivasiAkunRequest;
 use LearnPhpMvc\dto\AktivasiAkunResponse;
 use LearnPhpMvc\dto\LoginRequest;
@@ -13,7 +16,12 @@ use LearnPhpMvc\dto\RegisterPencariMagangRequest;
 use LearnPhpMvc\dto\SearchKeyword;
 use LearnPhpMvc\dto\UpdateOencariMagangRequest;
 use LearnPhpMvc\dto\UpdatePencariMagangRequest;
+use LearnPhpMvc\helper\MoveFile;
+use LearnPhpMvc\repository\JurusanRepository;
 use LearnPhpMvc\repository\PencariMagangRepository;
+use LearnPhpMvc\repository\PenghargaanRepository;
+use LearnPhpMvc\repository\SekolahRepository;
+use LearnPhpMvc\repository\SkillRepository;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -23,10 +31,19 @@ use PHPUnit\TextUI\XmlConfiguration\Php;
 class PencariMagangService
 {
     private PencariMagangRepository $pencariMagangRepository;
+    private SkillRepository $skilrepository;
 
-    public function __construct(PencariMagangRepository $pencariMagangRepository)
+    private JurusanRepository $jurusanRepository;
+    private SekolahRepository $sekolahRepository;
+    private PenghargaanRepository $penghargaanRepository;
+
+    public function __construct(PencariMagangRepository $pencariMagangRepository, SkillRepository $skillRepository)
     {
         $this->pencariMagangRepository = $pencariMagangRepository;
+        $this->skilrepository = $skillRepository;
+        $this->sekolahRepository = new SekolahRepository(Database::getConnection());
+        $this->jurusanRepository = new JurusanRepository(Database::getConnection());
+        $this->penghargaanRepository = new PenghargaanRepository(Database::getConnection());
     }
     public function findAll(): array
     {
@@ -34,6 +51,43 @@ class PencariMagangService
         return $this->pencariMagangRepository->findAll();
     }
 
+    public function findByIdApi($id): array
+    {
+        $response = array();
+        $response['body'] =  array();
+        $resultObj = $this->pencariMagangRepository->findById($id);
+        if ($resultObj != null) {
+            $response['status'] = "oke";
+            http_response_code(200);
+            $item = array(
+                "id" => $resultObj->getId(),
+                "username" => $resultObj->getUsername(),
+                "password" => $resultObj->getPassword(),
+                "email" => $resultObj->getEmail(),
+                "sekolah" => $resultObj->getIdSekolah() == null ? 0 : $resultObj->getIdSekolah(),
+                "no_telp" => $resultObj->getNo_telp(),
+                "agama" => $resultObj->getAgama() == null ? 'null' : $resultObj->getAgama(),
+                "tangal_lahir" => $resultObj->getTanggalLahir(),
+                "token" => $resultObj->getToken(),
+                "cv" => $resultObj->getCv() ?? 'null',
+                "resume" => $resultObj->getResume() ?? 'null',
+                "status" => $resultObj->getStatus(),
+                "statusMagang" => $resultObj->isStatusMagang(),
+                "role" => $resultObj->getRole(),
+                "create_at" => $resultObj->getCreate_at(),
+                "update_at" => $resultObj->getUpdate_at(),
+                "nama" => $resultObj->getNama(),
+                "foto" => $resultObj->getFoto() ?? 'null',
+                "jenis_kelamin" => $resultObj->getJenis_kelamin(),
+            );
+            array_push($response['body'], $item);
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = "data tidak ditemukan";
+        }
+        return $response;
+    }
     public function findByStatusAktif(): array
     {
         // return array , cek di repository package
@@ -54,6 +108,8 @@ class PencariMagangService
                     if (password_verify($loginRequest->password, $loginResponse['body'][0]['password'])) {
                         http_response_code(200);
                         $response['message'] = "Berhasil login";
+                        $skill = new  Skill();
+                        $skill->setPencari_magang($loginResponse['body'][0]['id']);
                         array_push($response['body'], $loginResponse['body']);
                     } else {
                         http_response_code(401);
@@ -69,6 +125,7 @@ class PencariMagangService
             //       
         } else {
             http_response_code(404);
+            $response['status'] = "failed";
             array_push($response['body'], $loginResponse['status']);
         }
         return $response;
@@ -207,9 +264,9 @@ class PencariMagangService
                                     $pencariMagang->setStatus("tidak_aktif");
                                     $pencariMagang->setStatusMagang("tidak_magang");
                                     $pencariMagang->setRole($request->getRole());
-                                    //                                    $sekolah->id = $request->getIdSekolah();
-                                    //                                    $pencariMagang->setIdSekolah($request->getIdSekolah());
+                                    // $pencariMagang->setIdSekolah($request->getIdSekolah());
                                     $pencariMagang->setNama($request->getNamaDepan() . " " . $request->getNamaBelakang());
+                                    $pencariMagang->setJenis_kelamin($request->getJenis_kelamin());
                                     $saveResult = $this->pencariMagangRepository->savePencariMagnag($pencariMagang, $sekolah);
                                     if ($saveResult == null) {
                                         http_response_code(401);
@@ -420,7 +477,241 @@ HTML;
 
     public function findById($id): ?PencariMagang
     {
-        $data =  $this->pencariMagangRepository->findById($id);
+        $data = $this->pencariMagangRepository->findById($id);
+
         return $data;
+    }
+
+    public function updateTentangSaya($tentang_saya, $id): array
+    {
+        $pencarimagang = new PencariMagang();
+        $pencarimagang->setId($id);
+        $pencarimagang->setTentang_saya($tentang_saya);
+        $responsefind = $this->pencariMagangRepository->findById($id);
+        if ($responsefind == null) {
+            $response['status'] = "failed";
+            $response['message'] = "Gagal memperbarui tentang saya";
+        } else {
+            $isSucces = $this->pencariMagangRepository->updateTentangSaya($pencarimagang);
+            $response = array();
+            if ($isSucces) {
+                $response['status'] = "oke";
+                $response['message'] = "berhasil memperbarui tentang saya";
+            } else {
+                $response['status'] = "failed";
+                $response['message'] = "Gagal memperbarui tentang saya";
+            }
+        }
+        return $response;
+    }
+
+    public function updateDeskripsi($deskripsi, $id): array
+    {
+        $pencariMagang = new PencariMagang();
+        $pencariMagang->setId($id);
+        $resultCari = $this->pencariMagangRepository->findById($id);
+        $response = array();
+        if ($resultCari == null) {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal memperbarui data sekolah';
+        } else {
+            $pencariMagang->setDeskripsi_sekolah($deskripsi);
+            $responseUpdate = $this->pencariMagangRepository->updateDeskripsiSekolah($pencariMagang);
+            if ($responseUpdate != null) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil memperbarui deskripsi sekolah';
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui data sekolah';
+            }
+        }
+        return $response;
+    }
+    public function uploadImage($username): array
+    {
+        $response = array();
+        if (isset($_FILES['avatar'])) {
+            $avatar_name = $_FILES["avatar"]["name"];
+            $avatar_tmp_name = $_FILES["avatar"]["tmp_name"];
+            $error = $_FILES["avatar"]["error"];
+            if ($error > 0) {
+                http_response_code(400);
+                $response['status'] = 'failed';
+                $response['message'] =  'terjadi kesalahan upload image';
+            } else {
+                $nameDecoded = md5($avatar_name);
+                $fotoExtensions = explode(".", $avatar_name);
+                $microTime = floor(microtime(true) * 1000);
+                $fullNameFoto = $microTime . rand(10, 100) . $nameDecoded . "." . $fotoExtensions[1];
+                $response =  MoveFile::moveFilePenyedia($avatar_tmp_name, $fullNameFoto, 'avatarpencari');
+                if ($response['status'] == 'oke') {
+                    // todo update photo path in DB
+                    $pencariMagang = new PencariMagang();
+                    $pencariMagang->setFoto($fullNameFoto);
+                    $pencariMagang->setUsername($username);
+                    $responserepo = $this->pencariMagangRepository->saveImage($pencariMagang);
+                    var_dump($responserepo);
+                    http_response_code(200);
+                } else if ($response['status'] == 'failed') {
+                    $response['status'] = 'failed';
+                    $response['message'] =  'Kamu tidak bisa menambahkan foto yang sama , coba rename foto mu';
+                    http_response_code(404);
+                } else {
+                    $response['status'] = 'failed';
+                    $response['message'] =  'terjadi kesalahan upload image';
+                    http_response_code(400);
+                }
+            }
+        }
+        return $response;
+    }
+    public function addSekolah(int $sekolah, int $jurusan, $id): array
+    {
+        $pencariMagang = new PencariMagang();
+        $sekolahResponse = $this->sekolahRepository->findById($sekolah);
+        $jurusanResponse =  $this->jurusanRepository->findById($jurusan);
+        $response = array();
+        if ($sekolahResponse != null && $jurusanResponse != null) {
+            $pencariMagang->setIdSekolah($sekolah);
+            $pencariMagang->setJurusan($jurusan);
+            $pencariMagang->setId($id);
+            $responsePencariMagang = $this->pencariMagangRepository->findById($id);
+            if ($responsePencariMagang != null) {
+                $responseObj =  $this->pencariMagangRepository->addSekolah($pencariMagang);
+                if ($responseObj) {
+                    http_response_code(200);
+                    $response['status'] = "oke";
+                    $response['messge'] = "berhasil menambahkan sekolah dan jurusan";
+                } else {
+                    $response['status'] = "failed";
+                    $response['messge'] = "gagal menambahkan sekolah dan jurusan";
+                    http_response_code(400);
+                }
+            } else {
+                http_response_code(404);
+                $response['status'] = 'failed';
+                $response['message'] = "gagal , data user tidak ada";
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failedd';
+            $response['message'] = 'data jurusan dan sekolah tidak ada';
+        };
+        return $response;
+    }
+
+    public function showdatasekolah($id): array
+    {
+        return  $this->pencariMagangRepository->showDataSekolah($id);
+    }
+
+    public function addPenghargaan($files, $judul, $username): array
+    {
+        define('KB', 1024);
+        define('MB', 1048576);
+        define('GB', 1073741824);
+        define('TB', 1099511627776);
+        $response = array();
+        $response['body'] = array();
+        $tmp_name = $files['tmp_name'];
+        $name = $files['name'];
+        $nameTm = explode(".", $name);
+        $namebeforeConvert = $nameTm[0];
+        $extensions = $nameTm[1];
+        $microTime = floor(microtime(true) * 1000 + time());
+        $nameTemp = $microTime . rand(10, 100) . md5($namebeforeConvert);
+        $fullname = $nameTemp . "." . $extensions;
+        $size = $files['size'];
+        if ($files['error'] > 0) {
+            http_response_code(500);
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal menambahkan file penghargaan , terjadi kesalahan server';
+        } else {
+            if ($size > 5 * MB) {
+                http_response_code(401);
+                $response['status'] = 'failed';
+                $response['message'] = 'file tidak boleh lebih dari 5 MB';
+            } else {
+                $responseUpload =  MoveFile::moveFilePenyedia($tmp_name, $fullname, "penghargaan");
+                if ($responseUpload['status'] == 'oke') {
+                    $responseByUsername = $this->pencariMagangRepository->findByUsername($username);
+                    $id_penghargaanTemp = $responseByUsername['body'][0]['id_penghargaan'];
+                    $id_pencarimagang = $responseByUsername['body'][0]['id'];
+                    // succes move file to directory
+                    $penghargaan = new Penghargaan();
+                    $penghargaan->setJudul($judul);
+                    $penghargaan->setFile($fullname);
+                    $penghargaan->setPencari_magang($id_pencarimagang);
+                    if ($responseByUsername['status'] == 'oke') {
+                        if ($id_penghargaanTemp != 0) {
+                            $penghargaan->setId_penghargaan($id_penghargaanTemp);
+                            $responsePenghargaan = $this->penghargaanRepository->findById($penghargaan);
+                            if ($responsePenghargaan != null) {
+                                if (unlink(__DIR__ . "/../../public/dokuments/penghargaan/" . $responsePenghargaan->getFile())) {
+                                    $penghargaan->setId_penghargaan($id_penghargaanTemp);
+                                    $penghargaan->setFile($fullname);
+                                    $penghargaan->setJudul($judul);
+                                    $resultPenghargaan = $this->penghargaanRepository->updatePenghargaan($penghargaan);
+                                    if ($resultPenghargaan) {
+                                        $item = array(
+                                            "id_penghargaan" => $penghargaan->getId_penghargaan(),
+                                            "judul" => $penghargaan->getJudul(),
+                                            "file" => $penghargaan->getFile()
+                                        );
+                                        array_push($response['body'], $item);
+                                        http_response_code(201);
+                                        $response['status'] = 'oke';
+                                        $response['message'] = 'berhasil memperbarui penghargaan';
+                                    } else {
+                                        http_response_code(400);
+                                        $response['status'] = 'failed';
+                                        $response['message'] = 'gagal memperbarui penghargaan';
+                                    }
+                                } else {
+                                    http_response_code(400);
+                                    $response['status'] = 'failed';
+                                    $response['message'] = 'gagal memperbarui data , data tidak ada';
+                                }
+                            }
+                        } else {
+                            echo "else";
+                            $penghargaanresult =  $this->penghargaanRepository->addPenghargaan($penghargaan);
+                            if ($penghargaanresult != null) {
+                                if ($responseByUsername['status'] == 'oke') {
+                                    $pencariMagang = new PencariMagang();
+                                    $pencariMagang->setUsername($username);
+                                    $result =  $this->pencariMagangRepository->addPenghargaan($pencariMagang, $penghargaanresult);
+                                    if ($result) {
+                                        $item = array(
+                                            "id_penghargaan" => $penghargaan->getId_penghargaan(),
+                                            "judul" => $penghargaan->getJudul(),
+                                            "file" => $penghargaan->getFile()
+                                        );
+                                        http_response_code(201);
+                                        array_push($response['body'], $item);
+                                        $response['status'] = 'ok';
+                                        $response['message'] = 'berhasil menambahkan penghargaan ke pencari magang';
+                                    } else {
+                                        http_response_code(400);
+                                        $response['status'] = 'failed';
+                                        $response['message'] = 'gagal menambahkan penghargaan ke pencari magang';
+                                    }
+                                }
+                            } else {
+                                http_response_code(400);
+                                $response['status'] = 'failed';
+                                $response['message'] = 'gagak menambahkan penghargaan ke table penghargaan';
+                            }
+                        }
+                    } else {
+                        $response['status'] = 'failed';
+                        $response['message'] = 'data user tidak ada harap masukan username yang tersedia';
+                    }
+                } else {
+                    echo 'error';
+                }
+            }
+        }
+        return $response;
     }
 }

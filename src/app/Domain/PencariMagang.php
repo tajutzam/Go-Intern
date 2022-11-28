@@ -14,9 +14,18 @@ class PencariMagang{
     private string $email;
     private int $no_telp;
     private string $tanggalLahir;
-    private int $id_sekolah;
+    private ?int $id_sekolah;
     private string $foto;
     private string $nama;
+    
+    private string $tentang_saya;
+
+    private string $deskripsi_sekolah;
+
+    private string $jenis_kelamin;
+    private int $jurusan;
+
+    private int $penghargaan;
 
     /**
      * @return string
@@ -65,7 +74,7 @@ class PencariMagang{
     /**
      * @return int
      */
-    public function getIdSekolah(): int
+    public function getIdSekolah(): ?int
     {
         return $this->id_sekolah;
     }
@@ -73,11 +82,10 @@ class PencariMagang{
     /**
      * @param int $id_sekolah
      */
-    public function setIdSekolah(int $id_sekolah): void
+    public function setIdSekolah(?int $id_sekolah): void
     {
         $this->id_sekolah = $id_sekolah;
     }
-
     /**
      * @return bool
      */
@@ -203,7 +211,6 @@ class PencariMagang{
     public function setNo_telp($no_telp)
     {
         $this->no_telp = $no_telp;
-
         return $this;
     }
 
@@ -367,4 +374,104 @@ class PencariMagang{
         return $this;
     }
     
+
+    /**
+     * Get the value of tentang_saya
+     */ 
+    public function getTentang_saya()
+    {
+        return $this->tentang_saya;
+    }
+
+    /**
+     * Set the value of tentang_saya
+     *
+     * @return  self
+     */ 
+    public function setTentang_saya($tentang_saya)
+    {
+        $this->tentang_saya = $tentang_saya;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deskripsi_sekolah
+     */ 
+    public function getDeskripsi_sekolah()
+    {
+        return $this->deskripsi_sekolah;
+    }
+
+    /**
+     * Set the value of deskripsi_sekolah
+     *
+     * @return  self
+     */ 
+    public function setDeskripsi_sekolah($deskripsi_sekolah)
+    {
+        $this->deskripsi_sekolah = $deskripsi_sekolah;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of jenis_kelamin
+     */ 
+    public function getJenis_kelamin()
+    {
+        return $this->jenis_kelamin;
+    }
+
+    /**
+     * Set the value of jenis_kelamin
+     *
+     * @return  self
+     */ 
+    public function setJenis_kelamin($jenis_kelamin)
+    {
+        $this->jenis_kelamin = $jenis_kelamin;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of jurusan
+     */ 
+    public function getJurusan()
+    {
+        return $this->jurusan;
+    }
+
+    /**
+     * Set the value of jurusan
+     *
+     * @return  self
+     */ 
+    public function setJurusan($jurusan)
+    {
+        $this->jurusan = $jurusan;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of penghargaan
+     */ 
+    public function getPenghargaan()
+    {
+        return $this->penghargaan;
+    }
+
+    /**
+     * Set the value of penghargaan
+     *
+     * @return  self
+     */ 
+    public function setPenghargaan($penghargaan)
+    {
+        $this->penghargaan = $penghargaan;
+
+        return $this;
+    }
 }

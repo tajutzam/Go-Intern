@@ -98,6 +98,7 @@ class LoginController
                     $newData = array();
                     // save jwt session
                     $key = "asodkaosdkoaoasdisauduqeiqwmxzmxlasncjnfqwhodqwpdqowkdpqkdckmkjfabfhfwhfojpfqkqowkowqkeopqwke";
+                   
                     // var_dump($response[0]['username']);
                     $payload = array(
                         "id" => $response[0]['id'],
@@ -108,6 +109,8 @@ class LoginController
                         "jenis_usaha" => $response[0]['jenis_usaha'],
                         "email" => $response[0]['email'],
                         "token" => $response[0]['token'],
+                        "alamat" => $response[0]['alamat'] , 
+                        
                     );
                     $jwt =  JWT::encode($payload, $key, 'HS256');
                     // set cockie

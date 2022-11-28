@@ -7,7 +7,10 @@ use LearnPhpMvc\dto\LoginRequest;
 use LearnPhpMvc\dto\RegisterPencariMagangRequest;
 use LearnPhpMvc\dto\UpdatePencariMagangRequest;
 use LearnPhpMvc\repository\PencariMagangRepository;
+use LearnPhpMvc\repository\SkillRepository;
 use PHPUnit\Framework\TestCase;
+
+use function PHPUnit\Framework\assertEquals;
 
 class PencariMagangServiceTest extends TestCase
 {
@@ -17,7 +20,8 @@ class PencariMagangServiceTest extends TestCase
     protected function setUp() : void
     {
         $repository = new PencariMagangRepository(Database::getConnection());
-        $this->service = new PencariMagangService($repository);
+        $skilRepo = new SkillRepository(Database::getConnection());
+        $this->service = new PencariMagangService($repository , $skilRepo);
     }
 
     public function testFindAll()
@@ -29,10 +33,10 @@ class PencariMagangServiceTest extends TestCase
     public function testLoginSucces()
     {
         $loginRe = new LoginRequest();
-        $loginRe->username = "zam baruasdasdasd";
-        $loginRe->password = "zam baru";
+        $loginRe->username = "Zam";
+        $loginRe->password = "rahasia";
         $arr = $this->service->login($loginRe);
-        self::assertEquals('ok' , $arr['status']);
+        var_dump($arr);
     }
     public function testLoginFailed()
     {
@@ -40,9 +44,10 @@ class PencariMagangServiceTest extends TestCase
         $loginRe->username = "zam baru";
         $loginRe->password = "zam barasdasu";
         $arr = $this->service->login($loginRe);
+        var_dump($arr);
         self::assertEquals('failed' , $arr['status']);
     }
-
+    
     public function testRegister()
     {
         $request = new RegisterPencariMagangRequest();
@@ -108,7 +113,7 @@ class PencariMagangServiceTest extends TestCase
         $arr = $this->service->register($request);
         self::assertEquals("terjadi kesalahan" , $arr['status']);
     }
-
+    
     public function testUpdateUserByIdSuccess()
     {
         $request = new UpdatePencariMagangRequest();
@@ -130,5 +135,14 @@ class PencariMagangServiceTest extends TestCase
         self::assertEquals("ok" , $updateData['status']);
     }
 
+    public function testUpdateTentangSaya(){
+        $response = $this->service->updateTentangSaya("tentang-saya.pdf" , 72);
+        assertEquals('oke' , $response['status']);
+    }
 
+    public function testUpdateDeskripsiSekolah(){
+        $response = $this->service->updateDeskripsi('beru deskripsi' , 103);
+        assertEquals('oke' , $response['status']);
+    }
+    
 }

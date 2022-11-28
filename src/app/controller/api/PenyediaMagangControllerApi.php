@@ -67,7 +67,6 @@ class PenyediaMagangControllerApi
     }
     public function regristasiAkun()
     {
-        
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
@@ -82,6 +81,7 @@ class PenyediaMagangControllerApi
         $request->setToken($jsonData['token']);
         $request->setNama_perusahaan($jsonData['nama_perusahaan']);
         $request->setAlamat($jsonData['alamat']);
+        $request->setJenis_usaha($jsonData['jenisUsaha']);
         $responseRegister = $this->service->register($request);
         echo json_encode($responseRegister);
     }

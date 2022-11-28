@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use LearnPhpMvc\Config\Url;
+use LearnPhpMvc\Session\MySession;
+
 ?>
 <!-- Url::BaseUrl()."/assets/logo.png -->
 <!-- config for base url -->

@@ -18,6 +18,7 @@ class Magang{
 
     private int $kategori;
 
+    private int $salary; 
 
 
     /**
@@ -196,6 +197,26 @@ class Magang{
     public function setKategori($kategori)
     {
         $this->kategori = $kategori;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of salary
+     */ 
+    public function getSalary()
+    {
+        return $this->salary;
+    }
+
+    /**
+     * Set the value of salary
+     *
+     * @return  self
+     */ 
+    public function setSalary($salary)
+    {
+        $this->salary = $salary;
 
         return $this;
     }
