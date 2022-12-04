@@ -277,4 +277,37 @@ HTML;
         return $response;
         
     }
+
+    public function downloadCv(){
+        $path = $_SERVER['PATH_INFO'];
+        $exploded = explode("/", $path);
+        var_dump($exploded);
+        $tempName = $exploded[3];
+        $filename = $exploded[4];
+        $fullName = $tempName . ".pdf";
+        $is =  file_exists(__DIR__."/../../public/dokuments/cv/".    $fullName);
+        if($is){
+            header("Content-Disposition: attacchment; filename = ".$filename.".pdf");
+            header('Content-type: application/pdf');
+            readfile(__DIR__."/../../public/dokuments/cv/".    $fullName);
+        }else{
+            echo "script";
+        }
+    }
+    public function downloadPenghargaan(){
+        $path = $_SERVER['PATH_INFO'];
+        $exploded = explode("/", $path);
+        var_dump($exploded);
+        $tempName = $exploded[3];
+        $filename = $exploded[4];
+        $fullName = $tempName . ".pdf";
+        $is =  file_exists(__DIR__."/../../public/dokuments/penghargaan/".    $fullName);
+        if($is){
+            header("Content-Disposition: attacchment; filename = ".$filename.".pdf");
+            header('Content-type: application/pdf');
+            readfile(__DIR__."/../../public/dokuments/penghargaan/".    $fullName);
+        }else{
+            echo "script";
+        }
+    }
 }

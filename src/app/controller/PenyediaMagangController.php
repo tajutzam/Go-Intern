@@ -10,6 +10,7 @@ use LearnPhpMvc\dto\MagangRequest;
 use LearnPhpMvc\dto\PenyediaMagangRequest;
 use LearnPhpMvc\dto\SyaratRequest;
 use LearnPhpMvc\helper\MoveFile;
+use LearnPhpMvc\service\LowonganMagangService;
 use LearnPhpMvc\service\MagangService;
 use LearnPhpMvc\service\PenyediaMagangService;
 use LearnPhpMvc\service\SyaratService;
@@ -22,16 +23,25 @@ class PenyediaMagangController
 
     private PenyediaMagangService $penyediaMagangService;
 
+    private LowonganMagangService $lowonganMagangService;
     public function __construct()
     {
         $this->service = new MagangService();
         $this->syaratService = new SyaratService();
         $this->penyediaMagangService = new PenyediaMagangService();
+        $this->lowonganMagangService = new LowonganMagangService();
     }
-
+    public function showLamaranMagang()
+    {
+        $session = MySession::getCurrentSession();
+        $id = $session[0]['id'];
+        $response = $this->lowonganMagangService->showLamaranMagang($id);
+        return $response;
+    }
     static function home()
     {
         $isLogin = MySession::getCurrentSession();
+
         if ($isLogin['status'] != false) {
             $model = [
                 'title' => "Isi Data Lamaran",
@@ -44,20 +54,25 @@ class PenyediaMagangController
         }
     }
 
-    public function testPhpInfo(){
+    public function testPhpInfo()
+    {
         phpinfo();
     }
 
     function dashboardPenyedia()
     {
         $isLogin = MySession::getCurrentSession();
+        $responseLamar = $this->showLamaranMagang();
         if ($isLogin['status'] != false) {
             $isLogin = MySession::getCurrentSession();
             $magang = $this->service->findAll();
+
             $model = [
                 "title" => "Dashboard Penyedia",
                 "result" => $isLogin,
-                "magang" => $magang
+                "magang" => $magang,
+                "lamaran" => $responseLamar
+                // "response" => $responseLamar
             ];
             View::renderDashboard("index", $model);
         } else {
@@ -67,7 +82,6 @@ class PenyediaMagangController
 
     function formTambahData()
     {
-
         $isLogin = MySession::getCurrentSession();
         $magangRequest = new MagangRequest();
         $magangRequest->setPenyedia($isLogin[0]['id']);
@@ -96,18 +110,17 @@ class PenyediaMagangController
         }
     }
     function tambahDataPost()
-    {   
+    {
         $isLogin = MySession::getCurrentSession();
-       
+
         if ($isLogin['status'] == true) {
             if (isset($_POST)) {
-                if($isLogin[0]['foto'] == null ){
+                if ($isLogin[0]['foto'] == null) {
                     echo "<script>
                     alert('gagal menambahkan magang , kamu harus melengkapi foto mu terlebih dahulu , klik namamu pojok kanan atas sekarang ! ');
                     window.location.href='/company/home/dashboard/tambah/magang';
-                    </script>";    
-                   
-                }else{
+                    </script>";
+                } else {
                     if (isset($_POST['save'])) {
                         $posisi_magang = $_POST['posisi_magang'];
                         $lama_magang = $_POST['lama_magang'];
@@ -125,7 +138,7 @@ class PenyediaMagangController
                         $magangRequest->setDeskripsi($deskripsi);
                         $magangRequest->setKategori($kategori);
                         $magangRequest->setSalary($salary);
-                        $responseMagang =  $this->service->addMagang($magangRequest); 
+                        $responseMagang =  $this->service->addMagang($magangRequest);
                         $syaratReq = new SyaratRequest();
                         $syaratReq->setId_magang($responseMagang['body'][0]['id']);
                         foreach ($syaratData as $key => $value) {
@@ -144,7 +157,6 @@ class PenyediaMagangController
                         }
                     }
                 }
-                
             }
         } else {
             View::redirect("login");
@@ -266,7 +278,7 @@ class PenyediaMagangController
                                     }
                                 }
                                 if ($statusVal) {
-                              
+
                                     echo "<script>alert('Berhasil memperbarui data');window.location.href='/company/home/dashboard/tambah/magang'</script>";
                                 } else {
                                     echo "<script>alert('tidak ada perubahan data');window.location.href='/company/home/dashboard/tambah/magang'</script>";
@@ -333,7 +345,6 @@ class PenyediaMagangController
             $magangRequest = new MagangRequest();
             $magangRequest->setId($id);
             $response = $this->service->deleteById($magangRequest);
-            
             echo "<script>alert('" . $response['message'] . "');window.location.href='/company/home/dashboard/tambah/magang'</script>";
         }
     }
@@ -341,12 +352,10 @@ class PenyediaMagangController
     public function updateDataProfile()
     {
         $isLogin = MySession::getCurrentSession();
-  
+
         $image = $_FILES['image'];
         $tmp_name = $image['tmp_name'];
         $name_file = $image['name'];
-        
-    
         $idUser = $isLogin[0]['id'];
         $usernameUser = $isLogin[0]['username'];
         $namaPeursahanUser = $isLogin[0]['nama_perusahaan'];
@@ -356,11 +365,11 @@ class PenyediaMagangController
         $emailUser = $isLogin[0]['email'];
         $tokenUser = $isLogin[0]['token'];
         $alamatUser = $isLogin[0]['alamat'];
-       
-        $rand = substr(md5(microtime()), rand(0, 26), 5); 
+
+        $rand = substr(md5(microtime()), rand(0, 26), 5);
         $nameDecoded = md5($name_file);
         $fotoExtensions = explode(".", $name_file);
-        $fullNameFoto = $nameDecoded.".".$fotoExtensions[1];     
+        $fullNameFoto = $nameDecoded . "." . $fotoExtensions[1];
         if (isset($_POST)) {
             $username = $_POST['usernameUpdate'];
             $namaPerusahaanUpdate = $_POST['namaPerusahaanUpdate'];
@@ -375,30 +384,98 @@ class PenyediaMagangController
             $penyediMagangRequest->setNoTelp($noTelpUpdate);
             $penyediMagangRequest->setUsername($username);
             $penyediMagangRequest->setJenisUsaha($jenisUsahaUpdate);
-            $penyediMagangRequest->setFoto($nameDecoded."." . $fotoExtensions[1]);
+            $penyediMagangRequest->setFoto($nameDecoded . "." . $fotoExtensions[1]);
             $penyediMagangRequest->setId($isLogin[0]['id']);
-            if($usernameUser == $username && $namaPeursahanUser == $namaPerusahaanUpdate && $no_telpUser == $noTelpUpdate && $jenisUsahaUser == $jenisUsahaUpdate && $emailUser == $emailUpdate && $alamatUser == $alamatUpdate && $image['error'] != 0){
-                // echo "<script>alert('Tidak ada perubahan data');window.location.href='/company/home/dashboard/tambah/magang'</script>";
-               var_dump($image);
-            }else{
-                if($name_file == ""){
+            if ($usernameUser == $username && $namaPeursahanUser == $namaPerusahaanUpdate && $no_telpUser == $noTelpUpdate && $jenisUsahaUser == $jenisUsahaUpdate && $emailUser == $emailUpdate && $alamatUser == $alamatUpdate && $image['error'] != 0) {
+                echo "<script>alert('Tidak ada perubahan data');window.location.href='/company/home/dashboard/tambah/magang'</script>";
+            } else {
+                if ($name_file == "") {
                     // todo no update without foto 
                     $responseUpdate = $this->penyediaMagangService->updateDataProfile($penyediMagangRequest);
-                }else{
+                } else {
                     // todo update foto
                     $penyediaMagangRequestPhoto  = new PenyediaMagangRequest();
                     $penyediaMagangRequestPhoto->setFoto($fullNameFoto);
-                    $penyediaMagangRequestPhoto->setId($isLogin[0]['id']).
-                    $resposeResult = $this->penyediaMagangService->updatePathPhoto($penyediaMagangRequestPhoto);
-                    $response = MoveFile::moveFilePenyedia($tmp_name, $fullNameFoto , 'avatarpenyedia');
+                    $penyediaMagangRequestPhoto->setId($isLogin[0]['id']) .
+                        $resposeResult = $this->penyediaMagangService->updatePathPhoto($penyediaMagangRequestPhoto);
+                    $response = MoveFile::moveFilePenyedia($tmp_name, $fullNameFoto, 'avatarpenyedia');
                     $responseUpdate = $this->penyediaMagangService->updateDataProfile($penyediMagangRequest);
-                }   
-            }  
-        } 
-        else 
-        {
+                }
+            }
+        } else {
+        }
+    }
 
-        }        
-     
+    public function downloadCv()
+    {
+
+        $this->penyediaMagangService->downloadCv();
+    }
+
+    public function downloadPenghargaan()
+    {
+        $this->penyediaMagangService->downloadPenghargaan();
+    }
+
+    public function formLamaran()
+    {
+        $dataLamaran = $this->showLamaranMagang();
+        $count = 0;
+        foreach ($dataLamaran['body'] as $key => $value) {
+            $dataLamaran['body'][$count]['skilss'] = array();
+            $data = $this->fetchSkill($value['id_pencari']);
+            if ($data['status'] == 'ok') {
+                array_push($dataLamaran['body'][$count]['skilss'], $data['skills']);
+            } else {
+            }
+            $count++;
+        }
+        $model = array(
+            "lamaran" => $dataLamaran
+        );
+        View::renderDashboard('lamaran', $model);
+    }
+
+    public function fetchSkill($id): array
+    {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://192.168.0.9:8080/api/skill/showskillbypencari/' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+        $response = curl_exec($curl);
+        $responseDecoded = json_decode($response, true);
+        curl_close($curl);
+        return $responseDecoded;
+    }
+
+    public function tolakLamaran()
+    {
+        $dataLogin = MySession::getCurrentSession();
+        $id = $dataLogin[0]['id'];
+        $path = $_SERVER['PATH_INFO'];
+        $newPath = explode("/", $path);
+        var_dump($newPath);
+        $idPencari = $newPath[6];
+        $idMagang = $newPath[7];
+        $response =   $this->lowonganMagangService->tolakLamaran($idPencari, $idMagang, $id);
+        // tolak , lamaran
+        if ($response['status'] == 'oke') {
+            echo "<script>
+            alert('berhasil Menolak lamaran !');
+            window.location.href='/company/home/dashboard/lamaran';
+            </script>";
+        } else {
+            echo "<script>
+            alert('gagal Menolak lamaran !');
+            window.location.href='/company/home/dashboard/lamaran';
+            </script>";
+        }
     }
 }

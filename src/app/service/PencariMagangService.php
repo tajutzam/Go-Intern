@@ -79,6 +79,9 @@ class PencariMagangService
                 "nama" => $resultObj->getNama(),
                 "foto" => $resultObj->getFoto() ?? 'null',
                 "jenis_kelamin" => $resultObj->getJenis_kelamin(),
+                "surat_lamaran" => $resultObj->getSuratLamaran() , 
+                "jurusan" => $resultObj->getJurusan() , 
+                "penghargaan" => $resultObj->getPenghargaan()
             );
             array_push($response['body'], $item);
         } else {
@@ -674,7 +677,7 @@ HTML;
                                 }
                             }
                         } else {
-                            echo "else";
+
                             $penghargaanresult =  $this->penghargaanRepository->addPenghargaan($penghargaan);
                             if ($penghargaanresult != null) {
                                 if ($responseByUsername['status'] == 'oke') {
@@ -708,9 +711,171 @@ HTML;
                         $response['message'] = 'data user tidak ada harap masukan username yang tersedia';
                     }
                 } else {
-                    echo 'error';
                 }
             }
+        }
+        return $response;
+    }
+
+    public function updateDataPersonal($nama, $email, $tanggal_lahir, $agama, $jenis_kelamin, $id): array
+    {
+        $pencariMagang = new PencariMagang();
+        $pencariMagang->setNama($nama);
+        $pencariMagang->setEmail($email);
+        $pencariMagang->setTanggalLahir($tanggal_lahir);
+        $pencariMagang->setAgama($agama);
+        $pencariMagang->setJenis_kelamin($jenis_kelamin);
+        $pencariMagang->setId($id);
+        $response = array();
+        $responseFindById =  $this->pencariMagangRepository->findById($id);
+        if ($responseFindById != null) {
+            if ($responseFindById->getNama() == $nama && $responseFindById->getEmail() == $email && $responseFindById->getTanggalLahir() == $tanggal_lahir && $responseFindById->getAgama() == $agama && $responseFindById->getJenis_kelamin() == $jenis_kelamin) {
+                http_response_code(401);
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui data tidak ada perubahan';
+            } else {
+                $responseUpdate =  $this->pencariMagangRepository->updateDataPersonal($pencariMagang);
+                if ($responseUpdate != null) {
+                    http_response_code(200);
+                    $response['status'] = 'oke';
+                    $response['message'] = 'berhasil update data user';
+                } else {
+                    http_response_code(500);
+                    $response['status'] = 'failed';
+                    $response['message'] = 'gagal memperbarui user , terjadi kesalahan';
+                }
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal menemukan data user';
+        }
+        return $response;
+    }
+    public function updateKeamann($username, $password, $id): array
+    {
+        $hashed = password_hash($password, PASSWORD_BCRYPT);
+        $pencariMagang = new PencariMagang();
+        $pencariMagang->setUsername($username);
+        $pencariMagang->setPassword($hashed);
+        $pencariMagang->setId($id);
+        $response = array();
+        $responseFindById = $this->pencariMagangRepository->findById($id);
+        if ($responseFindById != null) {
+            if (password_verify($password, $responseFindById->getPassword()) && $username == $responseFindById->getUsername()) {
+                http_response_code(401);
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui Data Keamanan , tidak ada perubahan';
+            } else {
+                $responseUpdate =  $this->pencariMagangRepository->updateKeamanan($pencariMagang);
+                if ($responseUpdate != null) {
+                    http_response_code(200);
+                    $response['status'] = 'oke';
+                    $response['message'] = "berhasil memperbarui keamanan user";
+                } else {
+                    http_response_code(400);
+                    $response['status'] = 'failed';
+                    $response['message'] = 'gagal memperbarui kemanan user ';
+                }
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'data user tidak ditemukan';
+        }
+        return $response;
+    }
+
+    public function updateCv($files, $username): array
+    {
+        $response = array();
+        $response['body'] = array();
+        $tmp_name = $files['tmp_name'];
+        $name = $files['name'];
+        $nameTm = explode(".", $name);
+        $namebeforeConvert = $nameTm[0];
+        $extensions = $nameTm[1];
+        $microTime = floor(microtime(true) * 1000 + time());
+        $nameTemp = $microTime . rand(10, 100) . md5($namebeforeConvert);
+        $fullname = $nameTemp . "." . $extensions;
+        $pencariMagang = new PencariMagang();
+        $pencariMagang->setCv($fullname);
+        $pencariMagang->setUsername($username);
+        $responseFindById = $this->pencariMagangRepository->findByUsername($username); // salah , nanti 
+        $pencariMagangFind = new PencariMagang();
+        $pencariMagangFind->setUsername($username);
+        $responseFindCv =  $this->pencariMagangRepository->findCvByUsername($pencariMagangFind);
+
+        if ($responseFindById['status'] == 'oke') {
+            if ($responseFindCv->getCv() != "belum ada cv") {
+                // ada data cv di dalam server , delete
+                if (unlink(__DIR__ . "/../../public/dokuments/cv/" . $responseFindCv->getCv())) {
+                    $responseMove = MoveFile::moveFilePenyedia($tmp_name, $fullname, "cv");
+                    $responseUpdate = $this->pencariMagangRepository->updateCv($pencariMagang);
+                    if ($responseUpdate != null) {
+                        http_response_code(200);
+                        $response['status'] = 'oke';
+                        $response['message'] = 'berhasil menambahkan cv';
+                    } else {
+                        http_response_code(400);
+                        $response['status'] = 'failed';
+                        $response['message'] = 'gagal menabahkan cv terjadi kesalahan';
+                    }
+                } else {
+                    $responseMove = MoveFile::moveFilePenyedia($tmp_name, $fullname, "cv");
+                    $responseUpdate = $this->pencariMagangRepository->updateCv($pencariMagang);
+                    if ($responseUpdate != null) {
+                        http_response_code(200);
+                        $response['status'] = 'oke';
+                        $response['message'] = 'berhasil menambahkan cv , tetapi gagal melakukan delete di server';
+                    } else {
+                        http_response_code(400);
+                        $response['status'] = 'failed';
+                        $response['message'] = 'gagal menabahkan cv terjadi kesalahan';
+                    }
+                }
+            } else {
+                $responseMove = MoveFile::moveFilePenyedia($tmp_name, $fullname, "cv");
+                if ($responseFindById['status'] == "oke") {
+                    $responseUpdate = $this->pencariMagangRepository->updateCv($pencariMagang);
+                    if ($responseUpdate != null) {
+                        http_response_code(200);
+
+                        var_dump($responseMove);
+                        $response['status'] = 'oke';
+                        $response['message'] = 'berhasil menambahkan cv';
+                    } else {
+                        http_response_code(400);
+                        $response['status'] = 'failed';
+                        $response['message'] = 'gagal menabahkan cv terjadi kesalahan';
+                    }
+                } else {
+                    http_response_code(404);
+                    $response['status'] = 'failed';
+                    $response['message'] = 'gagal menambahkan cv ,data tidak ditemukan';
+                }
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal menambahkan cv , data user tidak ditemukan';
+        }
+        return $response;
+    }
+
+    public function updateNoHp($noHp, $id)
+    {
+        $responseBool = $this->pencariMagangRepository->updateNoHp($noHp, $id);
+        $response = array();
+
+        if ($responseBool) {
+            http_response_code(200);
+            $response['status'] = 'success';
+            $response['message'] = 'berhasil memperbarui no telpeon';
+        } else {
+            http_response_code(400);
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal memperbarui no telpon';
         }
         return $response;
     }

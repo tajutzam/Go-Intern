@@ -53,6 +53,20 @@ class MoveFile
                     $response['name'] = $nama;
                 }
                 break;
+            case 'cv':
+                if (file_exists(__DIR__ . "/../../public/documents/cv/" . $nama)) {
+                    $response['status'] = "failed";
+                    $response['message'] = "gagal menambahkan cv , cv sudah ada";
+                } else {
+                    $responseTrue = move_uploaded_file(
+                        $tmp,
+                        __DIR__ . "/../../public/dokuments/cv/" . $nama
+                    );
+                    $response['status'] = "oke";
+                    $response['message'] = "Berhasil menambahkan cv , ";
+                    $response['name'] = $nama;
+                }
+                break;
             default:
                 # code...
                 break;

@@ -7,7 +7,7 @@ use Cassandra\Date;
 use DateTime;
 
 class PencariMagang{
-    
+    private string $suratLamaran;
     private int $id;
     private string $username;
     private string $password;
@@ -474,4 +474,20 @@ class PencariMagang{
 
         return $this;
     }
+
+	/**
+	 * @return string
+	 */
+	public function getSuratLamaran(): string {
+		return $this->suratLamaran;
+	}
+	
+	/**
+	 * @param string $suratLamaran 
+	 * @return self
+	 */
+	public function setSuratLamaran(string $suratLamaran): self {
+		$this->suratLamaran = $suratLamaran;
+		return $this;
+	}
 }

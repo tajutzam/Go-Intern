@@ -30,18 +30,10 @@ $session = MySession::getCurrentSession();
         Features
     </div>
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap" aria-expanded="true" aria-controls="collapseBootstrap">
+        <a class="nav-link collapsed" href=<?= Url::BaseUrl() . "/company/home/dashboard" ?>   data-target="#collapseBootstrap" aria-expanded="true" aria-controls="collapseBootstrap">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>Dashboard</span>
         </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Data Primary</h6>
-                <a class="collapse-item" href="alerts.html">Data Magang</a>
-                <a class="collapse-item" href="alerts.html">Data Pemagang</a>
-                <a class="collapse-item" href="alerts.html">Data Profile</a>
-            </div>
-        </div>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="<?= Url::BaseUrl() . "/company/home/dashboard/tambah/magang" ?>" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true" aria-controls="collapseForm">
@@ -53,48 +45,14 @@ $session = MySession::getCurrentSession();
                 <h6 class="collapse-header">Forms</h6>
                 <a class="collapse-item" href="<?= Url::BaseUrl() . "/company/home/dashboard/tambah/magang" ?>">Form Magang</a>
                 <a class="collapse-item" href="form_advanceds.html">Form Pemagang</a>
-                <a class="collapse-item" href="form_advanceds.html">Form Lamaran</a>
+                <a class="collapse-item" href="<?= Url::BaseUrl()."/company/home/dashboard/lamaran" ?>">Form Lamaran</a>
             </div>
         </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Tables</h6>
-                <a class="collapse-item" href="simple-tables.html">Simple Tables</a>
-                <a class="collapse-item" href="datatables.html">DataTables</a>
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
-            <i class="fas fa-fw fa-palette"></i>
-            <span>UI Colors</span>
-        </a>
     </li>
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
         Examples
     </div>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true" aria-controls="collapsePage">
-            <i class="fas fa-fw fa-columns"></i>
-            <span>Pages</span>
-        </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Example Pages</h6>
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="register.html">Register</a>
-                <a class="collapse-item" href="404.html">404 Page</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a>
-            </div>
-        </div>
-    </li>
     <li class="nav-item">
         <a class="nav-link" href="charts.html">
             <i class="fa-solid fa-right-from-bracket"></i>
@@ -255,7 +213,7 @@ $session = MySession::getCurrentSession();
                 <li class="nav-item dropdown no-arrow">
                     <!-- show modal proffile -->
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="img-profile rounded-circle" src="<?=Url::BaseUrl()."/image/penyedia/".$session[0]['foto'] ?>" style="max-width: 60px">
+                        <img class="img-profile rounded-circle" src="<?= Url::BaseUrl() . "/image/penyedia/" . $session[0]['foto'] ?>" style="max-width: 60px">
                         <span class="ml-2 d-none d-lg-inline text-white small"><?= $model['result'][0]['nama_perusahaan'] ?></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -302,66 +260,68 @@ $session = MySession::getCurrentSession();
                 </div>
             </div>
         </div>
-   
- <div class="modal fade" id="modalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">Data Profile</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= Url::BaseUrl() . "/company/home/dashboard/update/data" ?>" method="post" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username harus diawali dengan hurus besar" value="<?= $model['result'][0]['username'] ?>" name="usernameUpdate">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Nama Perusahaan</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Nama Lengkap" value="<?= $model['result'][0]['nama_perusahaan'] ?>" name="namaPerusahaanUpdate">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">No telp</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan No Telp" value="<?= $model['result'][0]['no_telp'] ?>" name="no_telpUpdate">
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Alamat Perusahaan</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Alamat Perusahaan" value="<?= $model['result'][0]['alamat'] ?>" name="alamatUpdate">
+        <div class="modal fade" id="modalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalScrollableTitle">Data Profile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Email</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Email" value="<?= $model['result'][0]['email'] ?>" name="emailUpdate">
+                    <div class="modal-body">
+                        <form action="<?= Url::BaseUrl() . "/company/home/dashboard/update/data" ?>" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username harus diawali dengan hurus besar" value="<?= $model['result'][0]['username'] ?>" name="usernameUpdate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Nama Perusahaan</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Nama Lengkap" value="<?= $model['result'][0]['nama_perusahaan'] ?>" name="namaPerusahaanUpdate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">No telp</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan No Telp" value="<?= $model['result'][0]['no_telp'] ?>" name="no_telpUpdate">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Alamat Perusahaan</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Alamat Perusahaan" value="<?= $model['result'][0]['alamat'] ?>" name="alamatUpdate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukan Email" value="<?= $model['result'][0]['email'] ?>" name="emailUpdate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Jenis Usaha</label>
+                                <select class="custom-select" id="inputGroupSelect01" name="jenisUsahaUpdate" aria-label="Default select example">
+                                    < <?php
+                                        $url = Url::BaseApi() . "/api/jenisusaha/findall";
+                                        $data = file_get_contents($url);
+                                        $decoded = json_decode($data, true);
+                                        for ($i = 0; $i < sizeof($decoded['body']); $i++) {
+                                        ?> <option value=<?= $decoded['body'][$i]['id'] ?>><?= $decoded['body'][$i]['jenis'] ?></option>
+                                    <?php }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    Image
+                                </div>
+                                <div class="col-9">
+                                    <input type="file" name="image" accept="image/jpg , image/png , image/jpeg">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="simpan-profile">Simpan</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Jenis Usaha</label>
-                        <select class="custom-select" id="inputGroupSelect01" name="jenisUsahaUpdate" aria-label="Default select example" >
-                            < <?php
-                                $url = Url::BaseApi() . "/api/jenisusaha/findall";
-                                $data = file_get_contents($url);
-                                $decoded = json_decode($data, true);
-                                for ($i = 0; $i < sizeof($decoded['body']); $i++) {
-                                ?> <option value=<?= $decoded['body'][$i]['id'] ?>><?= $decoded['body'][$i]['jenis'] ?></option>
-                            <?php }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-3">
-                            Image
-                        </div>
-                        <div class="col-9">
-                            <input type="file" name="image" accept="image/jpg , image/png , image/jpeg">      
-                        </div>
-                    </div>  
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" name="simpan-profile">Simpan</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>    
+
+       

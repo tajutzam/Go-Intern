@@ -91,8 +91,8 @@ class MagangRepository
                     "create_at" => $row['create_at'],
                     "deskripsi" => $row['deskripsi'],
                     "salary" => $row['salary'],
-                    
-                    
+
+
                 );
                 array_push($response['body'], $item);
             }
@@ -139,7 +139,7 @@ class MagangRepository
 
     public function showMagangOnMobile(): array
     {
-        $query =  "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status = 'kosong' ";
+        $query =  "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status = 'kosong' or magang.status = 'pending'";
         $responseData = array();
         try {
             $response = $this->connection->query($query);
@@ -160,7 +160,7 @@ class MagangRepository
                         "id_magang" => $row['magang_id'],
                         "jumlah_maksimal" => $row['jumlah_maksimal'],
                         "deskripsi" => $row['deskripsi'],
-                        "kategori" => $row['kategori'] , 
+                        "kategori" => $row['kategori'],
                         "create_at" => $row['create_at'],
                         "lowongan_tersedia" => $row['jumlah_maksimal'] - $row['jumlah_saatini']
                     );
@@ -173,6 +173,40 @@ class MagangRepository
         } catch (\PDOException $th) {
             var_dump($th);
         }
+        // shuffle($responseData['body']);
         return $responseData;
     }
+    
+    public function findById($id): bool
+    {
+        $query = "select * from magang where id = ?";
+        $PDOstatement = $this->connection->prepare($query);
+        $PDOstatement->execute([$id]);
+        if ($PDOstatement->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function findByIdResult($id): ?Magang
+    {
+        $magang = new Magang();
+        $query = "select * from magang where id = ?";
+        $PDOstatement = $this->connection->prepare($query);
+        $PDOstatement->execute([$id]);
+        if ($PDOstatement->rowCount() > 0) {
+            $row = $PDOstatement->fetch(PDO::FETCH_ASSOC);
+            $magang->setId($row['id']);
+            $magang->setPosisi_magang($row['posisi_magang']);
+            $magang->setStatus($row['status']);
+            $magang->setPenyedia($row['penyedia']);
+            return $magang;
+        } else {
+            return null;
+        }
+    }
+
+
+
 }

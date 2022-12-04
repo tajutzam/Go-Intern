@@ -43,7 +43,6 @@ class MySession
                     "token" => $token,
                     "alamat" => $alamat
                 );
-
                 array_push($response, $item);
                 $response['status']  = true;
             } else {

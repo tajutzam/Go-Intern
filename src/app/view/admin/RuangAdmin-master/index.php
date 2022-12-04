@@ -1,6 +1,11 @@
 <?php
 
+use LearnPhpMvc\Config\Url;
+
 ?>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -10,7 +15,6 @@
       <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
     </ol>
   </div>
-
   <div class="row mb-3">
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
@@ -46,49 +50,9 @@
         </div>
       </div>
     </div>
-    <!-- New User Card Example -->
-    <!-- <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-uppercase mb-1"></div>
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">366</div>
-                  <div class="mt-2 mb-0 text-muted text-xs">
-                    <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 20.4%</span>
-                    <span>Since last month</span>
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <i class="fas fa-users fa-2x text-info"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-    <!-- Pending Requests Card Example
-        <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-uppercase mb-1">Pending Requests</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                  <div class="mt-2 mb-0 text-muted text-xs">
-                    <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                    <span>Since yesterday</span>
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <i class="fas fa-comments fa-2x text-warning"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-    <!-- Area Chart -->
-    <div class="col-xl-8 col-lg-7">
+  </div>
+  <div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12">
       <div class="card mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Daftar Posisi yang paling banyak diminati </h6>
@@ -108,7 +72,7 @@
         <div class="card-body">
           <div class="chart-area">
             <div class="table">
-              <table class="table align-items-center table-flush">
+              <table class="table align-items-center table-flush table-responsive table">
                 <thead class="thead-light">
                   <tr>
                     <th>Magang ID</th>
@@ -118,34 +82,16 @@
                     <th>Action</th>
                   </tr>
                   <tr>
-                    <td>
-                      <?=$model['magang'][0]['id']?>
-                    </td>
-                    <td>
-                      <?=$model['magang'][0]['posisi_magang']?>
-                    </td>
-                    <td>
-                      <?=$model['magang'][0]['status']?>
-                    </td>
-                    <td>
-                      <?=$model['magang'][0]['penyedia']?>
-                    </td>
-                    <td>
-                      <a href="" class="btn btn-warning">detail</a>
-                    </td>
+                    <!--  -->
                   </tr>
                 </thead>
-
               </table>
-
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Pie Chart -->
-    <div class="col-xl-4 col-lg-5">
+    <div class="col-lg-6 col-sm-12 col-md-8">
       <div class="card mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Lamaran Masuk</h6>
@@ -163,102 +109,143 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="mb-3">
-            <div class="small text-gray-500">Oblong T-Shirt
-              <div class="small float-right"><b>600 of 800 Items</b></div>
-            </div>
-            <div class="progress" style="height: 12px;">
-              <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <div class="small text-gray-500">Gundam 90'Editions
-              <div class="small float-right"><b>500 of 800 Items</b></div>
-            </div>
-            <div class="progress" style="height: 12px;">
-              <div class="progress-bar bg-success" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <div class="small text-gray-500">Rounded Hat
-              <div class="small float-right"><b>455 of 800 Items</b></div>
-            </div>
-            <div class="progress" style="height: 12px;">
-              <div class="progress-bar bg-danger" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <div class="small text-gray-500">Indomie Goreng
-              <div class="small float-right"><b>400 of 800 Items</b></div>
-            </div>
-            <div class="progress" style="height: 12px;">
-              <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <div class="small text-gray-500">Remote Control Car Racing
-              <div class="small float-right"><b>200 of 800 Items</b></div>
-            </div>
-            <div class="progress" style="height: 12px;">
-              <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
+          <div class="table">
+            <table class="table align-items-center table-flush table-responsive" id="tableLamaranDashboard">
+              <thead class="thead-light">
+                <tr>
+                  <th>No</th>
+                  <th>Nama Pelamar</th>
+                  <th>Posisi Magang</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $counter = 0;
+                foreach ($model['lamaran']['body'] as $key => $value) {
+                  # code...
+                  $counter++;
+                ?>
+                  <tr>
+                    <td>
+                      <?php echo $counter ?>
+                    </td>
+                    <td>
+                      <?= $value['nama_magang'] ?>
+                    </td>
+                    <td>
+                      <?= $value['posisi_magang'] ?>
+                    </td>
+                    <td>
+                      <div class="row">
+                        <button href="#" data-toggle="modal" data-target="#modalLamaran" id="dataPelamar" class="btn btn-warning" data-posisi="<?= $value['posisi_magang'] ?>" data-nama="<?= $value['nama_magang'] ?>" data-cv="<?= $value['cv'] ?>" data-sl="<?= $value['surat_lamaran'] ?>" data-penghargaan="<?= $value['file_penghargaan'] ?>" data-email=<?= $value['email'] ?> data-agama="<?= $value['agama'] ?>" data-jk="<?= $value['jenis_kelamin'] ?>" data-foto="/<?= $value['foto'] ?>">Detail</button>
+                      </div>
+                      <div class="row">
+                        <button class="btn btn-danger">Tolak</button>
+                      </div>
+                    </td>
+                  </tr>
+                <?php }
+                ?>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="card-footer text-center">
-          <a class="m-0 small text-primary card-link" href="#">View More <i class="fas fa-chevron-right"></i></a>
-        </div>
-      </div>
-  
-    <!-- Message From Customer-->
-    <!-- <div class="col-xl-4 col-lg-5 ">
-      <div class="card">
-        <div class="card-header py-4 bg-primary d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-light">Message From Customer</h6>
-        </div>
-        <div>
-          <div class="customer-message align-items-center">
-            <a class="font-weight-bold" href="#">
-              <div class="text-truncate message-title">Hi there! I am wondering if you can help me with a
-                problem I've been having.</div>
-              <div class="small text-gray-500 message-time font-weight-bold">Udin Cilok · 58m</div>
-            </a>
-          </div>
-          <div class="customer-message align-items-center">
-            <a href="#">
-              <div class="text-truncate message-title">But I must explain to you how all this mistaken idea
-              </div>
-              <div class="small text-gray-500 message-time">Nana Haminah · 58m</div>
-            </a>
-          </div>
-          <div class="customer-message align-items-center">
-            <a class="font-weight-bold" href="#">
-              <div class="text-truncate message-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit
-              </div>
-              <div class="small text-gray-500 message-time font-weight-bold">Jajang Cincau · 25m</div>
-            </a>
-          </div>
-          <div class="customer-message align-items-center">
-            <a class="font-weight-bold" href="#">
-              <div class="text-truncate message-title">At vero eos et accusamus et iusto odio dignissimos
-                ducimus qui blanditiis
-              </div>
-              <div class="small text-gray-500 message-time font-weight-bold">Udin Wayang · 54m</div>
-            </a>
-          </div>
-          <div class="card-footer text-center">
-            <a class="m-0 small text-primary card-link" href="#">View More <i class="fas fa-chevron-right"></i></a>
-          </div>
+          <a class="m-0 small text-primary card-link" href="<?= Url::BaseUrl()."/company/home/dashboard/lamaran" ?>">View More <i class="fas fa-chevron-right"></i></a>
         </div>
       </div>
     </div>
-  </div> -->
-  <!--Row-->
-<!-- 
-  <div class="row">
-    <div class="col-lg-12 text-center">
-      <p>Do you like this template ? you can download from <a href="https://github.com/indrijunanda/RuangAdmin" class="btn btn-primary btn-sm" target="_blank"><i class="fab fa-fw fa-github"></i>&nbsp;GitHub</a></p>
-    </div>
-  </div> -->
+  </div>
+  <!-- Scrollable modal -->
+  <!-- Button trigger modal -->
 </div>
-<!---Container Fluid-->
+<!-- modal detail pelamar -->
+<div class="modal fade" id="modalLamaran" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Data Pelamar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+          <div class="row">
+            <div class="col-lg-4">
+              <img class="rounded-0 shadow" style="height: 200px; " alt="Foto profile pelamar" id="image-pelamar">
+            </div>
+            <div class="col-lg-8">
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">Nama Lengkap :</label>
+                <div class="col-lg-8">
+                  <input type="text" readonly class="form-control-plaintext" id="namaLenkap" value="email@example.com">
+                </div>
+              </div>
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">Posisi Magang :</label>
+                <div class="col-lg-8">
+                  <input type="text" readonly class="form-control-plaintext" id="posisi" value="email@example.com">
+                </div>
+              </div>
+
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">Surat Lamaran:</label>
+                <div class="col-lg-8">
+                  <input type="text" readonly class="form-control-plaintext" id="sl" value="email@example.com">
+                </div>
+              </div>
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">Email :</label>
+                <div class="col-lg-8">
+                  <input type="text" readonly class="form-control-plaintext" id="email" value="email@example.com">
+                </div>
+              </div>
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">Agama :</label>
+                <div class="col-lg-8">
+                  <input type="text" readonly class="form-control-plaintext" id="agama" value="email@example.com">
+                </div>
+              </div>
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">jenis Kelamin:</label>
+                <div class="col-lg-8">
+                  <input type="text" readonly class="form-control-plaintext" id="jk" value="email@example.com">
+                </div>
+              </div>
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">Cv / resume :</label>
+                <div class="col-lg-4">
+                  <input type="text" readonly class="form-control-plaintext" id="cv" value="email@example.com" style="width: 150px;">
+                </div>
+                <div class="col-2">
+                  <a class="viewCv" href="">View</a>
+                </div>
+                <div class="col-2">
+                  <a class="downloadCv" href="">Download</a>
+                </div>
+              </div>
+              <div class="row">
+                <label for="staticEmail" class="col-lg-4 col-form-label">penghargaan:</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control-plaintext" readonly id="penghargaan"  style="width: 150px;">
+                </div>
+                <div class="col-2">
+                  <a class="viewPenghargaan" href="">View</a>
+                </div>
+                <div class="col-2">
+                  <a class="downloadPenghargaan" href="">Download</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

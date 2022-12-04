@@ -1,13 +1,12 @@
 <?php
+
 use LearnPhpMvc\APP\View;
 use LearnPhpMvc\Config\Url;
+
 $count = 0;
 ?>
-<h2 class="ml-2">Data Magang</h2>
-
 <?php
 if (isset($_SESSION['succes'])) {
-    
 ?>
     <div class="card-body">
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -22,6 +21,33 @@ if (isset($_SESSION['succes'])) {
             unset($_SESSION['alert']);
         }
             ?>
+
+<div class="container">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Data Magang</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">magang</li>
+        </ol>
+    </div>
+</div>
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Magang</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= isset($model['magang']['body']) ? count($model['magang']['body']) : 0 ?></div>
+                    <div class="mt-2 mb-0 text-muted text-xs">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-calendar fa-2x text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="col-xl-12 col-lg-12  mb-4 mx-auto">
     <div class="card">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -42,7 +68,7 @@ if (isset($_SESSION['succes'])) {
                         <th>Desripsi Magang</th>
                         <th>Action</th>
                         <th hidden>Action</th>
-                        
+
                     </tr>
                 </thead>
 
@@ -59,7 +85,7 @@ if (isset($_SESSION['succes'])) {
                         ?>
                             <tr>
                                 <td><?= $i + 1 ?></td>
-                               
+
                                 <td><?= $model['magang']['body'][$i]['posisi_magang'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['kategori'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['lama_magang'] . " Bulan" ?></td>
@@ -81,21 +107,21 @@ if (isset($_SESSION['succes'])) {
                                     }
                                     ?>
                                 </td>
-                                
+
                                 <td>
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <a href="" local data-toggle="modal" data-target="#exampleModalScrollableUpdate" id="select" data-id="<?= $model['magang']['body'][$i]['id'] ?>" data-posisi="<?= $model['magang']['body'][$i]['posisi_magang'] ?>" data-kategori="<?= $model['magang']['body'][$i]['id_kategori'] ?>" data-lama_magang="<?= $model['magang']['body'][$i]['lama_magang'] ?>" data-status="<?= $model['magang']['body'][$i]['status'] ?>" data-jumlah-maksimal="<?= $model['magang']['body'][$i]['jumlah_maksimal'] ?>" data-jumlah-saatini="<?= $model['magang']['body'][$i]['jumlah_saatini'] ?>" data-deskripsi="<?= $model['magang']['body'][$i]['deskripsi'] ?>" data-salary = "<?= $model['magang']['body'][$i]['salary'] ?>" data-syarat="<?php for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
-                                                if ($model['magang']['body'][$i]['syarat'][0] != null) {
-                                                    for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
-                                                        # code...
-                                                        if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
-                                                            echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            ?>" ;>
+                                            <a href="" local data-toggle="modal" data-target="#exampleModalScrollableUpdate" id="select" data-id="<?= $model['magang']['body'][$i]['id'] ?>" data-posisi="<?= $model['magang']['body'][$i]['posisi_magang'] ?>" data-kategori="<?= $model['magang']['body'][$i]['id_kategori'] ?>" data-lama_magang="<?= $model['magang']['body'][$i]['lama_magang'] ?>" data-status="<?= $model['magang']['body'][$i]['status'] ?>" data-jumlah-maksimal="<?= $model['magang']['body'][$i]['jumlah_maksimal'] ?>" data-jumlah-saatini="<?= $model['magang']['body'][$i]['jumlah_saatini'] ?>" data-deskripsi="<?= $model['magang']['body'][$i]['deskripsi'] ?>" data-salary="<?= $model['magang']['body'][$i]['salary'] ?>" data-syarat="<?php for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if ($model['magang']['body'][$i]['syarat'][0] != null) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        # code...
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ?>" ;>
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                         </div>

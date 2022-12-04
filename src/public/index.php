@@ -8,6 +8,7 @@ use LearnPhpMvc\controller\api\AuthentikasiController;
 use LearnPhpMvc\controller\api\JenisUsahaControllerApi;
 use LearnPhpMvc\controller\api\JurusanControllerApi;
 use LearnPhpMvc\controller\api\KategoriControllerApi;
+use LearnPhpMvc\controller\api\LowonganMagangControllerApi;
 use LearnPhpMvc\controller\api\MagangControllerApi;
 use LearnPhpMvc\controller\api\PencariMagangControllerApi;
 use LearnPhpMvc\controller\api\PenghargaanControllerApi;
@@ -55,9 +56,11 @@ Router::add("GET", "/api/jenisusaha/findall", JenisUsahaControllerApi::class, "f
 Router::add("POST", "/api/sekolah/save", SekolahControllerApi::class, "save");
 Router::add("POST", "/api/sekolah/addjurusantosekolah", SekolahControllerApi::class, "addJurusanToSekolah");
 Router::add("POST", "/api/jurusan/findbyjurusan", JurusanControllerApi::class, "findByJurusan");
-Router::add("POST" , "/api/pencarimagang/uploadpenghargaan" , PencariMagangControllerApi::class , "uploadPenghargaan");
-Router::add("POST" , "/api/penghargaan/findById" , PenghargaanControllerApi::class , "findById");
-Router::add("POST" , "/api/penghargaan/findbypencarimagang" , PenghargaanControllerApi::class , "findByPencariMagang");
+Router::add("POST", "/api/pencarimagang/uploadpenghargaan", PencariMagangControllerApi::class, "uploadPenghargaan");
+Router::add("POST", "/api/penghargaan/findById", PenghargaanControllerApi::class, "findById");
+Router::add("POST", "/api/penghargaan/findbypencarimagang", PenghargaanControllerApi::class, "findByPencariMagang");
+Router::add("POST", "/api/pencarimagang/updatedeskripsi", PencariMagangControllerApi::class, "updateDeskripsi");
+
 //w=web
 Router::add('GET', '/', HomeController::class, 'index');
 Router::add('GET', '/hello', HomeController::class, 'hello', [AuthMiddleware::class]);
@@ -65,6 +68,7 @@ Router::add('GET', '/world', HomeController::class, 'world', [AuthMiddleware::cl
 Router::add('GET', '/about', HomeController::class, 'about');
 Router::add("POST", "/company/home/dashboard/update/data", PenyediaMagangController::class, "updateDataProfile");
 Router::add('POST', '/company/search', CompanyController::class, 'search');
+Router::add("GET", "/company/home/dashboard/lamaran", PenyediaMagangController::class, "formLamaran");
 Router::add('GET', '/company', CompanyController::class, 'index');
 Router::add('GET', '/formlamar', LamarController::class, 'formLamar');
 Router::add("POST", "/api/update/tentang-saya", PencariMagangControllerApi::class, "updateTentangSaya");
@@ -77,13 +81,16 @@ Router::add("GET", "/login", LoginController::class, "formLogin");
 Router::add("POST", "/login/post", LoginController::class, "postLogin");
 Router::add("POST", "/api/pencarimagang/upload/image", PencariMagangControllerApi::class, "uploadImage");
 Router::add("POST", "/api/sekolah/findbysekolah", SekolahControllerApi::class, "findBySekolah");
-Router::add("POST" , "/api/pencarimagang/showdatasekolah" , PencariMagangControllerApi::class , "showDataSekolah");
+Router::add("POST", "/api/pencarimagang/showdatasekolah", PencariMagangControllerApi::class, "showDataSekolah");
+Router::add("POST", "/api/pencarimagang/updatedatapersonal", PencariMagangControllerApi::class, "updateDataPersonal");
+Router::add("POST", "/api/pencarimagang/updatekeamanan", PencariMagangControllerApi::class, "upadateKemananUser");
 // register controler 
 Router::add("GET", "/register", RegisterController::class, "formRegister");
 Router::add("POST", "/register/post", RegisterController::class, "postRegister");
 Router::add("POST", "/company/home/dashboard/tambah/magang/update", PenyediaMagangController::class, "updateData");
 Router::add("GET", "/api/sekolah/findall", SekolahControllerApi::class, "findAll");
-Router::add("POST" , "/api/pencarimagang/addsekolah" , PencariMagangControllerApi::class , "updateDataSekolah");
+Router::add("POST", "/api/pencarimagang/addsekolah", PencariMagangControllerApi::class, "updateDataSekolah");
+Router::add("POST", "/api/pencarimagang/updatecv", PencariMagangControllerApi::class, "updateCv");
 // penyedia controller
 Router::add("GET", "/company/home", PenyediaMagangController::class, "home");
 Router::add("GET", "/company/home/dashboard", PenyediaMagangController::class, "dashboardPenyedia");
@@ -94,4 +101,10 @@ Router::add("GET", "/company/test", PenyediaMagangController::class, "testPhpInf
 Router::add("GET", "/api/magang/showmagangall", MagangControllerApi::class, "showMagangInMobile");
 Router::add('GET', '/api/jurusan/findall', JurusanControllerApi::class, 'findAll');
 Router::add("POST", "/api/jurusan/findbyid", JurusanControllerApi::class, "findById");
+Router::add("POST", "/api/lowonganmagang/addlowongan", LowonganMagangControllerApi::class, "addLowonganMagang");
+Router::add("POST", "/api/lowonganmagang/updatesuratlamaran", LowonganMagangControllerApi::class, "updateSuratLamran");
+Router::add("POST", "/api/pencarimagang/updatenohp", PencariMagangControllerApi::class, "updateNoTelp");
+Router::add("GET", "/download/cv/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "downloadCv");
+Router::add("GET", "/download/penghargaan/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "downloadPenghargaan");
+Router::add("GET", "/company/home/dashboard/lamaran/tolak/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "tolakLamaran");
 Router::run();
