@@ -84,8 +84,8 @@ class AuthentikasiController
         $request->setNamaBelakang($jsonData['nama_belakang']);
         $request->setJenis_kelamin($jsonData['jenis_kelamin']);
         $arr = $this->service->registerMobile($request);
+    
         
-
         echo json_encode($arr);
     }
     public function sendEmail()

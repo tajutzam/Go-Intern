@@ -253,60 +253,70 @@ HTML;
         $penyedia->setUsername($penyediaMagangRequest->getUsername());
         $penyedia->setJenisUsaha($penyediaMagangRequest->getJenisUsaha());
         $penyedia->setId($penyediaMagangRequest->getId());
-        $updatedData = $this->repository->updateData($penyedia);
-        if ($updatedData == null) {
-            $response['status'] = "failed";
-            $response['message'] = "gagal memperbarui data profile";
-            echo "<script>alert('gagal memperbarui data profile')</script>";
+
+        $responseFindByUsername = $this->repository->findByUsername($penyedia);
+        if ($responseFindByUsername['status'] == 'failed') {
+            $updatedData = $this->repository->updateData($penyedia);
+            if ($updatedData == null) {
+                $response['status'] = "failed";
+                $response['message'] = "gagal memperbarui data profile";
+                echo "<script>alert('gagal memperbarui data profile')</script>";
+            } else {
+                $response['status'] = "oke";
+                $response['message'] = "berhasil memperbarui data profile";
+                unset($_COOKIE['GO-INTERN-COCKIE']);
+                setcookie('GO-INTERN-COCKIE', null, -1, '/');
+                echo "<script>alert('Berhasil Memperbarui data profile');window.location.href='/login'</script>";
+            }
         } else {
-            $response['status'] = "oke";
-            $response['message'] = "berhasil memperbarui data profile";
-            unset($_COOKIE['GO-INTERN-COCKIE']); 
-            setcookie('GO-INTERN-COCKIE', null, -1, '/'); 
-            echo "<script>alert('Berhasil Memperbarui data profile');window.location.href='/login'</script>";
+            $response['status'] = "failed";
+            $response['message'] = "gagal memperbarui data profile , username sudah digunakan ";
+            echo "<script>alert('gagal memperbarui data profile, username sudah digunakan '); window.location.href='/company/home/dashboard'</script>";
         }
         return $response;
     }
 
-    public function updatePathPhoto(PenyediaMagangRequest $penyediaMagangRequest){
-        
+    public function updatePathPhoto(PenyediaMagangRequest $penyediaMagangRequest)
+    {
+
         $penyedia = new PenyediaMagang();
         $penyedia->setFoto($penyediaMagangRequest->getFoto());
         $penyedia->setId($penyediaMagangRequest->getId());
         $response = $this->repository->updatePathFoto($penyedia);
         return $response;
-        
     }
 
-    public function downloadCv(){
+    public function downloadCv()
+    {
         $path = $_SERVER['PATH_INFO'];
         $exploded = explode("/", $path);
         var_dump($exploded);
         $tempName = $exploded[3];
         $filename = $exploded[4];
         $fullName = $tempName . ".pdf";
-        $is =  file_exists(__DIR__."/../../public/dokuments/cv/".    $fullName);
-        if($is){
-            header("Content-Disposition: attacchment; filename = ".$filename.".pdf");
+        $is =  file_exists(__DIR__ . "/../../public/dokuments/cv/" .    $fullName);
+        if ($is) {
+            header("Content-Disposition: attacchment; filename = " . $filename . ".pdf");
             header('Content-type: application/pdf');
-            readfile(__DIR__."/../../public/dokuments/cv/".    $fullName);
-        }else{
+            readfile(__DIR__ . "/../../public/dokuments/cv/" .    $fullName);
+        } else {
             echo "script";
         }
     }
-    public function downloadPenghargaan(){
+    public function downloadPenghargaan()
+    {
         $path = $_SERVER['PATH_INFO'];
         $exploded = explode("/", $path);
         var_dump($exploded);
         $tempName = $exploded[3];
         $filename = $exploded[4];
         $fullName = $tempName . ".pdf";
-        $is =  file_exists(__DIR__."/../../public/dokuments/penghargaan/".    $fullName);
-        if($is){
-            header("Content-Disposition: attacchment; filename = ".$filename.".pdf");
+        $is =  file_exists(__DIR__ . "/../../public/dokuments/penghargaan/" .    $fullName);
+        if ($is) {
+            header("Content-Disposition: attacchment; filename = " . $filename . ".pdf");
             header('Content-type: application/pdf');
-            readfile(__DIR__."/../../public/dokuments/penghargaan/".    $fullName);
-        }else{
+            readfile(__DIR__ . "/../../public/dokuments/penghargaan/" .    $fullName);
+        } else {
             echo "script";
         }
     }

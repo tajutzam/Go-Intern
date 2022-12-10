@@ -1,15 +1,14 @@
 <?php
 
 use LearnPhpMvc\Config\Url;
-
 ?>
 <!-- Button trigger modal -->
 
 <!-- Modal -->
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
-  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+  <div class="d-sm-flex align-items-center justify-content-between mb-1">
+    <h1 class="h5 mb-0 text-gray-800">Dashboard</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="./">Home</a></li>
       <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
@@ -28,7 +27,7 @@ use LearnPhpMvc\Config\Url;
               </div>
             </div>
             <div class="col-auto">
-              <i class="fas fa-calendar fa-2x text-primary"></i>
+              <i class="fa-solid fa-2x fa-briefcase text-primary"></i>
             </div>
           </div>
         </div>
@@ -44,7 +43,37 @@ use LearnPhpMvc\Config\Url;
               <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 10 ?></div>
             </div>
             <div class="col-auto">
-              <i class="fas fa-shopping-cart fa-2x text-success"></i>
+              <i class="fas fa-solid fa-handshake fa-2x text-secondary"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Lamaran Masuk</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 10 ?></div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-solid fa-angles-down fa-2x text-primary"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Pemagang</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 10 ?></div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-regular fa-id-badge fa-2x text-secondary"></i>
             </div>
           </div>
         </div>
@@ -55,7 +84,6 @@ use LearnPhpMvc\Config\Url;
     <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12">
       <div class="card mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Daftar Posisi yang paling banyak diminati </h6>
           <div class="dropdown no-arrow">
             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -72,20 +100,7 @@ use LearnPhpMvc\Config\Url;
         <div class="card-body">
           <div class="chart-area">
             <div class="table">
-              <table class="table align-items-center table-flush table-responsive table">
-                <thead class="thead-light">
-                  <tr>
-                    <th>Magang ID</th>
-                    <th>Posisi Magang </th>
-                    <th>Status</th>
-                    <th>Jumlah SDM</th>
-                    <th>Action</th>
-                  </tr>
-                  <tr>
-                    <!--  -->
-                  </tr>
-                </thead>
-              </table>
+              <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
             </div>
           </div>
         </div>
@@ -110,13 +125,13 @@ use LearnPhpMvc\Config\Url;
         </div>
         <div class="card-body">
           <div class="table">
-            <table class="table align-items-center table-flush table-responsive" id="tableLamaranDashboard">
+            <table class="table align-items-center table-flush" id="tableLamaranDashboard">
               <thead class="thead-light">
                 <tr>
                   <th>No</th>
                   <th>Nama Pelamar</th>
                   <th>Posisi Magang</th>
-                  <th>Action</th>
+                  <th>Action </th>
                 </tr>
               </thead>
               <tbody>
@@ -138,11 +153,18 @@ use LearnPhpMvc\Config\Url;
                     </td>
                     <td>
                       <div class="row">
-                        <button href="#" data-toggle="modal" data-target="#modalLamaran" id="dataPelamar" class="btn btn-warning" data-posisi="<?= $value['posisi_magang'] ?>" data-nama="<?= $value['nama_magang'] ?>" data-cv="<?= $value['cv'] ?>" data-sl="<?= $value['surat_lamaran'] ?>" data-penghargaan="<?= $value['file_penghargaan'] ?>" data-email=<?= $value['email'] ?> data-agama="<?= $value['agama'] ?>" data-jk="<?= $value['jenis_kelamin'] ?>" data-foto="/<?= $value['foto'] ?>">Detail</button>
+                        <div class="col-6">
+                          <button data-toggle="modal" data-target="#modalLamaran" id="dataPelamar" class="btn btn-warning" data-posisi="<?= $value['posisi_magang'] ?>" data-nama="<?= $value['nama_magang'] ?>" data-cv="<?= $value['cv'] ?>" data-sl="<?= $value['surat_lamaran'] ?>" data-penghargaan="<?= $value['file_penghargaan'] ?>" data-email=<?= $value['email'] ?> data-agama="<?= $value['agama'] ?>" data-jk="<?= $value['jenis_kelamin'] ?>" data-foto="/<?= $value['foto'] ?>" data-pencari="<?= $value['id_pencari'] ?>" data-idmagang="<?= $value['id_magang'] ?>"> <i class="fa-solid fa-info"></i></span></button>
+                        </div>
+                        <div class="col-6">
+                          <a href="" class="tolakLamaran2 btn btn-danger" data-idmagang="<?= $value['id_magang'] ?>" data-pencari="<?= $value['id_pencari'] ?>">
+                            <span style="color: white;">
+                              <i class="fa-solid fa-xmark" style="color: white;"></i>
+                            </span>
+                          </a>
+                        </div>
                       </div>
-                      <div class="row">
-                        <button class="btn btn-danger">Tolak</button>
-                      </div>
+
                     </td>
                   </tr>
                 <?php }
@@ -152,7 +174,7 @@ use LearnPhpMvc\Config\Url;
           </div>
         </div>
         <div class="card-footer text-center">
-          <a class="m-0 small text-primary card-link" href="<?= Url::BaseUrl()."/company/home/dashboard/lamaran" ?>">View More <i class="fas fa-chevron-right"></i></a>
+          <a class="m-0 small text-primary card-link" href="<?= Url::BaseUrl() . "/company/home/dashboard/lamaran" ?>">View More <i class="fas fa-chevron-right"></i></a>
         </div>
       </div>
     </div>
@@ -160,6 +182,7 @@ use LearnPhpMvc\Config\Url;
   <!-- Scrollable modal -->
   <!-- Button trigger modal -->
 </div>
+
 <!-- modal detail pelamar -->
 <div class="modal fade" id="modalLamaran" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
@@ -226,10 +249,10 @@ use LearnPhpMvc\Config\Url;
                   <a class="downloadCv" href="">Download</a>
                 </div>
               </div>
-              <div class="row">
+              <div class="row justify-content-between">
                 <label for="staticEmail" class="col-lg-4 col-form-label">penghargaan:</label>
                 <div class="col-lg-4">
-                  <input type="text" class="form-control-plaintext" readonly id="penghargaan"  style="width: 150px;">
+                  <input type="text" class="form-control-plaintext" readonly id="penghargaan" style="width: 150px;">
                 </div>
                 <div class="col-2">
                   <a class="viewPenghargaan" href="">View</a>
@@ -242,7 +265,9 @@ use LearnPhpMvc\Config\Url;
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <a href="" class="terimaLamaran">
+              <button type="button" class="btn btn-primary">Terima Lamaran</button>
+            </a>
           </div>
         </form>
       </div>

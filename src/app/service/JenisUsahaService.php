@@ -17,9 +17,9 @@ class JenisUsahaService
         $this->repository = new JenisUsahaRepository(Database::getConnection());
     }
 
-    public function findAll(): array
+    public function findAll($jenis_usaha): array
     {
-        $arr = $this->repository->findAll();
+        $arr = $this->repository->findAll($jenis_usaha);
         return $arr;
     }
     public function findByJenis(SearchKeyword $keyword): ?array
@@ -40,11 +40,10 @@ class JenisUsahaService
         }
     }
 
-    public function findById(JenisUsaha $jenisUsaha): array
+    public function findById($id): array
     {
         $response = array();
-
-        $responseTemp = $this->repository->findById($jenisUsaha);
+        $responseTemp = $this->repository->findById($id);
         if ($responseTemp == null) {
             $response['status'] = "failed";
             $response['message'] = "gagal menemukan jenis usaha";

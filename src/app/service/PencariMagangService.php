@@ -81,7 +81,8 @@ class PencariMagangService
                 "jenis_kelamin" => $resultObj->getJenis_kelamin(),
                 "surat_lamaran" => $resultObj->getSuratLamaran() , 
                 "jurusan" => $resultObj->getJurusan() , 
-                "penghargaan" => $resultObj->getPenghargaan()
+                "penghargaan" => $resultObj->getPenghargaan() , 
+                "tentang_saya" => $resultObj->getTentang_saya()
             );
             array_push($response['body'], $item);
         } else {

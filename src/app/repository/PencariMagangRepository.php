@@ -138,6 +138,7 @@ class PencariMagangRepository
                 $pencariMagang->setPenghargaan($row['id_penghargaan'] == null ? 0 : $row['id_penghargaan']);
                 $pencariMagang->setSuratLamaran($row['surat_lamaran'] == null ? "" : $row['surat_lamaran']);
                 $pencariMagang->setJurusan($row['jurusan'] == null ? 0 : $row['jurusan']);
+                $pencariMagang->setTentang_saya($row['tentang_saya'] == null ? "" : $row['tentang_saya']);
             } 
             return $pencariMagang;
         } else {

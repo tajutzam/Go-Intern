@@ -52,7 +52,7 @@ Router::add("GET", "/api/penyediamagang/all", PenyediaMagangControllerApi::class
 Router::add('GET', '/api/penyedia/verivication/{id}', PenyediaMagangControllerApi::class, 'sendEmail');
 Router::add("POST", "/api/penyedia/login", PenyediaMagangControllerApi::class, "login");
 Router::add("GET", "/api/jenisusaha/findbyid/([0-9a-zA-Z]*)", JenisUsahaControllerApi::class, "findById");
-Router::add("GET", "/api/jenisusaha/findall", JenisUsahaControllerApi::class, "findAll");
+Router::add("POST", "/api/jenisusaha/findall", JenisUsahaControllerApi::class, "findAll");
 Router::add("POST", "/api/sekolah/save", SekolahControllerApi::class, "save");
 Router::add("POST", "/api/sekolah/addjurusantosekolah", SekolahControllerApi::class, "addJurusanToSekolah");
 Router::add("POST", "/api/jurusan/findbyjurusan", JurusanControllerApi::class, "findByJurusan");
@@ -60,7 +60,7 @@ Router::add("POST", "/api/pencarimagang/uploadpenghargaan", PencariMagangControl
 Router::add("POST", "/api/penghargaan/findById", PenghargaanControllerApi::class, "findById");
 Router::add("POST", "/api/penghargaan/findbypencarimagang", PenghargaanControllerApi::class, "findByPencariMagang");
 Router::add("POST", "/api/pencarimagang/updatedeskripsi", PencariMagangControllerApi::class, "updateDeskripsi");
-
+Router::add("POST", "/company/home/dashboard/kick", PenyediaMagangController::class, "keluarkanPemagang");
 //w=web
 Router::add('GET', '/', HomeController::class, 'index');
 Router::add('GET', '/hello', HomeController::class, 'hello', [AuthMiddleware::class]);
@@ -91,12 +91,13 @@ Router::add("POST", "/company/home/dashboard/tambah/magang/update", PenyediaMaga
 Router::add("GET", "/api/sekolah/findall", SekolahControllerApi::class, "findAll");
 Router::add("POST", "/api/pencarimagang/addsekolah", PencariMagangControllerApi::class, "updateDataSekolah");
 Router::add("POST", "/api/pencarimagang/updatecv", PencariMagangControllerApi::class, "updateCv");
+Router::add("POST", "/company/home/dashboard/terimawithjs", PenyediaMagangController::class, "terimaLamaranWithJS");
 // penyedia controller
 Router::add("GET", "/company/home", PenyediaMagangController::class, "home");
 Router::add("GET", "/company/home/dashboard", PenyediaMagangController::class, "dashboardPenyedia");
 Router::add("GET", "/company/home/dashboard/tambah/magang", PenyediaMagangController::class, "formTambahData");
 Router::add("POST", "/company/home/dashboard/tambah/magang/save", PenyediaMagangController::class, "tambahDataPost");
-Router::add("GET", "/company/home/dashboard/tambah/magang/delete/([0-9a-zA-Z]*)", PenyediaMagangController::class, "deleteMagang");
+Router::add("POST", "/company/home/dashboard/tambah/magang/delete", PenyediaMagangController::class, "deleteMagang");
 Router::add("GET", "/company/test", PenyediaMagangController::class, "testPhpInfo");
 Router::add("GET", "/api/magang/showmagangall", MagangControllerApi::class, "showMagangInMobile");
 Router::add('GET', '/api/jurusan/findall', JurusanControllerApi::class, 'findAll');
@@ -107,4 +108,10 @@ Router::add("POST", "/api/pencarimagang/updatenohp", PencariMagangControllerApi:
 Router::add("GET", "/download/cv/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "downloadCv");
 Router::add("GET", "/download/penghargaan/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "downloadPenghargaan");
 Router::add("GET", "/company/home/dashboard/lamaran/tolak/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "tolakLamaran");
+Router::add("POST", "/company/home/dashhboard/lamaran/acc", PenyediaMagangController::class, "terimaLamaran");
+Router::add("GET", "/company/home/dashboard/pemagang", PenyediaMagangController::class, "dataPemagang");
+Router::add("GET", "/company/home/dashboard/profile", PenyediaMagangController::class, "profile");
+Router::add("POST", "/company/home/dashboard/profile/update", PenyediaMagangController::class, "updateDataProfilenotModal");
+Router::add("POST", "/company/home/dashboard/changefoto", PenyediaMagangController::class, "updatePhotoProfile");
+
 Router::run();

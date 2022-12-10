@@ -108,7 +108,7 @@ class MagangRepository
         try {
 
             $now_stamp = date("Y-m-d H:i:s");
-            $query = "update magang set posisi_magang  = ? , kategori = ? , lama_magang = ? , jumlah_maksimal = ? , deskripsi = ?  where id = ? ";
+            $query = "update magang set posisi_magang  = ? , kategori = ? , lama_magang = ? , jumlah_maksimal = ? , deskripsi = ? , salary = ? where id = ? ";
             $PDOstatement = $this->connection->prepare($query);
             $PDOstatement->execute([
                 $magang->getPosisi_magang(),
@@ -116,6 +116,7 @@ class MagangRepository
                 $magang->getLama_magang(),
                 $magang->getJumlah_maksimal(),
                 $magang->getDeskripsi(),
+                $magang->getSalary(),
                 $magang->getId()
             ]);
             return $magang;
@@ -139,7 +140,7 @@ class MagangRepository
 
     public function showMagangOnMobile(): array
     {
-        $query =  "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status = 'kosong' or magang.status = 'pending'";
+        $query =  "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status != 'penuh' and magang.jumlah_maksimal != magang.jumlah_saatini";
         $responseData = array();
         try {
             $response = $this->connection->query($query);
@@ -176,7 +177,7 @@ class MagangRepository
         // shuffle($responseData['body']);
         return $responseData;
     }
-    
+
     public function findById($id): bool
     {
         $query = "select * from magang where id = ?";
@@ -201,12 +202,38 @@ class MagangRepository
             $magang->setPosisi_magang($row['posisi_magang']);
             $magang->setStatus($row['status']);
             $magang->setPenyedia($row['penyedia']);
+            $magang->setLama_magang($row['lama_magang']);
+            $magang->setJumlah_maksimal($row['jumlah_maksimal']);
+            $magang->setJumlah_saatini($row['jumlah_saatini']);
             return $magang;
         } else {
             return null;
         }
     }
 
+    public function updateMaksimalDanSatIni($newMaksimal, $newSaatIni, $id_magang)
+    {
+        try {
+            $query = "update magang set jumlah_maksimal = ? , jumlah_saatini = ? where id= ?";
+            $PDOstatement = $this->connection->prepare($query);
+            $PDOstatement->execute([$newMaksimal, $newSaatIni, $id_magang]);
+            return true;
+        } catch (\PDOException $th) {
+            //throw $th;
+            var_dump($th);
+            return false;
+        }
+    }
 
+    public function updateStatusToPenuh()
+    {
+        $query = "update magang set status = 'penuh' where jumlah_maksimal = jumlah_saatini";
+        $bool =  $this->connection->exec($query);
+        return $bool;
+    }
 
+    public function updateStatusToSebagian(){
+        $query = "update magang set status = 'sebagian' where jumlah_saatini != 0";
+        $this->connection->exec($query);
+    }
 }
