@@ -20,7 +20,7 @@ use LearnPhpMvc\Config\Url;
             <div class="row align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Lamaran Masuk</div>
-
+                     <?= count($model['lamaran']['body']) ?>   
                     <div class="mt-2 mb-0 text-muted text-xs">
                     </div>
                 </div>

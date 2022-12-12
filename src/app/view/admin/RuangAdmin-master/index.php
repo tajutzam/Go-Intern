@@ -22,7 +22,7 @@ use LearnPhpMvc\Config\Url;
           <div class="row align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-uppercase mb-1">Magang Yang sudah di iklankan</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= 10 ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $model['jumlahMagang'] ?></div>
               <div class="mt-2 mb-0 text-muted text-xs">
               </div>
             </div>
@@ -40,7 +40,7 @@ use LearnPhpMvc\Config\Url;
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-uppercase mb-1">Magang Yang Sedang di tempati</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 10 ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $model['jumlahMagangYangDitempati'] ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-solid fa-handshake fa-2x text-secondary"></i>
@@ -55,7 +55,7 @@ use LearnPhpMvc\Config\Url;
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Lamaran Masuk</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 10 ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $model['jumlahLamaranMasuk'] ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-solid fa-angles-down fa-2x text-primary"></i>
@@ -70,7 +70,7 @@ use LearnPhpMvc\Config\Url;
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Pemagang</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo 10 ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $model['jumlahPemagang'] ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-regular fa-id-badge fa-2x text-secondary"></i>
@@ -81,39 +81,39 @@ use LearnPhpMvc\Config\Url;
     </div>
   </div>
   <div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
       <div class="card mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <div class="dropdown no-arrow">
-            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <!-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a> -->
+            <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
               <div class="dropdown-header"> Tampilkan Menurut</div>
               <a class="dropdown-item" href="#">Naik</a>
               <a class="dropdown-item" href="#">Turun</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="card-body">
           <div class="chart-area">
-            <div class="table">
+            <div class="chart-bar">
               <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-6 col-sm-12 col-md-8">
+    <div class="col-lg-6 col-sm-12 col-md-12">
       <div class="card mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Lamaran Masuk</h6>
           <div class="dropdown no-arrow">
-            <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <!-- <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Month <i class="fas fa-chevron-down"></i>
-            </a>
+            </a> -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
               <div class="dropdown-header">Select Periode</div>
               <a class="dropdown-item" href="#">Today</a>
@@ -125,7 +125,7 @@ use LearnPhpMvc\Config\Url;
         </div>
         <div class="card-body">
           <div class="table">
-            <table class="table align-items-center table-flush" id="tableLamaranDashboard">
+            <table class="table align-items-center table-flush table-responsive" id="tableLamaranDashboard">
               <thead class="thead-light">
                 <tr>
                   <th>No</th>

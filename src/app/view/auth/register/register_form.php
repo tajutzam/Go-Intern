@@ -25,8 +25,7 @@ use LearnPhpMvc\config\Url;
         
         </div>
         <div class=" mb-4">
-            <input type="email" class="form-control" id="validationCustom01" required name="emailRegister" placeholder="Masukan email"/>
-          
+            <input type="email" class="form-control" id="validationCustom01" required name="emailRegister" placeholder="Masukan email"/>   
         </div>
         <div class="row">
             <div class="  col-6">

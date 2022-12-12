@@ -92,6 +92,7 @@ Router::add("GET", "/api/sekolah/findall", SekolahControllerApi::class, "findAll
 Router::add("POST", "/api/pencarimagang/addsekolah", PencariMagangControllerApi::class, "updateDataSekolah");
 Router::add("POST", "/api/pencarimagang/updatecv", PencariMagangControllerApi::class, "updateCv");
 Router::add("POST", "/company/home/dashboard/terimawithjs", PenyediaMagangController::class, "terimaLamaranWithJS");
+Router::add("POST", "/company/home/dashboard/posisipopuler", PenyediaMagangController::class, "showPosisiPopuler");
 // penyedia controller
 Router::add("GET", "/company/home", PenyediaMagangController::class, "home");
 Router::add("GET", "/company/home/dashboard", PenyediaMagangController::class, "dashboardPenyedia");
@@ -107,11 +108,13 @@ Router::add("POST", "/api/lowonganmagang/updatesuratlamaran", LowonganMagangCont
 Router::add("POST", "/api/pencarimagang/updatenohp", PencariMagangControllerApi::class, "updateNoTelp");
 Router::add("GET", "/download/cv/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "downloadCv");
 Router::add("GET", "/download/penghargaan/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "downloadPenghargaan");
-Router::add("GET", "/company/home/dashboard/lamaran/tolak/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenyediaMagangController::class, "tolakLamaran");
+Router::add("POST", "/company/home/dashboard/tolak/lamaran", PenyediaMagangController::class, "tolakLamaran");
 Router::add("POST", "/company/home/dashhboard/lamaran/acc", PenyediaMagangController::class, "terimaLamaran");
 Router::add("GET", "/company/home/dashboard/pemagang", PenyediaMagangController::class, "dataPemagang");
 Router::add("GET", "/company/home/dashboard/profile", PenyediaMagangController::class, "profile");
 Router::add("POST", "/company/home/dashboard/profile/update", PenyediaMagangController::class, "updateDataProfilenotModal");
 Router::add("POST", "/company/home/dashboard/changefoto", PenyediaMagangController::class, "updatePhotoProfile");
-
+Router::add("GET", "/api/penyedia/popular", PenyediaMagangControllerApi::class, "showPenyediaPopular");
+Router::add("GET", "/company/home/dashboard/logout", PenyediaMagangController::class, "logout");
+Router::add("POST", "/company/home/dashboard/updatepassword", PenyediaMagangController::class, "updatePassword");
 Router::run();

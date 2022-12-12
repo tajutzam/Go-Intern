@@ -102,7 +102,7 @@ class LowonganMagangRepository
             return true;
         }
     }
-
+    
     public function tolakLamaran(LowonganMagang $lowonganMagang): bool
     {
         try {
@@ -205,10 +205,28 @@ class LowonganMagangRepository
         return $response;
     }
 
-    public function showMagangPalingBanyakDiminati($id_penyedia)
+    public function showMagangPalingBanyakDiminati($id_penyedia): array
     {
         $query = "select magang.posisi_magang , COUNT(magang.posisi_magang) as jumlah FROM lowongan_magang JOIN magang on magang.id = lowongan_magang.id_magang WHERE lowongan_magang.penyediaMagang = ? GROUP BY magang.posisi_magang ORDER BY jumlah DESC";
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$id_penyedia]);
+        $response = array();
+        if ($PDOStatement->rowCount() > 0) {
+            $response['body'] = array();
+            $response['status'] = 'oke';
+            $response['message'] = 'ada data';
+            while ($row = $PDOStatement->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                $item = array(
+                    "posisi" => $posisi_magang,
+                    "jumlah" => $jumlah
+                );
+                array_push($response['body'], $item);
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'data magang tidak ditemukan';
+        }
+        return $response;
     }
 }

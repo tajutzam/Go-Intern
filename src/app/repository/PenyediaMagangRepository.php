@@ -5,6 +5,7 @@ namespace LearnPhpMvc\repository;
 use DateTime;
 use LearnPhpMvc\Domain\PenyediaMagang;
 use LearnPhpMvc\dto\AktivasiAkunResponse;
+use PDO;
 
 class PenyediaMagangRepository
 {
@@ -251,6 +252,137 @@ SQL;
             $responseStatement->execute([$penyediaMagang->getFoto(), $penyediaMagang->getId()]);
             return true;
         } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
+
+    public function countMagangIklan(PenyediaMagang $penyediaMagang): int
+    {
+        $count = 0;
+        $query =  'select count(id) as jumlah from magang where penyedia = ?';
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$penyediaMagang->getId()]);
+        if ($PDOStatement->rowCount() > 0) {
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $count = $row['jumlah'];
+        } else {
+        }
+        return $count;
+    }
+
+    public function countMagangYangsedangDitempati(PenyediaMagang $penyediaMagang)
+    {
+        $count = 0;
+        $query =  "select count(id) as jumlah from magang where status != 'kosong' and penyedia = ?";
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$penyediaMagang->getId()]);
+        if ($PDOStatement->rowCount() > 0) {
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $count = $row['jumlah'];
+        } else {
+        }
+        return $count;
+    }
+
+    public function countLamaranMasuk(PenyediaMagang $penyediaMagang)
+    {
+        $count = 0;
+        $query = "SELECT COUNT(id) as jumlah from lowongan_magang WHERE penyediaMagang = ? and status = 'pending'";
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$penyediaMagang->getId()]);
+        if ($PDOStatement->rowCount() > 0) {
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $count = $row['jumlah'];
+        } else {
+        }
+        return $count;
+    }
+    public function countPemagang(PenyediaMagang $penyediaMagang)
+    {
+        $count = 0;
+        $query = "SELECT COUNT(id) as jumlah from lowongan_magang WHERE penyediaMagang = ? and status = 'acc'";
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$penyediaMagang->getId()]);
+        if ($PDOStatement->rowCount() > 0) {
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $count = $row['jumlah'];
+        } else {
+        }
+        return $count;
+    }
+
+
+    public function showPopularCompanies(): array
+    {
+        $response = array();
+        $query = "select penyedia_magang.id ,  penyedia_magang.nama_perusahaan , penyedia_magang.foto , penyedia_magang.alamat_perusahaan , penyedia_magang.email  , penyedia_magang.no_telp , COUNT(magang.id) as jumlah from penyedia_magang JOIN magang on penyedia_magang.id = magang.penyedia  GROUP BY(penyedia_magang.id) ORDER BY(jumlah) DESC";
+
+        $PDOstatement = $this->connection->query($query);
+        if ($PDOstatement->rowCount() > 0) {
+            $response['body'] = array();
+            $response['status'] = 'oke';
+            $response['message'] = 'terdapat data popular';
+            http_response_code(200);
+            while ($row = $PDOstatement->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                $item = array(
+                    "id" => $id,
+                    "nama_perusahaan" => $nama_perusahaan,
+                    "foto" => $foto,
+                    "alamat_perusahaan" => $alamat_perusahaan,
+                    "email" => $email,
+                    "no_telp" => $no_telp,
+                    "jumlah" => $jumlah
+                );
+                array_push($response['body'], $item);
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'data popular tidak tersedia';
+        }
+        return $response;
+    }
+
+    public  function showPopularClose(): array
+    {
+        $query = "select DISTINCT penyedia_magang.id ,  penyedia_magang.nama_perusahaan , penyedia_magang.foto , penyedia_magang.alamat_perusahaan , penyedia_magang.email  , penyedia_magang.no_telp from penyedia_magang join lowongan_magang on penyedia_magang.id != lowongan_magang.penyediaMagang";
+
+        $PDOstatement = $this->connection->query($query);
+        if ($PDOstatement->rowCount() > 0) {
+            $response['body'] = array();
+            http_response_code(200);
+            while ($row = $PDOstatement->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                $item = array(
+                    "id" => $id,
+                    "nama_perusahaan" => $nama_perusahaan,
+                    "foto" => $foto,
+                    "alamat_perusahaan" => $alamat_perusahaan,
+                    "email" => $email,
+                    "no_telp" => $no_telp,
+                    "jumlah" => 0
+                );
+                array_push($response['body'], $item);
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'data popular tidak tersedia';
+        }
+        return $response;
+    }
+
+    public function updatePassword(PenyediaMagang $penyediaMagang): bool
+    {
+        try {
+            $query = "update penyedia_magang set password = ? where id = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$penyediaMagang->getPassword(), $penyediaMagang->getId()]);
+            return true;
+        } catch (\PDOException $th) {
             //throw $th;
             return false;
         }

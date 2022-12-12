@@ -241,7 +241,6 @@ HTML;
         }
         return $response;
     }
-
     public function updateDataProfile(PenyediaMagangRequest $penyediaMagangRequest): array
     {
         $response = array();
@@ -253,39 +252,30 @@ HTML;
         $penyedia->setUsername($penyediaMagangRequest->getUsername());
         $penyedia->setJenisUsaha($penyediaMagangRequest->getJenisUsaha());
         $penyedia->setId($penyediaMagangRequest->getId());
-
-        $responseFindByUsername = $this->repository->findByUsername($penyedia);
-        if ($responseFindByUsername['status'] == 'failed') {
-            $updatedData = $this->repository->updateData($penyedia);
-            if ($updatedData == null) {
-                $response['status'] = "failed";
-                $response['message'] = "gagal memperbarui data profile";
-                echo "<script>alert('gagal memperbarui data profile')</script>";
-            } else {
-                $response['status'] = "oke";
-                $response['message'] = "berhasil memperbarui data profile";
-                unset($_COOKIE['GO-INTERN-COCKIE']);
-                setcookie('GO-INTERN-COCKIE', null, -1, '/');
-                echo "<script>alert('Berhasil Memperbarui data profile');window.location.href='/login'</script>";
-            }
-        } else {
+        $updatedData = $this->repository->updateData($penyedia);
+        if ($updatedData == null) {
             $response['status'] = "failed";
-            $response['message'] = "gagal memperbarui data profile , username sudah digunakan ";
-            echo "<script>alert('gagal memperbarui data profile, username sudah digunakan '); window.location.href='/company/home/dashboard'</script>";
+            $response['message'] = "gagal memperbarui data profile";
+            echo "<script>alert('gagal memperbarui data profile , username sudah digunakan');window.location.href='/company/home/dashboard'</script>";
+        } else {
+            $response['status'] = "oke";
+            $response['message'] = "berhasil memperbarui data profile";
+            unset($_COOKIE['GO-INTERN-COCKIE']);
+            setcookie('GO-INTERN-COCKIE', null, -1, '/', Url::domain());
+            setcookie('id', null, -1, '/', Url::domain());
+            setcookie('id', null, -1, '/');
+            echo "<script>alert('Berhasil Memperbarui data profile');window.location.href='/login'</script>";
         }
         return $response;
     }
-
     public function updatePathPhoto(PenyediaMagangRequest $penyediaMagangRequest)
     {
-
         $penyedia = new PenyediaMagang();
         $penyedia->setFoto($penyediaMagangRequest->getFoto());
         $penyedia->setId($penyediaMagangRequest->getId());
         $response = $this->repository->updatePathFoto($penyedia);
         return $response;
     }
-
     public function downloadCv()
     {
         $path = $_SERVER['PATH_INFO'];
@@ -319,5 +309,95 @@ HTML;
         } else {
             echo "script";
         }
+    }
+    public function countMagang($id)
+    {
+        $penyedia = new PenyediaMagang();
+        $penyedia->setId($id);
+        $count = $this->repository->countMagangIklan($penyedia);
+        return $count;
+    }
+    public function countMagangYangSedangDitempati($id)
+    {
+        $penyedia = new PenyediaMagang();
+        $penyedia->setId($id);
+        $count = $this->repository->countMagangYangsedangDitempati($penyedia);
+        return $count;
+    }
+
+    public function countLamaranMasuk($id)
+    {
+        $penyedia = new PenyediaMagang();
+        $penyedia->setId($id);
+        $count = $this->repository->countLamaranMasuk($penyedia);
+        return $count;
+    }
+    public function countPemagang($id)
+    {
+        $penyedia = new PenyediaMagang();
+        $penyedia->setId($id);
+        $count = $this->repository->countPemagang($penyedia);
+        return $count;
+    }
+
+    public function showPopularPenyedia()
+    {
+        $response = $this->repository->showPopularCompanies();
+        $responseNotPopular = $this->repository->showPopularClose();
+        foreach ($responseNotPopular['body'] as $key => $value) {
+            # code...
+            array_push($response['body'], $value);
+        }
+        return $response;
+    }
+
+    public function updatePassword($passwordLama, $passwordBaru,  $konfirmasiPassword, $id): array
+    {
+        $response = array();
+        $responseFindPenyediaMagang =  $this->repository->findById($id);
+        if (isset($id)) {
+            if ($responseFindPenyediaMagang != null) {
+                $passwordHash = $responseFindPenyediaMagang->getPassword();
+                $isCheckPassword =  password_verify($passwordLama, $passwordHash);
+                $isCheckChanged = password_verify($passwordBaru, $passwordHash);
+                if ($isCheckPassword) {
+                    if ($isCheckChanged) {
+                        $response['status'] = 'failed';
+                        $response['message'] = 'Gagal memperbarui password , tidak ada perubahan';
+                    } else {
+                        if ($konfirmasiPassword == $passwordBaru) {
+                            // todo update
+                            $passwordBcrpt = password_hash($passwordBaru, PASSWORD_BCRYPT);
+                            $responseFindPenyediaMagang->setPassword($passwordBcrpt);
+                            $responseUpdate = $this->repository->updatePassword($responseFindPenyediaMagang);
+                            if ($responseUpdate) {
+                                $response['status'] = 'oke';
+                                $response['message'] = 'berhasil memperbarui password';
+                            } else {
+                                $response['status'] = 'failed';
+                                $response['message'] = 'terjadi kesalahan server';
+                            }
+                        } else {
+                            // todo not equals
+                            $response['status'] = 'failed';
+                            $response['message'] = 'Password dan konfirmasi password tidak sesuai';
+                        }
+                    }
+                    // todo compare password and confirmation password
+
+                } else {
+                    $response['status'] = 'failed';
+                    $response['message'] = 'Password lama tidak sesuai';
+                }
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui password , terjadi kesalahan';
+            }
+        } else {
+            // todo data id not set
+            $response['status'] = 'failed';
+            $response['message'] = 'id not set , relog terlebih dahulu';
+        }
+        return $response;
     }
 }

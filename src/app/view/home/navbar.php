@@ -24,7 +24,7 @@ use LearnPhpMvc\Session\MySession;
               Magang
             </a>
           </li>
-          <li class="nav-item mb-2">
+          <li hidden class="nav-item mb-2">
             <a href=<?= Url::BaseUrl() . "/company" ?> style="margin-right:30px; font-size: 20px;">
               Penyedia Magang
             </a>
@@ -41,14 +41,11 @@ use LearnPhpMvc\Session\MySession;
           </li>
         </ul>
         <a id="register" href=<?= Url::BaseUrl() . "/register" ?> style="margin-right:30px ; font-size: 20px">
-          <button class="btn btn-warning" type="submit">Register</button>
+          <button class="btn register" type="submit"><span>Register</span></button>
         </a>
         <a hidden href="" id="btn-logout">
           <div class="btn btn-primary">Logout</div>
         </a>
-        <div hidden class="img rounded-circle" id="profile-img">
-          <img src=<?= Url::BaseUrl() . "/assets/logo.png" ?> alt="" style="height: 100px  ;">
-        </div>
       </div>
     </div>
   </nav>

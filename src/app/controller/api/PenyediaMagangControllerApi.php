@@ -119,4 +119,10 @@ class PenyediaMagangControllerApi
         $responseLogin = $this->service->login($loginRequest);
         echo json_encode($responseLogin);
     }
+
+    public function showPenyediaPopular()
+    {
+        $response =  $this->service->showPopularPenyedia();
+        echo json_encode($response);
+    }
 }
