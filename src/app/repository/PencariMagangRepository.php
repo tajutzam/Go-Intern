@@ -136,7 +136,10 @@ class PencariMagangRepository
                 $pencariMagang->setNama($row['nama']);
                 $pencariMagang->setJenis_kelamin($row['jenis_kelamin']);
                 $pencariMagang->setPenghargaan($row['id_penghargaan'] == null ? 0 : $row['id_penghargaan']);
-            }
+                $pencariMagang->setSuratLamaran($row['surat_lamaran'] == null ? "" : $row['surat_lamaran']);
+                $pencariMagang->setJurusan($row['jurusan'] == null ? 0 : $row['jurusan']);
+                $pencariMagang->setTentang_saya($row['tentang_saya'] == null ? "" : $row['tentang_saya']);
+            } 
             return $pencariMagang;
         } else {
             return null;
@@ -241,8 +244,10 @@ SQL;
                     "tentang-saya" => $tentang_saya,
                     "nama" => $nama,
                     "foto" => $foto,
-                    "jenis_kelamin" => $jenis_kelamin , 
-                    "id_penghargaan" => $id_penghargaan == null ? 0 : $id_penghargaan
+                    "jenis_kelamin" => $jenis_kelamin,
+                    "id_penghargaan" => $id_penghargaan == null ? 0 : $id_penghargaan,
+                    "deskripsi" => $deskripsi_sekolah,
+                    "surat_lamaran" => $surat_lamaran
                 );
                 array_push($response['body'], $item);
             }
@@ -299,8 +304,6 @@ SQL;
         }
         return $response;
     }
-
-
 
     public function savePencariMagnag(PencariMagang $pencariMagang, Sekolah $sekolah): ?PencariMagang
     {
@@ -517,7 +520,7 @@ SQL;
     public function showDataSekolah($id): array
     {
         $response = array();
-        $query = "SELECT jurusan.jurusan , sekolah.nama_sekolah  , pencari_magang.nama from jurusan , sekolah , pencari_magang INNER join jurusan_sekolah where pencari_magang.jurusan = jurusan.id and sekolah.id = pencari_magang.id_sekolah and pencari_magang.id = ? LIMIT 1";
+        $query = "SELECT jurusan.jurusan , sekolah.nama_sekolah  , pencari_magang.nama  ,  pencari_magang.deskripsi_sekolah from jurusan , sekolah , pencari_magang INNER join jurusan_sekolah where pencari_magang.jurusan = jurusan.id and sekolah.id = pencari_magang.id_sekolah and pencari_magang.id = ? LIMIT 1";
         $PDOStatement = $this->connection->prepare($query);
         $response['body'] = array();
         $PDOStatement->execute([$id]);
@@ -529,7 +532,8 @@ SQL;
             $item = array(
                 "jurusan" => $row['jurusan'],
                 "nama_sekolah" => $row['nama_sekolah'],
-                "nama_pencari_magang" => $row['nama']
+                "nama_pencari_magang" => $row['nama'],
+                "deskripsi" => $row['deskripsi_sekolah']
             );
             array_push($response['body'], $item);
         } else {
@@ -540,16 +544,98 @@ SQL;
         return  $response;
     }
 
-    public function addPenghargaan(PencariMagang $pencariMagang, Penghargaan $penghargaan) : bool
+    public function addPenghargaan(PencariMagang $pencariMagang, Penghargaan $penghargaan): bool
     {
-      try {
-        $query = "update pencari_magang set id_penghargaan = ? where username = ? ";
-        $PDOStatement =  $this->connection->prepare($query);
-        $PDOStatement->execute([$penghargaan->getId_penghargaan() , $pencariMagang->getUsername()]);
-        return true;
-      } catch (PDOException $th) {
-        var_dump($th);
-        return false;
-      }
+        try {
+            $query = "update pencari_magang set id_penghargaan = ? where username = ? ";
+            $PDOStatement =  $this->connection->prepare($query);
+            $PDOStatement->execute([$penghargaan->getId_penghargaan(), $pencariMagang->getUsername()]);
+            return true;
+        } catch (PDOException $th) {
+            var_dump($th);
+            return false;
+        }
+    }
+    public function updateDataPersonal(PencariMagang $pencariMagang): ?PencariMagang
+    {
+        try {
+            $query = "update pencari_magang set nama = ?  , email = ? , tanggal_lahir = ?  , agama = ? , jenis_kelamin = ?  where id = ? ";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$pencariMagang->getNama(), $pencariMagang->getEmail(), $pencariMagang->getTanggalLahir(), $pencariMagang->getAgama(), $pencariMagang->getJenis_kelamin(), $pencariMagang->getId()]);
+            return $pencariMagang;
+        } catch (PDOException $th) {
+            var_dump($th);
+            return null;
+        }
+    }
+    public function updateKeamanan(PencariMagang $pencariMagang): ?PencariMagang
+    {
+        try {
+            //code...
+            $quer  = "update pencari_magang set username = ?   , password  = ? where id = ? ";
+            $PDOStatement = $this->connection->prepare($quer);
+            $PDOStatement->execute([$pencariMagang->getUsername(), $pencariMagang->getPassword(), $pencariMagang->getId()]);
+            return $pencariMagang;
+        } catch (PDOException $th) {
+            //throw $th;
+            var_dump($th);
+            return null;
+        }
+    }
+
+    public function updateCv(PencariMagang $pencariMagang): ?PencariMagang
+    {
+        try {
+            $query  = "update pencari_magang set cv = ? where username = ?";
+            $PDOstatement = $this->connection->prepare($query);
+            $PDOstatement->execute([$pencariMagang->getCv(), $pencariMagang->getUsername()]);
+            return $pencariMagang;
+        } catch (PDOException $th) {
+            //throw $th;
+            return null;
+        }
+    }
+    public function findCvByUsername(PencariMagang $pencariMagang): ?PencariMagang
+    {
+        $this->connection->beginTransaction();
+        $query = "select cv from pencari_magang where username = ?";
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$pencariMagang->getUsername()]);
+        if ($PDOStatement->rowCount() > 0) {
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $pencariMagang->setCv($row['cv'] == null ? "belum ada cv" : $row['cv']);
+            $this->connection->commit();
+            return $pencariMagang;
+        } else {
+            $this->connection->rollBack();
+            return null;
+        }
+    }
+
+
+    public function updateSuratLamaran($surat_lamatan, $id): bool
+    {
+        try {
+            $query = "update pencari_magang set surat_lamaran = ? where id = ?";
+            $PDOstatement = $this->connection->prepare($query);
+            $PDOstatement->execute([$surat_lamatan, $id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
+    public function updateNoHp($noHp, $id)
+    {
+        try {
+            $query = "update pencari_magang set no_telp = ? where id =?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$noHp, $id]);
+            return true;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
     }
 }

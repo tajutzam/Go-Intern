@@ -11,16 +11,16 @@ use LearnPhpMvc\service\JenisUsahaService;
 class MySession
 {
 
-    
+
 
     static public function getCurrentSession(): array
     {
         $response = array();
         try {
             $key = "asodkaosdkoaoasdisauduqeiqwmxzmxlasncjnfqwhodqwpdqowkdpqkdckmkjfabfhfwhfojpfqkqowkowqkeopqwke";
-            if ($_COOKIE['GO-INTERN-COCKIE']) {
+            if (isset($_COOKIE['GO-INTERN-COCKIE'])) {
                 $jwt = $_COOKIE['GO-INTERN-COCKIE'];
-                $payload = JWT::decode($jwt, new Key($key, 'HS256'));   
+                $payload = JWT::decode($jwt, new Key($key, 'HS256'));
                 $username = $payload->username;
                 $id = $payload->id;
                 $nama_perusahaan = $payload->nama_perusahaan;
@@ -31,7 +31,22 @@ class MySession
                 $token = $payload->token;
                 $alamat = $payload->alamat;
                 $jenisUsahaValue = $payload->jenis_usaha;
-         
+                
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => Url::BaseApi().'/api/jenisusaha/findbyid/'.$jenis_usaha,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'GET',
+                ));
+
+                $responseCurl = curl_exec($curl);
+                $decodedJenisUSaha = json_decode($responseCurl , true);
+                curl_close($curl);
                 $item = array(
                     "username" => $username,
                     "id" => $id,
@@ -41,9 +56,9 @@ class MySession
                     "jenis_usaha" => $jenisUsahaValue,
                     "email" => $email,
                     "token" => $token,
-                    "alamat" => $alamat
+                    "alamat" => $alamat , 
+                    "jenis_usaha_value" => $decodedJenisUSaha['body'][0]['jenis_usaha']
                 );
-
                 array_push($response, $item);
                 $response['status']  = true;
             } else {

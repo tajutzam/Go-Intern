@@ -9,12 +9,12 @@
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>Go Intern Dashboard</title>
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="css/ruang-admin.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+  <!-- <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- <link href="css/ruang-admin.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
 
 </head>
 
 <body id="page-top">
-  <div id="wrapper">
+  <div id="wrapper"> 

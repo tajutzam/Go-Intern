@@ -235,12 +235,10 @@ SQL;
                 $penyediaMagang->getNoTelp(),
                 $penyediaMagang->getUsername(),
                 $penyediaMagang->getJenisUsaha(),
-
                 $penyediaMagang->getId()
             ]);
             return $penyediaMagang;
         } catch (\PDOException $th) {
-            var_dump($th);
             return null;
         }
     }

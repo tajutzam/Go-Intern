@@ -10,7 +10,7 @@ class Url
         return $url;
     }
     static function BaseApi() : string{
-        $url = "http://192.168.0.9:8080";
+        $url = "http://192.168.195.94:8080";
         // $url = "http//localhost:8080";
         return $url;
     }

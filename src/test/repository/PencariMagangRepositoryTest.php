@@ -168,18 +168,34 @@ class PencariMagangRepositoryTest extends TestCase
         assertNotNull($response);
     }
 
-    public function testShowDataSekolaByPencariSucces(){
+    public function testShowDataSekolaByPencariSucces()
+    {
         $pencarimagang = new PencariMagang();
         $pencarimagang->setId(103);
         $response = $this->repository->findBySekolah($pencarimagang);
-        assertEquals('oke' , $response['status']);
+        assertEquals('oke', $response['status']);
         var_dump($response);
-    }   
-    public function testShowDataSekolaByPencariFailed(){
+    }
+    public function testShowDataSekolaByPencariFailed()
+    {
         $pencarimagang = new PencariMagang();
         $pencarimagang->setId(104);
         $response = $this->repository->findBySekolah($pencarimagang);
-        assertEquals('failed' , $response['status']);
+        assertEquals('failed', $response['status']);
         var_dump($response);
-    }   
+    }
+
+    public function testUpdatedatapersonal()
+    {
+        $pencariMagang = new PencariMagang();
+        $pencariMagang->setNama('jemi');
+        $pencariMagang->setEmail('mohammadtajutzamzami07@gmail.com');
+        $pencariMagang->setTanggalLahir("2022-11-30");
+        $pencariMagang->setAgama('islam');
+        $pencariMagang->setJenis_kelamin('L');
+        $pencariMagang->setId(142);
+        $response =  $this->repository->updateDataPersonal($pencariMagang);
+        assertNotNull($response);
+        var_dump($response);
+    }
 }

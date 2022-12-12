@@ -167,7 +167,76 @@ class PencariMagangControllerApi
         header("Access-Control-Allow-Methods: POST");
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $jsonData = json_decode(file_get_contents("php://input"), true);
-        $response =    $this->service->addPenghargaan($_FILES['penghargaan'] , $_POST['judul'], $_POST['username']);
+        $response =    $this->service->addPenghargaan($_FILES['penghargaan'], $_POST['judul'], $_POST['username']);
+        echo json_encode($response);
+    }
+
+    public function updateDeskripsi()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $deskripsi = $jsonData['deskripsi'];
+        $id = $jsonData['id'];
+        $response =  $this->service->updateDeskripsi($deskripsi, $id);
+        echo json_encode($response);
+    }
+
+    public function updateDataPersonal()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $nama = $jsonData['nama'];
+        $email = $jsonData['email'];
+        $tanggal_lahir = $jsonData['tanggal_lahir'];
+        $agama = $jsonData['agama'];
+        $jenis_kelamin = $jsonData['jenis_kelamin'];
+        $id = $jsonData['id'];
+        $response = $this->service->updateDataPersonal($nama, $email, $tanggal_lahir, $agama, $jenis_kelamin, $id);
+        echo json_encode($response);
+    }
+
+    public function upadateKemananUser()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $username = $jsonData['username'];
+        $password = $jsonData['password'];
+        $id = $jsonData['id'];
+        $response =  $this->service->updateKeamann($username, $password, $id);
+        echo json_encode($response);
+    }
+
+    public function updateCv()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $username = $_POST['username'];
+        $array = $this->service->updateCv($_FILES['cv'], $username);
+        echo json_encode($array);
+    }
+
+    public function updateNoTelp()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $noTelp = $jsonData['no_telp'];
+        $id = $jsonData['id'];
+        $response = $this->service->updateNoHp($noTelp, $id);
         echo json_encode($response);
     }
 }
