@@ -62,14 +62,13 @@ class PenyediaMagangController
     static function home()
     {
         $isLogin = MySession::getCurrentSession();
-
         if ($isLogin['status'] != false) {
             $model = [
                 'title' => "Isi Data Lamaran",
                 'content' => "Go Intern",
                 'result' => $isLogin
             ];
-            View::render("/penyedia/index", $model, "getFooter2");
+            View::renderHome("/penyedia/index", $model, "getFooter2");
         } else {
             LoginController::formLogin();
         }
@@ -84,6 +83,11 @@ class PenyediaMagangController
     {
         $isLogin = MySession::getCurrentSession();
         $responseLamar = $this->showLamaranMagang();
+        $id = $isLogin[0]['id'];
+        $jumlahMagang = $this->penyediaMagangService->countMagang($id);
+        $magangYangSedangDitempati = $this->penyediaMagangService->countMagangYangSedangDitempati($id);
+        $lamaranMasuk = $this->penyediaMagangService->countLamaranMasuk($id);
+        $jumlahPemagang = $this->penyediaMagangService->countPemagang($id);
         if ($isLogin['status'] != false) {
             $isLogin = MySession::getCurrentSession();
             $magang = $this->service->findAll();
@@ -92,16 +96,18 @@ class PenyediaMagangController
                 "title" => "Dashboard Penyedia",
                 "result" => $isLogin,
                 "magang" => $magang,
-                "lamaran" => $responseLamar
+                "lamaran" => $responseLamar,
+                "jumlahMagang" => $jumlahMagang,
+                "jumlahMagangYangDitempati" => $magangYangSedangDitempati,
+                "jumlahLamaranMasuk" => $lamaranMasuk,
+                "jumlahPemagang" => $jumlahPemagang
                 // "response" => $responseLamar
-
             ];
             View::renderDashboard("index", $model);
         } else {
             LoginController::formLogin();
         }
     }
-
     function formTambahData()
     {
         $isLogin = MySession::getCurrentSession();
@@ -522,12 +528,11 @@ class PenyediaMagangController
                         if ($response['status'] == 'oke') {
                             echo "<script>
                             alert('Berhasil mengganti foto profile! , silahkan login ulang');
-                            window.location.href='/company/home/dashboard';
+                            window.location.href='/login';
                             </script>";
                             if (isset($_COOKIE['GO-INTERN-COCKIE'])) {
                                 unset($_COOKIE['GO-INTERN-COCKIE']);
                                 setcookie('GO-INTERN-COCKIE', null, -1, '/');
-
                                 return true;
                             } else {
                                 return false;
@@ -583,29 +588,18 @@ class PenyediaMagangController
         View::renderDashboard('lamaran', $model);
     }
 
-
-
     public function tolakLamaran()
     {
-        $dataLogin = MySession::getCurrentSession();
-        $id = $dataLogin[0]['id'];
-        $path = $_SERVER['PATH_INFO'];
-        $newPath = explode("/", $path);
-
-        $idPencari = $newPath[6];
-        $idMagang = $newPath[7];
-        $response = $this->lowonganMagangService->tolakLamaran($idPencari, $idMagang, $id);
-        if ($response['status'] == 'oke') {
-            echo "<script>
-            alert('berhasil Menolak lamaran !');
-            window.location.href='/company/home/dashboard/lamaran';
-            </script>";
-        } else {
-            echo "<script>
-            alert('gagal Menolak lamaran !');
-            window.location.href='/company/home/dashboard/lamaran';
-            </script>";
-        }
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $idPencari = $jsonData['pencari'];
+        $idMagang = $jsonData['magang'];
+        $idpenyedia = $jsonData['penyedia'];
+        $response = $this->lowonganMagangService->tolakLamaran($idPencari, $idMagang, $idpenyedia);
+        echo json_encode($response);
     }
 
     public function terimaLamaran()
@@ -631,7 +625,7 @@ class PenyediaMagangController
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $idPencari = $jsonData['idPencari'];
         $idMagang = $jsonData['idmagang'];
-        $response = $this->lowonganMagangService->terimaMagang($idPencari , $idMagang);
+        $response = $this->lowonganMagangService->terimaMagang($idPencari, $idMagang);
         echo json_encode($response);
     }
 
@@ -659,17 +653,57 @@ class PenyediaMagangController
     }
 
     public function keluarkanPemagang()
-    { {
-            header("Access-Control-Allow-Origin: *");
-            header("Content-Type: application/json; charset=UTF-8");
-            header("Access-Control-Allow-Methods: POST");
-            header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-            $jsonData = json_decode(file_get_contents("php://input"), true);
-            $idLowongan = $jsonData['idlowongan'];
-            $pemagang = $jsonData['pemagang'];
-            $response = $this->lowonganMagangService->keluarkanPemagang($idLowongan, $pemagang);
-            echo "<script>alert('" . $response['message'] . "');'</script>";
-            echo json_encode($response);
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $idLowongan = $jsonData['idlowongan'];
+        $pemagang = $jsonData['pemagang'];
+        $response = $this->lowonganMagangService->keluarkanPemagang($idLowongan, $pemagang);
+        echo "<script>alert('" . $response['message'] . "');'</script>";
+        echo json_encode($response);
+    }
+
+
+    public function showPosisiPopuler()
+    {
+        // need to know the id penyedia 
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $id = $jsonData['id'];
+        $response = $this->lowonganMagangService->showPosisiPalingBannyakDiminati($id);
+        echo json_encode($response);
+    }
+    
+    public function logout()
+    {
+        // delete cockie\
+        setcookie("GO-INTERN-COCKIE", "", time() - 3600, "/", Url::domain());
+        setcookie("id", "", time() - 3600, "/", Url::domain());
+        View::redirect("login");
+    }
+
+    public function updatePassword()
+    {
+        if (isset($_POST['updatePassword'])) {
+            $passwordBaru = $_POST['passwordBaru'];
+            $passwordLama = $_POST['passwordLama'];
+            $konfirmasiPassword = $_POST['konfirmasiPassword'];
+            $id = $_POST['id'];
+            $response =  $this->penyediaMagangService->updatePassword($passwordLama, $passwordBaru, $konfirmasiPassword, $id);
+            if ($response['status'] == 'oke') {
+                setcookie("GO-INTERN-COCKIE", "", time() - 3600, "/", Url::domain());
+                setcookie("id", "", time() - 3600, "/", Url::domain());
+                echo "<script>alert('" . $response['message'] . "');window.location.href='/login'</script>";
+            } else {
+                echo "<script>alert('" . $response['message'] . "');window.location.href='/company/home/dashboard'</script>";
+            }
+        } else {
         }
     }
 }

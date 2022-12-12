@@ -31,30 +31,32 @@ class LoginController
     static function formLogin()
     {
         $isLogin = MySession::getCurrentSession();
-
-        $model = [
-            'title' => "Isi Data Lamaran",
-            'content' => "Go Intern",
-            'result' => $isLogin
-        ];
         if ($isLogin['status'] == true) {
+            $model = [
+                'title' => "Isi Data Lamaran",
+                'content' => "Go Intern",
+                'result' => $isLogin
+            ];
             PenyediaMagangController::home();
+        } else {
+            $model = [
+                'title' => "Isi Data Lamaran",
+                'content' => "Go Intern",
+                // 'result' => $this->postLogin() != null ? $this->postLogin() : ""
+            ];
+            $newData = array();
+            View::render("/auth/login/login_form", $model, "getFooter3");
         }
-        $model = [
-            'title' => "Isi Data Lamaran",
-            'content' => "Go Intern"
-        ];
-        $url = Url::BaseApi() . "/api/pencarimagang/all";
-        $contents = file_get_contents($url);
-        $contents = utf8_encode($contents);
-        $result = json_decode($contents, true);
-        $model = [
-            'title' => "Isi Data Lamaran",
-            'content' => "Go Intern",
-            // 'result' => $this->postLogin() != null ? $this->postLogin() : ""
-        ];
-        $newData = array();
-        View::render("/auth/login/login_form", $model, "getFooter3");
+
+        // if ($isLogin['status'] == true) {
+        //     PenyediaMagangController::home();
+        // }
+
+        // $url = Url::BaseApi() . "/api/pencarimagang/all";
+        // $contents = file_get_contents($url);
+        // $contents = utf8_encode($contents);
+        // $result = json_decode($contents, true);
+
     }
     static function postLogin()
     {
@@ -115,6 +117,7 @@ class LoginController
                         );
                         $jwt =  JWT::encode($payload, $key, 'HS256');
                         // set cockie
+                        setcookie("id", $response[0]['id'], 0, "/");
                         setcookie("GO-INTERN-COCKIE", $jwt, 0, "/");
                         // // View::render("/penyedia/index", $model, "getFooter3");
                         // View::render("/penyedia/index", $model, "getFooter3");

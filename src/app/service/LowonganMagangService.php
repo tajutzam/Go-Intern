@@ -9,6 +9,7 @@ use LearnPhpMvc\repository\LowonganMagangRepository;
 use LearnPhpMvc\repository\MagangRepository;
 use LearnPhpMvc\repository\PencariMagangRepository;
 use LearnPhpMvc\repository\PenyediaMagangRepository;
+use LearnPhpMvc\Session\MySession;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class LowonganMagangService
@@ -433,6 +434,18 @@ class LowonganMagangService
         } else {
             $response['status'] = 'failed';
             $response['message'] = 'gagal mengeluarkan pemagang , data id tidak ada';
+        }
+        return $response;
+    }
+
+    public function showPosisiPalingBannyakDiminati($id_penyedia) : array
+    {
+
+        $response =  $this->repositoryLowonganMagang->showMagangPalingBanyakDiminati($id_penyedia);
+        if($response['status'] == 'oke'){
+            http_response_code(200);
+        }else{
+            http_response_code(400);
         }
         return $response;
     }

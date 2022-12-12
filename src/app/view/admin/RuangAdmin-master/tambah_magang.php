@@ -53,9 +53,8 @@ if (isset($_SESSION['succes'])) {
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable" id="#modalScroll">Tambah Data</button>
         </div>
-
         <div class="table-responsive">
-            <table class="table align-items-center table-flush table-magang p-2" id="table-magang">
+            <table class="table align-items-center table-flush table-magang p-2 " id="table-magang">
                 <thead class="thead-light">
                     <tr>
                         <th>No</th>
@@ -68,10 +67,8 @@ if (isset($_SESSION['succes'])) {
                         <th>Desripsi Magang</th>
                         <th>Action</th>
                         <th hidden>Action</th>
-
                     </tr>
                 </thead>
-
                 <tbody>
                     <?php
                     if (!isset($model['magang']['body'])) {
@@ -109,7 +106,7 @@ if (isset($_SESSION['succes'])) {
                                 </td>
 
                                 <td>
-                                    <div class="row">
+                                    <div class="row justify-content-between">
                                         <div class="col-lg-6">
                                             <a class="btn btn-warning" href="" local data-toggle="modal" data-target="#exampleModalScrollableUpdate" id="select" data-id="<?= $model['magang']['body'][$i]['id'] ?>" data-posisi="<?= $model['magang']['body'][$i]['posisi_magang'] ?>" data-kategori="<?= $model['magang']['body'][$i]['id_kategori'] ?>" data-lama_magang="<?= $model['magang']['body'][$i]['lama_magang'] ?>" data-status="<?= $model['magang']['body'][$i]['status'] ?>" data-jumlah-maksimal="<?= $model['magang']['body'][$i]['jumlah_maksimal'] ?>" data-jumlah-saatini="<?= $model['magang']['body'][$i]['jumlah_saatini'] ?>" data-deskripsi="<?= $model['magang']['body'][$i]['deskripsi'] ?>" data-salary="<?= $model['magang']['body'][$i]['salary'] ?>" data-syarat="<?php for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         if ($model['magang']['body'][$i]['syarat'][0] != null) {
@@ -126,9 +123,8 @@ if (isset($_SESSION['succes'])) {
                                             </a>
                                         </div>
                                         <div class="col-lg-6" id="deleteData" data-id="<?= $model['magang']['body'][$i]['id'] ?>">
-                                            <?= $model[''] ?>
                                             <a class="btn btn-danger" id="linkDelete">
-                                                <i class="fa-solid fa-trash"></i>
+                                                <span style="color: white;"><i class="fa-solid fa-trash"></i></span>
                                             </a>
                                         </div>
                                     </div>
@@ -137,10 +133,11 @@ if (isset($_SESSION['succes'])) {
                     <?php }
                     }
                     ?>
-
                 </tbody>
             </table>
         </div>
+
+
         <div class="card-footer"></div>
     </div>
 </div>

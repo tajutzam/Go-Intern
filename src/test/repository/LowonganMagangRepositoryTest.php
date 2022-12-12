@@ -5,6 +5,7 @@ use LearnPhpMvc\Domain\LowonganMagang;
 use LearnPhpMvc\repository\LowonganMagangRepository;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotNull;
 
 class LowonganMagangRepositoryTest extends TestCase
@@ -27,5 +28,12 @@ class LowonganMagangRepositoryTest extends TestCase
         $response = $this->repository->addLowonganMagang($lowongan);
         var_dump($response);
         assertNotNull($response);
+    }
+
+    public function testShowLowonaganPalignBanyak()
+    {
+        $response =  $this->repository->showMagangPalingBanyakDiminati(87);
+        var_dump($response);
+        assertEquals("oke", $response['status']);
     }
 }

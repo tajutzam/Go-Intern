@@ -11,8 +11,6 @@ use LearnPhpMvc\service\JenisUsahaService;
 class MySession
 {
 
-
-
     static public function getCurrentSession(): array
     {
         $response = array();
@@ -31,7 +29,6 @@ class MySession
                 $token = $payload->token;
                 $alamat = $payload->alamat;
                 $jenisUsahaValue = $payload->jenis_usaha;
-                
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
                     CURLOPT_URL => Url::BaseApi().'/api/jenisusaha/findbyid/'.$jenis_usaha,

@@ -16,30 +16,103 @@ use LearnPhpMvc\Config\Url;
 </script>
 <!-- <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script> -->
 <script>
-    var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-    var yValues = [55, 49, 44, 24, 15];
-    var barColors = ["red", "green", "blue", "orange", "brown"];
-    new Chart("myChart", {
-        type: "bar",
-        data: {
-            labels: xValues,
-            datasets: [{
-                backgroundColor: barColors,
-                data: yValues
-            }]
-        },
-        options: {
-            legend: {
-                display: false
-            },
-            title: {
-                display: true,
-                text: "Daftar posisi magang yang paling banyak diminati"
-            }
+    // Get all the cookies for the current page
+    var allCookies = document.cookie;
+    var cookieValue;
+    // Split the cookies into individual cookies
+    var cookies = allCookies.split(';');
+    // Loop through the cookies and find the one with the name you want
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+
+        // Use the trim method to remove leading and trailing white space
+        // from the cookie string
+        cookie = cookie.trim();
+
+        // Check if the cookie string starts with the name of the cookie
+        // you're looking for
+        if (cookie.indexOf('id') == 0) {
+            // If it does, extract the value of the cookie
+            cookieValue = cookie.substring('id'.length, cookie.length);
+            // You can now use the cookieValue variable to read the value of
+            // the cookie
         }
+    }
+    var newCockie = cookieValue.replace("=", "");
+    console.log(newCockie);
+    var baseUrl = "<?= Url::BaseUrl() ?>";
+    var responsePopular = fetch(baseUrl + '/company/home/dashboard/posisipopuler', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "id": parseInt(newCockie)
+        })
+    });
+    responsePopular.then((response) => {
+        const jsonPromise = response.json();
+        var xValues = [];
+                var yValues = [];
+                var barColors = [];
+        jsonPromise.then((data) => {
+            if (data.status == "oke") {
+              
+                data.body.forEach(element => {
+                    xValues.push(element.posisi);
+                    yValues.push(element.jumlah);
+                    var r = Math.floor(Math.random() * 256);
+                    var g = Math.floor(Math.random() * 256);
+                    var b = Math.floor(Math.random() * 256);
+                    var color = "rgb(" + r + "," + g + "," + b + ")";
+                    barColors.push(color);
+                });
+
+                new Chart("myChart", {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: "Daftar posisi magang yang paling banyak diminati"
+                        }
+                    }
+                });
+            } else {
+                new Chart("myChart", {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: "Daftar posisi magang yang paling banyak diminati"
+                        }
+                    }
+                });
+            }
+        });
     });
 
-    var baseUrl = "http://localhost:8081";
+
     $(document).ready(function() {
         $(document).on('click', '#select', function() {
             var item_id = $(this).data('id');
@@ -155,9 +228,33 @@ use LearnPhpMvc\Config\Url;
         $(document).on('click', ".tolakLamaran", function() {
             var idMagang = $(this).data('idmagang');
             var idPencari = $(this).data('pencari');
-            $(".tolakLamaran").attr("href", baseUrl + "/company/home/dashboard/lamaran/tolak/" + idPencari + "/" + idMagang)
-            console.log($(".tolakLamaran"))
-            console.log('after klick');
+            console.log(idPencari);
+            var confirmToDelete = confirm('Apakah kamu yakin , ingin menolak lamaran ?');
+            if (confirmToDelete) {
+                var response = fetch(baseUrl + '/company/home/dashboard/tolak/lamaran', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "pencari": idPencari,
+                        'magang': idMagang,
+                        'penyedia': parseInt(newCockie)
+                    })
+                });
+                response.then((response) => {
+                    const jsonPromise = response.json();
+                    console.log(jsonPromise);
+                    jsonPromise.then((data) => {
+                        window.location.reload();
+                        alert(data.message);
+                    });
+                });
+
+            } else {
+                window.reload();
+            }
         })
         // VIEW PENGHARGAAN
         $(document).on('click', ".viewPenghargaan2", function() {
@@ -168,10 +265,40 @@ use LearnPhpMvc\Config\Url;
         $(document).on('click', '.tolakLamaran2', function() {
             var idMagang = $(this).data('idmagang');
             var idPencari = $(this).data('pencari');
-            $(".tolakLamaran2").attr("href", baseUrl + "/company/home/dashboard/lamaran/tolak/" + idPencari + "/" + idMagang)
-            console.log($(".tolakLamaran"))
-            console.log('after klick');
+            console.log(idPencari);
+            var confirmToDelete = confirm('Apakah kamu yakin , ingin menolak lamaran ?');
+            if (confirmToDelete) {
+                var response = fetch(baseUrl + '/company/home/dashboard/tolak/lamaran', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "pencari": idPencari,
+                        'magang': idMagang,
+                        'penyedia': parseInt(newCockie)
+                    })
+                });
+                response.then((response) => {
+                    const jsonPromise = response.json();
+                    console.log(jsonPromise);
+                    jsonPromise.then((data) => {
+                        window.location.reload();
+                        alert(data.message);
+                    });
+                });
+
+            } else {
+                // window.reload();
+            }
+            // $(".tolakLamaran2").attr("href", baseUrl + "/company/home/dashboard/lamaran/tolak/" + idPencari + "/" + idMagang)
+            // console.log($(".tolakLamaran"))
+            // console.log('after klick');
         });
+
+        // tolak lamran by post
+
         var cv;
         var nama;
         var penghargaan;
@@ -323,4 +450,55 @@ use LearnPhpMvc\Config\Url;
 
         })
     })
+
+    function showHide3() {
+        console.log('oke');
+        var show_eye1 = document.getElementById("show_eye2");
+        var hide_eye1 = document.getElementById("hide_eye2");
+        var y = document.getElementById('password3')
+        hide_eye1.classList.remove("d-none");
+        if (y.type == "password") {
+            y.type = "text";
+            show_eye1.style.display = "none";
+            hide_eye1.style.display = "block";
+        } else {
+            y.type = "password";
+            show_eye1.style.display = "block";
+            hide_eye1.style.display = "none";
+        }
+    }
+
+    function showHide4() {
+        console.log('oke');
+        var show_eye1 = document.getElementById("show_eye3");
+        var hide_eye1 = document.getElementById("hide_eye3");
+        var y = document.getElementById('password4')
+        hide_eye1.classList.remove("d-none");
+        if (y.type == "password") {
+            y.type = "text";
+            show_eye1.style.display = "none";
+            hide_eye1.style.display = "block";
+        } else {
+            y.type = "password";
+            show_eye1.style.display = "block";
+            hide_eye1.style.display = "none";
+        }
+    }
+
+    function showHide5() {
+        console.log('oke');
+        var show_eye1 = document.getElementById("show_eye4");
+        var hide_eye1 = document.getElementById("hide_eye4");
+        var y = document.getElementById('password5')
+        hide_eye1.classList.remove("d-none");
+        if (y.type == "password") {
+            y.type = "text";
+            show_eye1.style.display = "none";
+            hide_eye1.style.display = "block";
+        } else {
+            y.type = "password";
+            show_eye1.style.display = "block";
+            hide_eye1.style.display = "none";
+        }
+    }
 </script>

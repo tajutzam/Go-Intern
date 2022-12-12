@@ -6,13 +6,6 @@ use LearnPhpMvc\config\Url;
 
 ?>
 <?php
-if ($model['status'] == "failed") {
-?>
-
-    <script>
-        alert("<?= $model['message'] ?>");
-    </script>
-<?php }
 ?>
 
 <div class="header-login position-relative">
@@ -33,7 +26,6 @@ if ($model['status'] == "failed") {
         <div class="mb-5">
             <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username" name="username">
         </div>
-
         <div class="input-group mb-5">
             <input type="password" name="passwordIn"  class="input form-control" id="password" placeholder="Password" required="true" aria-label="password" aria-describedby="basic-addon1">
             <div class="input-group-append">
@@ -43,11 +35,6 @@ if ($model['status'] == "failed") {
                 </span>
             </div>
         </div>
-
-        <!-- <div class="mb-5">
-            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="password" name="passwordIn"> <span><a href="">show</a></span>
-        </div> -->
-
         <div class="lupa-password ">
             <p> <span>Lupa Password</span> <a class="" href=""><span style="color: #4356FF;"></span>Klik Saya</a>
             </p>
@@ -55,7 +42,7 @@ if ($model['status'] == "failed") {
         <?php
         ?>
         <button type="submit" class="btn-primary w-100" name="login">Login</button>
-        <p class="mt-3 text-center">Tidak punya akun ? <a href=""> <span style="color: #4356FF;">Daftar sekarang</span></a> </p>
+        <p class="mt-3 text-center">Tidak punya akun ? <a href="<?= Url::BaseUrl()."/register" ?>"> <span style="color: #4356FF;">Daftar sekarang</span></a> </p>
     </form>
 
 </div>

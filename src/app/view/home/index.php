@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../../../vendor/autoload.php";
 use LearnPhpMvc\config\Url;
 ?>
-<div class="jumbotron" style="overflow: hidden;">
+<div class="jumbotron" id="index" style="overflow: hidden;">
     <div class="row">
         <div class="col-6 header-left" style="padding:  100px;">
             <h1 class="text-judul-v1" style="width: 100%; max-width: 400px;">
@@ -14,7 +14,7 @@ use LearnPhpMvc\config\Url;
             <!-- cek apakah sudah login belum -->
             <!-- jika belum , login dulu -->
             <a href=<?= Url::BaseUrl() . "/magang" ?>>
-                <button class="btn btn-primary mt-3">
+                <button class="btn btn-primary mt-3 instal">
                     <p style="font-family: poppins-semibold ; margin-top: 10px; margin-bottom: 10px;">Install Sekarang</p>
                 </button>
             </a>

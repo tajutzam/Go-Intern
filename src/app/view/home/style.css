@@ -12,8 +12,6 @@ a:hover {
   color: #004aad;
 }
 
- 
-
 a {
   text-decoration: none;
   color: #353535;
@@ -71,7 +69,6 @@ body {
   background-color: #e7ea5c;
   position: relative;
   height: 70vh;
- 
 }
 .box-login {
   height: auto;
@@ -321,6 +318,28 @@ asides .card {
   margin: 0;
   padding: 0;
 }
+.instal:hover{
+  background-color: #e7ea5c !important;
+  
+}
+.instal:hover p{
+  color: #353535;
+}
+.register{
+  background-color: #e7ea5c;
+}
+.register:hover{
+  background-color: #4356ff;
+}
+.register:hover span{
+  color: white;
+}
+.btn-left:hover{
+background-color: #e7ea5c !important;
+}
+.btn-left:hover h6{
+  color: #353535 !important;
+}
 
 .bg-light {
   background-color: #dee1ff;
@@ -398,7 +417,9 @@ asides .card {
 }
 .text-penyedia-none {
 }
-
+thead tr th {
+  font-size: 10px;
+}
 .durasi {
   margin-left: 5%;
 }
@@ -411,9 +432,7 @@ asides .card {
   margin-left: 20px !important;
 }
 
-
-.footer-bekerjasama{
-  
+.footer-bekerjasama {
 }
 /* fonts */
 @font-face {
@@ -427,6 +446,28 @@ asides .card {
 
 /* responsive */
 @media only screen and (max-width: 458px) {
+  .info-smile .kotak-v2 .cewek-senyum {
+    height: 375px !important;
+  }
+
+  .content-head .laki {
+    position: absolute;
+    bottom: 0;
+    right: -1px;
+    height: 250px !important;
+  }
+
+  html,
+  body {
+    width: auto !important;
+    overflow-x: hidden !important;
+  }
+  html,
+  table {
+    width: auto !important;
+    overflow-x: auto !important;
+  }
+
   .jumbotron-company-home {
   }
   .image-2 {
@@ -541,11 +582,15 @@ asides .card {
   a:hover {
     color: #004aad;
   }
-
-
-
 }
 @media only screen and (max-width: 768px) {
+  html {
+    overflow-x: hidden;
+  }
+  .table-condensed {
+    font-size: 10px !important;
+  }
+
   .info-smile .kami-membantu-text {
     margin-left: 20px !important;
   }

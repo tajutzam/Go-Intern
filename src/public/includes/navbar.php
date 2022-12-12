@@ -4,7 +4,6 @@ use LearnPhpMvc\Config\Url;
 use LearnPhpMvc\Session\MySession;
 
 $session = MySession::getCurrentSession();
-
 $curl = curl_init();
 $dataPost = array(
     "jenis" => $session[0]['jenis_usaha_value']
@@ -15,6 +14,19 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($dataPost));
 $responseDataJenis = curl_exec($curl);
 curl_close($curl);
 $decodedJenis = json_decode($responseDataJenis, true);
+// Menggunakan fungsi date untuk mendapatkan waktu saat ini
+$waktu = date("H");
+$sayGreeting;
+// Menggunakan kondisi if untuk memeriksa jam saat ini
+if ($waktu < 12) {
+    // Jika jam saat ini kurang dari 12, tampilkan ucapan selamat pagi
+    $sayGreeting =  "Selamat pagi!";
+} else if ($waktu >= 18 && $waktu < 24) {
+    // Jika tidak, tampilkan ucapan selamat siang
+    $sayGreeting =  "Selamat malam!";
+} else {
+    $sayGreeting = "Selamat siang";
+}
 
 ?>
 <!-- Sidebar -->
@@ -31,7 +43,7 @@ $decodedJenis = json_decode($responseDataJenis, true);
     <li class="nav-item active">
         <a class="nav-link" href="index.html">
             <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
-            <span>Selamat pagi , <?php echo $model['result'][0]['nama_perusahaan'] ?></span>
+            <span> <?php echo $sayGreeting . " " . $model['result'][0]['nama_perusahaan'] ?></span>
         </a>
     </li>
     <hr class="sidebar-divider">
@@ -64,7 +76,7 @@ $decodedJenis = json_decode($responseDataJenis, true);
         Logout
     </div>
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a id="logout" class="nav-link" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Logout</span>
         </a>
@@ -93,21 +105,16 @@ $decodedJenis = json_decode($responseDataJenis, true);
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#keamanan" id="#modalScroll">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Pengaturan Keamanan
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
-                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Logout
-                        </a>
                     </div>
                 </li>
             </ul>
         </nav>
         <!-- Topbar -->
-
         <!-- Modal Logout -->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -119,15 +126,18 @@ $decodedJenis = json_decode($responseDataJenis, true);
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure you want to logout?</p>
+                        <p>Apakah kamu yakin ingin logout?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                        <a href="login.html" class="btn btn-primary">Logout</a>
+                        <a href="<?= Url::BaseUrl() . "/company/home/dashboard/logout" ?>" class="btn btn-primary">Logout</a>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
 
         <div class="modal fade" id="modalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
@@ -165,10 +175,10 @@ $decodedJenis = json_decode($responseDataJenis, true);
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <form  action="<?= Url::BaseUrl() . "/company/home/dashboard/update/data" ?>" method="post" enctype="multipart/form-data">
+                                <form action="<?= Url::BaseUrl() . "/company/home/dashboard/update/data" ?>" method="post" enctype="multipart/form-data">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username harus diawali dengan hurus besar" value="<?= $model['result'][0]['username'] ?>" name="usernameUpdate" required oninvalid="this.setCustomValidity('Username tidak boleh kosong')" oninput="setCustomValidity('')"/>
+                                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username harus diawali dengan hurus besar" value="<?= $model['result'][0]['username'] ?>" name="usernameUpdate" required oninvalid="this.setCustomValidity('Username tidak boleh kosong')" oninput="setCustomValidity('')" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Nama Perusahaan</label>
@@ -212,3 +222,56 @@ $decodedJenis = json_decode($responseDataJenis, true);
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="keamanan" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalScrollableTitle">Perbarui Kata Sandi</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="<?= Url::BaseUrl() . "/company/home/dashboard/updatepassword" ?>">
+                            <label>Password Lama</label>
+                            <div class="input-group mb-5">
+                                <input required oninvalid="this.setCustomValidity('Password Lama tidak boleh kosong')" oninput="setCustomValidity('')" type="password" name="passwordLama" class="input form-control" id="password3" placeholder="Password" required="true" aria-label="password" aria-describedby="basic-addon1">
+                                <div class="input-group-addon">
+                                    <span class="input-group-text" onclick="showHide3();">
+                                        <i id="show_eye2"><img src=<?= Url::BaseUrl() . "/assets/eye.svg" ?> alt="" srcset=""></i>
+                                        <i class="d-none" id="hide_eye2"> <img src=<?= Url::BaseUrl() . "/assets/eye-off.svg" ?>> </i>
+                                    </span>
+                                </div>
+                            </div>
+                            <label>Password Baru</label>
+                            <div class="input-group mb-5">
+                                <input required oninvalid="this.setCustomValidity('Password baru  tidak boleh kosong')" oninput="setCustomValidity('')" type="password" name="passwordBaru" class="input form-control" id="password4" placeholder="Password" required="true" aria-label="password" aria-describedby="basic-addon1">
+                                <div class="input-group-addon">
+                                    <span class="input-group-text" onclick="showHide4();">
+                                        <i id="show_eye3"><img src=<?= Url::BaseUrl() . "/assets/eye.svg" ?> alt="" srcset=""></i>
+                                        <i class="d-none" id="hide_eye3"> <img src=<?= Url::BaseUrl() . "/assets/eye-off.svg" ?>> </i>
+                                    </span>
+                                </div>
+                            </div>
+                            <label>Konfirmasi Password</label>
+                            <div class="input-group mb-5">
+                                <input required oninvalid="this.setCustomValidity('Konfirmasi Password tidak boleh kosong')" oninput="setCustomValidity('')" type="password" name="konfirmasiPassword" class="input form-control" id="password5" placeholder="Password" required="true" aria-label="password" aria-describedby="basic-addon1">
+                                <div class="input-group-addon">
+                                    <span class="input-group-text" onclick="showHide5();">
+                                        <i id="show_eye4"><img src=<?= Url::BaseUrl() . "/assets/eye.svg" ?> alt="" srcset=""></i>
+                                        <i class="d-none" id="hide_eye4"> <img src=<?= Url::BaseUrl() . "/assets/eye-off.svg" ?>> </i>
+                                    </span>
+                                </div>
+                            </div>
+                            <input type="text" hidden readonly value="<?= $model['result'][0]['id'] ?>" name="id">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="updatePassword">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button trigger modal -->

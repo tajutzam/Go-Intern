@@ -34,13 +34,7 @@ use LearnPhpMvc\Session\MySession;
                     <a href=<?= Url::BaseUrl() . "" ?>>
                         <p>Halaman Depan</p>
                     </a>
-                    <a href=<?= Url::BaseUrl() . "/magang" ?>>
-                        <p>List Magang</p>
-                    </a>
-                    <a href=<?= Url::BaseUrl() . "/company" ?>>
-                        <p>List Perusahaan</p>
-                    </a>
-                    <a href=<?= Url::BaseUrl() . "" ?>>
+                    <a href = "<?= Url::BaseUrl()."#index" ?>">
                         <p>Tentang kami</p>
                     </a>
                     <a href=<?= Url::BaseUrl() . "/login" ?>>

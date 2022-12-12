@@ -3,6 +3,7 @@
 namespace LearnPhpMvc\repository;
 
 use LearnPhpMvc\Domain\Magang;
+use LearnPhpMvc\Domain\PenyediaMagang;
 use PDO;
 
 class MagangRepository
@@ -236,4 +237,7 @@ class MagangRepository
         $query = "update magang set status = 'sebagian' where jumlah_saatini != 0";
         $this->connection->exec($query);
     }
+
+    
+
 }

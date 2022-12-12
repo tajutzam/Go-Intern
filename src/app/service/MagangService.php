@@ -23,7 +23,7 @@ class MagangService
         $this->repository->updateStatusToPenuh();
         $this->repository->updateStatusToSebagian();
     }
-
+    
     public function findAll(): array
     {
         $this->repository->updateStatusToSebagian();
