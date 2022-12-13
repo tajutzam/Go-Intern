@@ -53,4 +53,23 @@ class View
             exit();
         }
     }
+
+    public static function renderAdmin($view , $model)
+    {
+        require __DIR__ . "/../../public/includeadmin/header.php";
+        require __DIR__ . "/../../public/includeadmin/style.php";
+        require __DIR__ . "/../../public/includeadmin/navbar.php";
+        $model;
+        require __DIR__ . "/../view/adminmaster/$view.php";
+        require __DIR__ . "/../../public/includeadmin/footer.php";
+        require __DIR__ . "/../../public/includeadmin/script.php";
+    }
+    public static function renderAdminLogin($view , $model)
+    {
+        require __DIR__ . "/../../public/includeadmin/header.php";
+        require __DIR__ . "/../../public/includeadmin/style.php";
+        $model;
+        require __DIR__ . "/../view/adminmaster/$view.php";
+        require __DIR__ . "/../../public/includeadmin/script.php";
+    }
 }

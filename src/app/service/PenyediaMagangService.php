@@ -343,9 +343,27 @@ HTML;
     public function showPopularPenyedia()
     {
         $response = $this->repository->showPopularCompanies();
+        
+        if($response['status'] =='oke'){
+            foreach ($response['body'] as $key => $value) {
+                # code...
+                $value['jumlah_magang'] = 0;
+                $id = $value['id'];
+                $penydia = new PenyediaMagang();
+                $penydia->setId($id);
+                $jumlah= $this->repository->countMagangIklan($penydia);
+                $response['body'][$key]['jumlah_magang'] = $jumlah;
+            }       
+        }
         $responseNotPopular = $this->repository->showPopularClose();
         foreach ($responseNotPopular['body'] as $key => $value) {
             # code...
+            $value['jumlah_magang'] = 0;
+            $id = $value['id'];
+            $penydia = new PenyediaMagang();
+            $penydia->setId($id);
+            $jumlah= $this->repository->countMagangIklan($penydia);
+            $value['jumlah_magang'] = $jumlah == null ? 0 : $jumlah;
             array_push($response['body'], $value);
         }
         return $response;

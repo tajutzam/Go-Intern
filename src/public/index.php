@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use LearnPhpMvc\APP\Router;
-
+use LearnPhpMvc\controller\admin\AdminController;
 use LearnPhpMvc\controller\api\AuthentikasiController;
 use LearnPhpMvc\controller\api\JenisUsahaControllerApi;
 use LearnPhpMvc\controller\api\JurusanControllerApi;
@@ -117,4 +117,9 @@ Router::add("POST", "/company/home/dashboard/changefoto", PenyediaMagangControll
 Router::add("GET", "/api/penyedia/popular", PenyediaMagangControllerApi::class, "showPenyediaPopular");
 Router::add("GET", "/company/home/dashboard/logout", PenyediaMagangController::class, "logout");
 Router::add("POST", "/company/home/dashboard/updatepassword", PenyediaMagangController::class, "updatePassword");
+Router::add("POST", "/api/magang/by/penyedia", MagangControllerApi::class, "showMagangOnMobileByPenyedia");
+Router::add("POST", "/api/magang/by/kategori", MagangControllerApi::class, "showMagangOnMobileByKategori");
+Router::add("POST", "/api/pencarimagang/showmagangactive", PencariMagangControllerApi::class, "showMagangActive");
+Router::add("GET", "/admin/home", AdminController::class, "home");
+Router::add("GET", "/admin/login", AdminController::class, "login");
 Router::run();
