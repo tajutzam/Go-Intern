@@ -79,9 +79,9 @@ class PencariMagangService
                 "nama" => $resultObj->getNama(),
                 "foto" => $resultObj->getFoto() ?? 'null',
                 "jenis_kelamin" => $resultObj->getJenis_kelamin(),
-                "surat_lamaran" => $resultObj->getSuratLamaran() , 
-                "jurusan" => $resultObj->getJurusan() , 
-                "penghargaan" => $resultObj->getPenghargaan() , 
+                "surat_lamaran" => $resultObj->getSuratLamaran(),
+                "jurusan" => $resultObj->getJurusan(),
+                "penghargaan" => $resultObj->getPenghargaan(),
                 "tentang_saya" => $resultObj->getTentang_saya()
             );
             array_push($response['body'], $item);
@@ -877,6 +877,17 @@ HTML;
             http_response_code(400);
             $response['status'] = 'failed';
             $response['message'] = 'gagal memperbarui no telpon';
+        }
+        return $response;
+    }
+
+    public function showMagangActive($id) : array
+    {
+        $response = $this->pencariMagangRepository->showMagangActive($id);
+        if ($response['status'] == 'oke') {
+            http_response_code(200);
+        } else {
+            http_response_code(404);
         }
         return $response;
     }

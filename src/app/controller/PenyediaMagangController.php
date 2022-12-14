@@ -679,7 +679,7 @@ class PenyediaMagangController
         $response = $this->lowonganMagangService->showPosisiPalingBannyakDiminati($id);
         echo json_encode($response);
     }
-    
+
     public function logout()
     {
         // delete cockie\

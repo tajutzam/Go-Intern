@@ -17,6 +17,12 @@ class JenisUsahaService
         $this->repository = new JenisUsahaRepository(Database::getConnection());
     }
 
+    public function findAllGet()
+    {
+        $arr = $this->repository->findAllGet();
+        return $arr;
+    }
+
     public function findAll($jenis_usaha): array
     {
         $arr = $this->repository->findAll($jenis_usaha);

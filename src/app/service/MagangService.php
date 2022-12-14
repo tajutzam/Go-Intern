@@ -23,7 +23,7 @@ class MagangService
         $this->repository->updateStatusToPenuh();
         $this->repository->updateStatusToSebagian();
     }
-    
+
     public function findAll(): array
     {
         $this->repository->updateStatusToSebagian();
@@ -132,6 +132,28 @@ class MagangService
         $this->repository->updateStatusToPenuh();
         $response = $this->repository->showMagangOnMobile();
         if ($response['status'] == "oke") {
+            http_response_code(200);
+        } else {
+            http_response_code(404);
+        }
+        return $response;
+    }
+
+    public function showMagangOnMobileByPenyedia($id)
+    {
+        $response = $this->repository->showMagangMobileByPenyedia($id);
+        if ($response['status'] == 'oke') {
+            http_response_code(200);
+        } else {
+            http_response_code(404);
+        }
+        return $response;
+    }
+
+    public function showMagangOnMobileByKategori($kategori): array
+    {
+        $response = $this->repository->showMobileMagangByKategori($kategori);
+        if ($response['status'] == 'oke') {
             http_response_code(200);
         } else {
             http_response_code(404);

@@ -67,10 +67,10 @@ class SekolahRepository
     public function save(Sekolah $sekolah): ?Sekolah
     {
         try {
-            $query = "insert into sekolah (nama_sekolah ) values (? )";
+            $query = "insert into sekolah (nama_sekolah) values (?)";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute([
-                $sekolah->sekolah,
+                $sekolah->sekolah
             ],);
             $sekolah->id = $this->connection->lastInsertId();
             return $sekolah;

@@ -139,7 +139,7 @@ class PencariMagangRepository
                 $pencariMagang->setSuratLamaran($row['surat_lamaran'] == null ? "" : $row['surat_lamaran']);
                 $pencariMagang->setJurusan($row['jurusan'] == null ? 0 : $row['jurusan']);
                 $pencariMagang->setTentang_saya($row['tentang_saya'] == null ? "" : $row['tentang_saya']);
-            } 
+            }
             return $pencariMagang;
         } else {
             return null;
@@ -637,5 +637,42 @@ SQL;
             //throw $th;
             return false;
         }
+    }
+    public function showMagangActive($id): array
+    {
+        $response = array();
+        $query = "SELECT magang.posisi_magang , penyedia_magang.nama_perusahaan , lowongan_magang.start_on , magang.deskripsi , kategori.kategori , penyedia_magang.alamat_perusahaan , penyedia_magang.email , penyedia_magang.no_telp , penyedia_magang.foto , lowongan_magang.finish_on from lowongan_magang join magang on lowongan_magang.id_magang = magang.id join penyedia_magang on penyedia_magang.id = lowongan_magang.penyediaMagang join pencari_magang on pencari_magang.id = lowongan_magang.pencariMagang join kategori on kategori.id = magang.kategori where lowongan_magang.pencariMagang = ? and lowongan_magang.status = 'acc'";
+        $PDOstatement = $this->connection->prepare($query);
+        $dateNowFormated = date("Y-m-d");
+        $dateNow = new DateTime($dateNowFormated);
+        $PDOstatement->execute([$id]);
+        if ($PDOstatement->rowCount() > 0) {
+            $response['status'] = 'oke';
+            $response['message'] = 'user memiliki magang aktif';
+            $response['body'] = array();
+            while ($row = $PDOstatement->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                $dateFinish = new DateTime($finish_on);
+                $interfal = $dateNow->diff($dateFinish);
+                $item = array(
+                    "posisi_magang" => $posisi_magang,
+                    "nama_perusahaan" => $nama_perusahaan,
+                    "start_on" => $start_on,
+                    "finish_on" => $finish_on,
+                    "deskripsi" => $deskripsi,
+                    "kategori" => $kategori,
+                    "alamat" => $alamat_perusahaan,
+                    "email" => $email,
+                    "no_telp" => $no_telp,
+                    "foto" => $foto,
+                    "durasi" =>  $interfal->y . " tahun," . $interfal->m . " bulan, " . $interfal->d . " hari"
+                );
+                array_push($response['body'], $item);
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'user belum memiliki lowongan aktif';
+        }
+        return $response;
     }
 }
