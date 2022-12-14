@@ -14,15 +14,32 @@ class AdminController
             'content' => "Go Intern"
         ];
 
-        View::renderAdmin("index" , $model);
+        View::renderAdmin("index", $model);
     }
 
-    function login(){
+    function login()
+    {
         $model = [
-            'title' => "Login" , 
+            'title' => "Login",
             "content" => "login page"
         ];
-        View::renderAdminLogin("login" , $model);
+        View::renderAdminLogin("login", $model);
+    }
 
+    function kategori()
+    {
+        
+        $model = [
+            'title' => "Login",
+            "content" => "login page"
+        ];
+        View::renderAdmin("kategori" , $model);
+
+    }
+
+    function addKategori()
+    {
+        $kategori = $_POST['kategori'];
+        echo $kategori;
     }
 }

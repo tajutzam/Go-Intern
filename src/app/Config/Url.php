@@ -6,11 +6,11 @@ class Url
 {
     static function BaseUrl(): string
     {
-        $url = "http://192.168.0.9:8081";
+        $url = "http://10.10.3.98:8081";
         return $url;
     }
     static function BaseApi() : string{
-        $url = "http://192.168.0.9:8080";
+        $url = "http://10.10.3.98:8080";
         // $url = "http//localhost:8080";
         return $url;
     }

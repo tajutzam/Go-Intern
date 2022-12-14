@@ -122,4 +122,6 @@ Router::add("POST", "/api/magang/by/kategori", MagangControllerApi::class, "show
 Router::add("POST", "/api/pencarimagang/showmagangactive", PencariMagangControllerApi::class, "showMagangActive");
 Router::add("GET", "/admin/home", AdminController::class, "home");
 Router::add("GET", "/admin/login", AdminController::class, "login");
+Router::add("GET", "/admin/kategori", AdminController::class, "kategori"); 
+Router::add("POST", "/admin/kategori/add", AdminController::class, "addKategori");
 Router::run();
