@@ -53,6 +53,7 @@ Router::add('GET', '/api/penyedia/verivication/{id}', PenyediaMagangControllerAp
 Router::add("POST", "/api/penyedia/login", PenyediaMagangControllerApi::class, "login");
 Router::add("GET", "/api/jenisusaha/findbyid/([0-9a-zA-Z]*)", JenisUsahaControllerApi::class, "findById");
 Router::add("POST", "/api/jenisusaha/findall", JenisUsahaControllerApi::class, "findAll");
+Router::add("GET", "/api/jenisusaha/findallget", JenisUsahaControllerApi::class, "findAllJenis");
 Router::add("POST", "/api/sekolah/save", SekolahControllerApi::class, "save");
 Router::add("POST", "/api/sekolah/addjurusantosekolah", SekolahControllerApi::class, "addJurusanToSekolah");
 Router::add("POST", "/api/jurusan/findbyjurusan", JurusanControllerApi::class, "findByJurusan");

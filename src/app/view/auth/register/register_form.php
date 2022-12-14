@@ -62,7 +62,7 @@ use LearnPhpMvc\config\Url;
             <div class="row mb-3">
                 <div class="col-8">
                     <?php
-                    $url = Url::BaseApi() . "/api/jenisusaha/findall";
+                    $url = Url::BaseApi() . "/api/jenisusaha/findallget";
                     $decode = file_get_contents($url, true);
                     $decodeData = json_decode($decode , true);
                     ?>

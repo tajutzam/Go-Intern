@@ -40,4 +40,10 @@ class JenisUsahaControllerApi
             echo json_encode($response);
         }
     }
+
+    public function findAllJenis()
+    {
+        $arr = $this->service->findAllGet();
+        echo json_encode($arr);
+    }
 }
