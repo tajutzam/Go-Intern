@@ -84,14 +84,14 @@ class PenyediaMagangController
         $isLogin = MySession::getCurrentSession();
         $responseLamar = $this->showLamaranMagang();
         $id = $isLogin[0]['id'];
-        $jumlahMagang = $this->penyediaMagangService->countMagang($id);
-        $magangYangSedangDitempati = $this->penyediaMagangService->countMagangYangSedangDitempati($id);
-        $lamaranMasuk = $this->penyediaMagangService->countLamaranMasuk($id);
-        $jumlahPemagang = $this->penyediaMagangService->countPemagang($id);
+       
         if ($isLogin['status'] != false) {
             $isLogin = MySession::getCurrentSession();
             $magang = $this->service->findAll();
-
+            $jumlahMagang = $this->penyediaMagangService->countMagang($id);
+            $magangYangSedangDitempati = $this->penyediaMagangService->countMagangYangSedangDitempati($id);
+            $lamaranMasuk = $this->penyediaMagangService->countLamaranMasuk($id);
+            $jumlahPemagang = $this->penyediaMagangService->countPemagang($id);
             $model = [
                 "title" => "Dashboard Penyedia",
                 "result" => $isLogin,
@@ -189,6 +189,14 @@ class PenyediaMagangController
         } else {
             View::redirect("login");
         }
+    }
+
+    public function logout()
+    {
+        // delete cockie\
+        setcookie("GO-INTERN-COCKIE", "", time() - 3600, "/", Url::domain());
+        setcookie("id", "", time() - 3600, "/", Url::domain());
+        View::redirect("login");
     }
     public function updateData()
     {
@@ -503,39 +511,58 @@ class PenyediaMagangController
 
     public function updatePhotoProfile()
     {
+        define('KB', 1024);
+        define('MB', 1048576);
+        define('GB', 1073741824);
+        define('TB', 1099511627776);
         if (isset($_POST['submit'])) {
-            if (isset($_FILES['fotofile'])) {
+            if (isset($_FILES['fotofile']) && $_FILES['fotofile']['name'] !=null) {
+                $size = $_FILES['fotofile']['size'];
+                var_dump($size);
                 if ($_FILES['fotofile']['error'] > 0) {
                     echo "<script>
-                alert('gagal mengganti foto profile! , harap pilih foto terlebih dahulu ');
-                window.location.href='/company/home/dashboard';
-                </script>";
+                    alert('gagal mengganti foto profile! , harap pilih foto Lain terjadi kesalahan ');
+                    window.location.href='/company/home/dashboard';
+                    </script>";
                 } else {
-                    $image = $_FILES['fotofile'];
-                    $tmp_name = $image['tmp_name'];
-                    $name_file = $image['name'];
-                    $isLogin = MySession::getCurrentSession();
-                    $rand = substr(md5(microtime()), rand(0, 26), 5);
-                    $nameDecoded = md5($name_file);
-                    $fotoExtensions = explode(".", $name_file);
-                    $fullNameFoto = $nameDecoded . $rand . "." . $fotoExtensions[1];
-                    $penyediaMagangRequestPhoto = new PenyediaMagangRequest();
-                    $penyediaMagangRequestPhoto->setFoto($fullNameFoto);
-                    $penyediaMagangRequestPhoto->setId($isLogin[0]['id']) .
-                        $resposeResult = $this->penyediaMagangService->updatePathPhoto($penyediaMagangRequestPhoto);
-                    if ($resposeResult) {
-                        $response = MoveFile::moveFilePenyedia($tmp_name, $fullNameFoto, 'avatarpenyedia');
-                        if ($response['status'] == 'oke') {
-                            echo "<script>
-                            alert('Berhasil mengganti foto profile! , silahkan login ulang');
-                            window.location.href='/login';
+                    if ($size > 2 * MB) {
+                        echo "<script>
+                            alert('gagal mengganti foto profile! , Foto tidak boleh lebih dari 2mb ');
+                            window.location.href='/company/home/dashboard';
                             </script>";
-                            if (isset($_COOKIE['GO-INTERN-COCKIE'])) {
-                                unset($_COOKIE['GO-INTERN-COCKIE']);
-                                setcookie('GO-INTERN-COCKIE', null, -1, '/');
-                                return true;
+                    } else {
+                        $image = $_FILES['fotofile'];
+                        $tmp_name = $image['tmp_name'];
+                        $name_file = $image['name'];
+                        $isLogin = MySession::getCurrentSession();
+                        $rand = substr(md5(microtime()), rand(0, 26), 5);
+                        $nameDecoded = md5($name_file);
+                        $fotoExtensions = explode(".", $name_file);
+                        $fullNameFoto = $nameDecoded . $rand . "." . $fotoExtensions[1];
+                        $penyediaMagangRequestPhoto = new PenyediaMagangRequest();
+                        $penyediaMagangRequestPhoto->setFoto($fullNameFoto);
+                        $penyediaMagangRequestPhoto->setId($isLogin[0]['id']) .
+                            $resposeResult = $this->penyediaMagangService->updatePathPhoto($penyediaMagangRequestPhoto);
+                        if ($resposeResult) {
+                            $response = MoveFile::moveFilePenyedia($tmp_name, $fullNameFoto, 'avatarpenyedia');
+                            if ($response['status'] == 'oke') {
+                                echo "<script>
+                                alert('Berhasil mengganti foto profile! , silahkan login ulang');
+                                window.location.href='/login';
+                                </script>";
+                                // if (isset($_COOKIE['GO-INTERN-COCKIE'])) {
+                                //     unset($_COOKIE['GO-INTERN-COCKIE']);
+                                //     setcookie('GO-INTERN-COCKIE', null, -1, '/');
+                                //     return true;
+                                // } else {
+                                //     return false;
+                                // }
+                                $this->logout();
                             } else {
-                                return false;
+                                echo "<script>
+                                alert('gagal mengganti foto profile!');
+                                window.location.href='/company/home/dashboard';
+                                </script>";
                             }
                         } else {
                             echo "<script>
@@ -543,11 +570,6 @@ class PenyediaMagangController
                             window.location.href='/company/home/dashboard';
                             </script>";
                         }
-                    } else {
-                        echo "<script>
-                        alert('gagal mengganti foto profile!');
-                        window.location.href='/company/home/dashboard';
-                        </script>";
                     }
                 }
             } else {
@@ -557,7 +579,6 @@ class PenyediaMagangController
                 </script>";
             }
         } else {
-
             View::redirect("company/home/dashboardqw");
         }
     }
@@ -680,13 +701,7 @@ class PenyediaMagangController
         echo json_encode($response);
     }
 
-    public function logout()
-    {
-        // delete cockie\
-        setcookie("GO-INTERN-COCKIE", "", time() - 3600, "/", Url::domain());
-        setcookie("id", "", time() - 3600, "/", Url::domain());
-        View::redirect("login");
-    }
+
 
     public function updatePassword()
     {

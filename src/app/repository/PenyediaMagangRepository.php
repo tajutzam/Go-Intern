@@ -42,7 +42,7 @@ class PenyediaMagangRepository
                     "create_at" => $create_at,
                     "update_at" => $update_at,
                     "lokasi" => $lokasi,
-                    "foto" => $foto
+                    "foto" => $foto ,
                 );
                 array_push($response['body'], $s);
             }
@@ -389,4 +389,5 @@ SQL;
             return false;
         }
     }
+
 }

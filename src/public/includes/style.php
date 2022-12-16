@@ -5,8 +5,10 @@
 
     ?>
 </style>
+
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 <!-- 
+    
 
 <style>
     .fotoprofile {

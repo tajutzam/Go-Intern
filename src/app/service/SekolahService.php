@@ -31,7 +31,7 @@ class SekolahService
         if ($responseFind != null) {
             http_response_code(400);
             $response['status'] = "failed";
-            $response['message'] = "data sudah ada";
+            $response['message'] = "data sekolah sudah ada";
         } else {
             $sekolahObj = $this->sekolahRepository->save($sekolah);
             $response = array();
@@ -99,6 +99,53 @@ class SekolahService
             $response['message'] = 'data sekolah tidak ditemukan';
         }
 
+        return $response;
+    }
+
+    public function update($sekolah, $id): array
+    {
+        $response = array();
+        $responseFind = $this->sekolahRepository->findById($id);
+        if ($responseFind != null) {
+            $sekolahObj = new Sekolah();
+            $sekolahObj->sekolah = $sekolah;
+            $sekolahObj->id = $id;
+            if ($responseFind->sekolah == $sekolahObj->sekolah) {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui sekolah , tidak ada perubahan';
+            } else {
+                $responseUpdate = $this->sekolahRepository->update($sekolahObj);
+                if ($responseUpdate != null) {
+                    $response['status'] = 'oke';
+                    $response['message'] = 'berhasil memperbarui sekolah';
+                } else {
+                    $response['status'] = 'failed';
+                    $response['message'] = 'gagal memperbarui sekolah terjadi kesalahan server';
+                }
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal memperbarui sekolah , data sekolah tidak ditemukan';
+        }
+        return $response;
+    }
+    public function delete($id): array
+    {
+        $response = array();
+        $responseFind = $this->sekolahRepository->findById($id);
+        if ($responseFind != null) {
+            $responsedelete = $this->sekolahRepository->deleteById($id);
+            if ($responsedelete) {
+                $response['status'] = 'oke';
+                $response['message'] = "berhasil menghapus sekolah";
+            } else {
+                $response['status'] = 'faileed';
+                $response['message'] = "gagal menghapus sekolah , terdapat data pencari magang yang terhubung dengan sekolah";
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = "gagal menghapus sekolah , data sekolah tidak ditemukan";
+        }
         return $response;
     }
 }

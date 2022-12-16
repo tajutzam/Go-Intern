@@ -244,6 +244,7 @@ class LowonganMagangService
                 $responseCheckAccOrPending =  $this->repositoryLowonganMagang->checkAccOrPending($idPencariMagang, $idMagang);
                 if ($responseCheckAccOrPending) {
                     $responseSend = $this->sendEmailTerimaLamaran($idPencariMagang, $idMagang);
+                    var_dump($responseSend);
                     if ($responseSend['status'] == 'oke') {
                         $response['status'] = 'oke';
                         $response['message'] = 'berhasil menerima lowongan';
@@ -273,7 +274,6 @@ class LowonganMagangService
         }
         return $response;
     }
-
     public function sendEmailTerimaLamaran($idPencariMagang, $idMagang)
     {
         $this->repositoryMagang->updateStatusToPenuh();
@@ -317,8 +317,10 @@ class LowonganMagangService
                                     <p>Salam Manis , Go intern :) </p>
                     HTML;
                     $mail->Body =  html_entity_decode($pesan);
+                    var_dump($mail->isError());
                     $mail->isHTML(true);
                     $responseCheck = $this->checkIsFullAndUpdate($idMagang);
+                    $mail->SMTPDebug  = 2;
                     if ($responseCheck['status'] == 'oke') {
                         $result =  $mail->send();
                         if ($result) {
@@ -438,13 +440,13 @@ class LowonganMagangService
         return $response;
     }
 
-    public function showPosisiPalingBannyakDiminati($id_penyedia) : array
+    public function showPosisiPalingBannyakDiminati($id_penyedia): array
     {
 
         $response =  $this->repositoryLowonganMagang->showMagangPalingBanyakDiminati($id_penyedia);
-        if($response['status'] == 'oke'){
+        if ($response['status'] == 'oke') {
             http_response_code(200);
-        }else{
+        } else {
             http_response_code(400);
         }
         return $response;

@@ -2,20 +2,25 @@
 
 use LearnPhpMvc\Config\Url;
 
+
+
 ?>
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <?php
-
-    ?>
     <div class="col-lg-3 col-6 mt-3">
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>Jumlah Sekolah</h3>
+                <h3>Jumlah Jurusan</h3>
 
-                <p>10</p>
+                <?php
+                if ($model['data']['status'] == 'oke') {
+                    echo count($model['data']['body']);
+                } else {
+                    echo 0;
+                } ?>
+
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -27,12 +32,12 @@ use LearnPhpMvc\Config\Url;
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Sekolah</h1>
+                    <h1>Jurusan</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Sekolah</li>
+                        <li class="breadcrumb-item active">Jurusan</li>
                     </ol>
                 </div>
             </div>
@@ -45,8 +50,8 @@ use LearnPhpMvc\Config\Url;
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahSekolah">
-                                Tambah Sekolah
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahJurusan">
+                                Tambah jurusan
                             </button>
                         </div>
                         <!-- /.card-header -->
@@ -55,30 +60,32 @@ use LearnPhpMvc\Config\Url;
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Sekolah</th>
+                                        <th>Nama Jurusan</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    if ($model['data']['status'] == 'ok') {
+                                    if ($model['data']['status'] == 'oke') {
                                         $count = 0;
-                                        foreach ($model['data']['data'] as $key => $value) {
+                                        foreach ($model['data']['body'] as $key => $value) {
                                             # code...
                                     ?>
                                             <tr>
                                                 <td><?= $count + 1 ?></td>
-                                                <td><?= $value['nama_sekolah'] ?></td>
+                                                <td><?= $value['jurusan'] ?></td>
                                                 <td>
                                                     <div class="row justify-content-evenly">
-                                                        <div class="col-lg-4" id="fieldUpdateSekolah" data-sekolah="<?= $value['nama_sekolah'] ?>" data-id="<?= $value['id'] ?>">
-                                                            <div class="btn btn-warning" data-toggle="modal" data-target="#updateSekolah">
+                                                        <div class="col-lg-4" id="btnUpdateJurusan" data-jrs="<?= $value['jurusan'] ?>" data-id="<?= $value['id'] ?>">
+                                                            <div class="btn btn-warning" data-toggle="modal" data-target="#updateJurusan">
                                                                 <span style="color: white;"> <i class="fa-solid fa-pen-to-square"></i></span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-4 deletebtn" data-id="<?= $value['id'] ?>">
-                                                            <a class="btn btn-danger deleteSekolah">
-                                                                <span style="color: white;"> <i class="fa-solid fa-trash"></i></span>
+                                                        <div class="col-lg-4 deleteJurusan" data-id="<?= $value['id'] ?>">
+                                                            <a href="" class="deleteLinkJurusan">
+                                                                <div class="btn btn-danger">
+                                                                    <span style="color: white;"> <i class="fa-solid fa-trash"></i></span>
+                                                                </div>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -110,24 +117,23 @@ use LearnPhpMvc\Config\Url;
     </section>
     <!-- /.content -->
 </div>
-<!-- Button trigger modal -->
 
 
-<!-- Modal -->
-<div class="modal fade" id="tambahSekolah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal tambah jurusan-->
+<div class="modal fade" id="tambahJurusan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Sekolah</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Jurusan </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= Url::BaseUrl() . "/admin/sekolah/add" ?>" method="post">
+                <form action="<?= Url::BaseUrl() . "/admin/jurusan/add" ?>" method="post">
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Nama Sekolah</label>
-                        <input required type="text" class="form-control" id="exampleFormControlInput1" placeholder="SMKN 1 TEGALSARI" name="sekolah">
+                        <label for="exampleFormControlInput1">Nama Jurusan</label>
+                        <input required name="jurusan" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Teknik Komputer Dan Jaringan">
                     </div>
             </div>
             <div class="modal-footer">
@@ -139,23 +145,23 @@ use LearnPhpMvc\Config\Url;
     </div>
 </div>
 <!-- modal update sekolah -->
-<div class="modal fade" id="updateSekolah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateJurusan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Sekolah</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Jurusan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= Url::BaseUrl() . "/admin/sekolah/update" ?>" method="post">
+                <form action="<?= Url::BaseUrl() . "/admin/jurusan/update" ?>" method="post">
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Nama Sekolah</label>
-                        <input type="text" class="form-control" id="sekolahUp" placeholder="SMKN 1 TEGALSARI" name="sekolah">
+                        <label for="exampleFormControlInput1">Nama Jurusan</label>
+                        <input required type="text" class="form-control" id="jurusan" placeholder="TEKNIK KOMPUTER" name="updateJurusan">
                     </div>
+                    <input hidden id="idjurusan" name="id"></input>
             </div>
-            <input type="text" hidden id="id" name="id">
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>

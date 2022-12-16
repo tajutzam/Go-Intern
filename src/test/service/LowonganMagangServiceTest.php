@@ -38,4 +38,10 @@ class LowonganMagangServiceTest extends TestCase
         $response = $this->service->showPemagang(87);
         assertEquals("oke", $response['status']);
     }
+
+    function testSendLamaran()
+    {
+        $response = $this->service->sendEmailTerimaLamaran(146, 154);
+        var_dump($response);
+    }
 }
