@@ -26,7 +26,6 @@ class Router
             'function' => $function
         ];
     }
-
     public static function run(): void
     {
          $path = "";

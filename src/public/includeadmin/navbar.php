@@ -44,10 +44,10 @@ use LearnPhpMvc\Config\Url;
           <a href="#" class="d-block">Mohammad Tajut Zam Zami</a>
         </div>
       </div>
-
       <!-- SidebarSearch Form -->
       <!-- Sidebar Menu -->
       <nav class="mt-2">
+        <a href="<?=Url::BaseUrl()."/admin/home" ?>" class="nav nav-pills ml-4" href="">Dashboard</a>
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -55,34 +55,46 @@ use LearnPhpMvc\Config\Url;
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Fitur
+                Data Master
                 <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">4</span>
+                <span class="badge badge-info right">6</span>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="<?= Url::BaseUrl()."/admin/penyedia" ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Data Penyedia</p>
+                  <p>Penyedia</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <a href="<?=Url::BaseUrl()."/admin/pencarimagang" ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Data Pencari Magang</p>
+                  <p>Pencari Magang</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
+                <a href="<?= Url::BaseUrl()."/admin/sekolah" ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Data Magang</p>
+                  <p>Sekolah</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar.html" class="nav-link">
+                <a href="<?= Url::BaseUrl()."/admin/jurusan"?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Data Sekolah</p>
+                  <p>Jurusan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= Url::BaseUrl()."/admin/kategori"?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Kategori</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= Url::BaseUrl()."/admin/kategori"?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Jenis Usaha</p>
                 </a>
               </li>
             </ul>

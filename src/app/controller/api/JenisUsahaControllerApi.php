@@ -46,4 +46,8 @@ class JenisUsahaControllerApi
         $arr = $this->service->findAllGet();
         echo json_encode($arr);
     }
+
+    public function test(){
+        phpinfo();
+    }
 }

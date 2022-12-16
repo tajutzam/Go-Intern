@@ -160,8 +160,8 @@ if ($waktu < 12) {
                                             <div class="row">
                                                 <div class="col-6">
                                                     <input hidden id="file_input" type="file" name="fotofile" accept="image/*">
-                                                    <span class="mt-5 ml-3 btn btn-primary" style="height: 40px ; width: 70px ;">
-                                                        <label for="file_input" style="font-size: 10px;">Pilih Foto</label>
+                                                    <span  class="mt-5 ml-3 btn btn-primary" style="height: 40px ; width: 70px ;">
+                                                        <label class="pilih" for="file_input" style="font-size: 10px; cursor: pointer;">Pilih Foto</label>
                                                     </span>
                                                 </div>
                                                 <div class="col-6">

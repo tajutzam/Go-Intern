@@ -3,7 +3,7 @@
 use LearnPhpMvc\Config\Url;
 ?>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="http://localhost:8081/includes/jquery/jquery.min.js"></script>
+<script src="<?=Url::BaseUrl() ?>/includes/jquery/jquery.min.js"></script>
 <script src=<?= Url::BaseUrl() . "/includes/js/popover.js" ?>></script>
 <script src=<?= Url::BaseUrl() . "/includes/jquery/jquery.min.js" ?>></script>
 <script src=<?= Url::BaseUrl() . "/includes/bootstrap/js/bootstrap.bundle.min.js" ?>></script>

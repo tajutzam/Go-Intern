@@ -59,6 +59,7 @@ class MySession
                 array_push($response, $item);
                 $response['status']  = true;
             } else {
+              
                 $response['coockie'] = $_COOKIE;
                 $response['status'] = false;
                 $response['message'] = 'harap login terlebih dahulu';

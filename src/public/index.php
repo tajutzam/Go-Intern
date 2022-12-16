@@ -123,6 +123,16 @@ Router::add("POST", "/api/magang/by/kategori", MagangControllerApi::class, "show
 Router::add("POST", "/api/pencarimagang/showmagangactive", PencariMagangControllerApi::class, "showMagangActive");
 Router::add("GET", "/admin/home", AdminController::class, "home");
 Router::add("GET", "/admin/login", AdminController::class, "login");
-Router::add("GET", "/admin/kategori", AdminController::class, "kategori"); 
+Router::add("GET", "/admin/kategori", AdminController::class, "kategori");
 Router::add("POST", "/admin/kategori/add", AdminController::class, "addKategori");
+Router::add("GET", "/test", JenisUsahaControllerApi::class, "test");
+Router::add("GET", "/admin/penyedia", AdminController::class, "penyedia");
+Router::add("GET", "/admin/sekolah", AdminController::class, "sekolah");
+Router::add("POST", "/admin/sekolah/add", AdminController::class, "addSekolah");
+Router::add("POST", "/admin/sekolah/update", AdminController::class, "updateSekolah");
+Router::add("GET", "/admin/jurusan", AdminController::class, "jurusan");
+Router::add("POST", "/admin/jurusan/add", AdminController::class, "addJurusan");
+Router::add("POST", "/admin/jurusan/update", AdminController::class, "updateJurusan");
+Router::add("GET", "/admin/jurusan/delete/([0-9a-zA-Z]*)", AdminController::class, "deleteJurusan");
+Router::add("GET", "/admin/sekolah/delete/([0-9a-zA-Z]*)", AdminController::class, "deleteSekolah");
 Router::run();

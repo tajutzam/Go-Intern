@@ -59,13 +59,53 @@ class JurusanRepository
         $query = "select * from jurusan where jurusan = ?";
         $PDOStatement = $this->connection->prepare($query);
         $PDOStatement->execute([$jurusan]);
-        if($PDOStatement->rowCount()>0){
+        if ($PDOStatement->rowCount() > 0) {
             $row = $PDOStatement->fetch(\PDO::FETCH_ASSOC);
             $jurusanSt->setId($row['id']);
             $jurusanSt->setJurusan($row['jurusan']);
             return $jurusanSt;
-        }else{
+        } else {
             return null;
+        }
+    }
+
+    public function save(Jurusan $jurusan): ?Jurusan
+    {
+        try {
+            //code...
+            $query = "insert into jurusan (jurusan)  values (?)";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$jurusan->getJurusan()]);
+            return $jurusan;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return null;
+        }
+    }
+
+    public function update(Jurusan $jurusan): bool
+    {
+        try {
+            $query = "update jurusan set jurusan = ? where id = ?";
+            $PDOstatement = $this->connection->prepare($query);
+            $PDOstatement->execute([$jurusan->getJurusan(), $jurusan->getId()]);
+            return true;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+    }
+    public function deleteJurusan(Jurusan $jurusan): bool
+    {
+        try {
+
+            $query = "delete from jurusan where id = ?";
+            $PDOstatement = $this->connection->prepare($query);
+            $PDOstatement->execute([$jurusan->getId()]);
+            return true;
+        } catch (\PDOException $th) {
+            //throw $th;
+            return false;
         }
     }
 }
