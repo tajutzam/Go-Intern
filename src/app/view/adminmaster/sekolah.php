@@ -15,10 +15,17 @@ use LearnPhpMvc\Config\Url;
             <div class="inner">
                 <h3>Jumlah Sekolah</h3>
 
-                <p>10</p>
+                <?PHP
+                if ($model['data']['status'] == 'ok') {
+                    echo count($model['data']['data']);
+                } else {
+                    echo 0;
+                }
+
+                ?>
             </div>
             <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="fa-solid fa-graduation-cap"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>

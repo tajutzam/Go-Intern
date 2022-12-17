@@ -83,6 +83,22 @@ use LearnPhpMvc\Config\Url;
 
     }
   });
+  $(document).on('click', '.deleteJenisBtn', function() {
+    var id = $(this).data('id');
+    var confirmDelete = confirm("yakin ingin menghapus Jenis Usaha ?");
+    if (confirmDelete) {
+      $(".deleteJenisBtn .deleteJenis").attr('href', baseurl + "/admin/jenisusaha/delete/" + id);
+    } else {
+
+    }
+  });
+
+  $(document).on('click', '#fieldUpdateJenis', function() {
+    var jenis = $(this).data('jenis');
+    var id = $(this).data('id');
+    $('#jenisUsahaUp').val(jenis);
+    $('#id').val(id);
+  });
 </script>
 
 

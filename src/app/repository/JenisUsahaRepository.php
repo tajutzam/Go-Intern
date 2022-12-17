@@ -83,6 +83,30 @@ SQL;
     }
 
 
+    public function showAll()
+    {
+        $query = <<<SQL
+        select  * from jenis_usaha 
+SQL;
+        $response = array();
+        $PDOStatement = $this->connection->query($query);
+        if ($PDOStatement->rowCount() > 0) {
+            $response['status'] = "ok";
+            $response['body'] = array();
+            while ($row = $PDOStatement->fetch(\PDO::FETCH_ASSOC)) {
+                extract($row);
+                $item = array(
+                    "id"  => $id,
+                    "jenis" => $jenis
+                );
+                array_push($response['body'], $item);
+            }
+        } else {
+            $response['status'] = "failed";
+        }
+        return $response;
+    }
+
     public function findByJenisUsahaLike(JenisUsaha $jenisUsaha): array
     {
         try {
@@ -173,6 +197,19 @@ SQL;
             return $jenisUsaha;
         } catch (\PDOException $exception) {
             return null;
+        }
+    }
+
+    public function deleteById($id)
+    {
+        try {
+            $query = "delete FROM jenis_usaha where id = ? ";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$id]);
+            return true;
+        } catch (\PDOException $th) {
+            //throw $th;
+            return false;
         }
     }
 }

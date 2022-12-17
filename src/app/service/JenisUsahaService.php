@@ -66,4 +66,83 @@ class JenisUsahaService
         }
         return $response;
     }
+
+    public function showAll()
+    {
+        $response = $this->repository->showAll();
+        return $response;
+    }
+
+
+    public function addJenis($jenis): array
+    {
+        $jenisObj = new JenisUsaha();
+        $jenisObj->setJenis($jenis);
+
+        $response = [];
+        $responseFindJenisUsaha = $this->repository->findByJenisUsaha($jenisObj);
+        if ($responseFindJenisUsaha != null) {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal menambahkan jenis usaha yang sudah tersedia';
+        } else {
+            $responseSave = $this->repository->save($jenisObj);
+            if ($responseSave != null) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil menambahkan jenis usaha';
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal menambahkan jenis usaha';
+            }
+        }
+        return $response;
+    }
+
+    public function update($jenisUsaha, $id): array
+    {
+        $response = [];
+        $responseFind = $this->repository->findById($id);
+        if ($responseFind != null) {
+            $jenisUsahaFind = new JenisUsaha();
+            $jenisUsahaFind->setJenis($jenisUsaha);
+            $jenisUsahaFind->setId($id);
+            $resultFindJenisUSaha = $this->repository->findByJenisUsaha($jenisUsahaFind);
+            if ($resultFindJenisUSaha != null) {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui jenis usaha, tidak ada perubahan data  atau jenis usaha sudah digunakan';
+            } else {
+                $responseUpdate = $this->repository->update($jenisUsahaFind);
+                if ($responseUpdate != null) {
+                    $response['status'] = 'oke';
+                    $response['message'] = 'berhasil memperbarui jenis usaha';
+                } else {
+                    $response['status'] = 'failed';
+                    $response['message'] = 'gagal memperbarui jenis usaha , terjadi kesalahan server';
+                }
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal memperbarui jenis usaha , id tidak ditemukan';
+        }
+        return $response;
+    }
+
+    public function deleteJenis($id): array
+    {
+        $response = [];
+        $responseFind = $this->repository->findById($id);
+        if ($responseFind != null) {
+            $responseDelete = $this->repository->deleteById($id);
+            if ($responseDelete) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil menghapus jenis usaha';
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal menghapus jenis usaha , jenis usaha digunakan oleh penyedia';
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal menghapus jenis usaha , jenis usaha tidak ditemukan';
+        }
+        return $response;
+    }
 }
