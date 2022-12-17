@@ -39,6 +39,7 @@ class AdminRepository
             if ($PDOStatement->rowCount() > 0) {
                 $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
                 extract($row);
+                $admin->setId($id);
                 $admin->setUsername($username);
                 $admin->setPassword($password);
                 $admin->setUpdate_at($update_at);

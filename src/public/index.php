@@ -141,4 +141,6 @@ Router::add("POST", "/admin/jenisusaha/update", AdminController::class, "updateJ
 Router::add("GET", "/admin/jenisusaha/delete/([0-9a-zA-Z]*)", AdminController::class, "deleteJenisUsaha");
 Router::add("GET", "/admin/register", AdminController::class, "register");
 Router::add("POST", "/admin/register/post", AdminController::class, "postRegister");
-Router::run();
+Router::add("POST", "/admin/login/post", AdminController::class, "postLogin");
+Router::add("GET", "/admin/pencarimagang", AdminController::class, "pencariMagang");
+Router::run(); 

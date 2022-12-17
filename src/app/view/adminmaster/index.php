@@ -29,7 +29,7 @@
               <div class="inner">
                 <h3>150</h3>
 
-                <p>New Orders</p>
+                <p>Pencari Magang</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -43,8 +43,7 @@
             <div class="small-box bg-success">
               <div class="inner">
                 <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p>Bounce Rate</p>
+                <p>Penyedia Magang</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -59,7 +58,7 @@
               <div class="inner">
                 <h3>44</h3>
 
-                <p>User Registrations</p>
+                <p>Sekolah</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -73,8 +72,7 @@
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>65</h3>
-
-                <p>Unique Visitors</p>
+                <p>Jurusan</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -84,11 +82,11 @@
           </div>
           <div class="col-lg-4 col-6">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-fuchsia">
               <div class="inner">
                 <h3>65</h3>
 
-                <p>Unique Visitors</p>
+                <p>Kategori</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -98,10 +96,10 @@
           </div>
           <div class="col-lg-4 col-6">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-blue">
               <div class="inner">
                 <h3>65</h3>
-                <p>Unique Visitors</p>
+                <p>Jenis Usaha</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>

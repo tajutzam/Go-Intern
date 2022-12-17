@@ -59,6 +59,7 @@ use LearnPhpMvc\Config\Url;
     $('#idjurusan').val(id);
   });
   var baseurl = "<?= Url::BaseUrl() ?>";
+  var domain = "<?= Url::domain() ?>";
   $(document).on('click', '.deleteJurusan', function() {
     var confirmDelete = confirm("yakin ingin menghapus Jurusan ?");
     if (confirmDelete) {
@@ -93,23 +94,50 @@ use LearnPhpMvc\Config\Url;
     }
   });
 
+  function get_cookie(name) {
+    return document.cookie.split(';').some(c => {
+      return c.trim().startsWith(name + '=');
+    });
+  }
+
+  function delete_cookie(name, path, domain) {
+    if (get_cookie(name)) {
+      document.cookie = name + "=" +
+        ((path) ? ";path=" + path : "") +
+        ((domain) ? ";domain=" + domain : "") +
+        ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+  }
+
+
+
+
   $(document).on('click', '#fieldUpdateJenis', function() {
     var jenis = $(this).data('jenis');
     var id = $(this).data('id');
     $('#jenisUsahaUp').val(jenis);
     $('#id').val(id);
   });
+
+  $(document).on('click', "#logout", function() {
+    var confirmToLogout = confirm("Apakah kamu yakin ingin logout ?");
+    if (confirmToLogout) {
+      document.cookie = "GO-INTERN-ADMIN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      alert("Berhasil logout");
+      console.log(document.cookie)
+      location.replace(baseurl+"/admin/login");
+    }
+  });
 </script>
-
-
 <script>
   $(function() {
-    $("#example2").DataTable({
-      "responsive": true,
-      "lengthChange": true,
-      "autoWidth": true,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+      $("#example2").DataTable({
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": true,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      })
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -118,7 +146,6 @@ use LearnPhpMvc\Config\Url;
       "info": true,
       "autoWidth": false,
       "responsive": true,
-
     });
   });
 </script>

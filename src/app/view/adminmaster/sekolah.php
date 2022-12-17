@@ -13,15 +13,13 @@ use LearnPhpMvc\Config\Url;
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>Jumlah Sekolah</h3>
-
+                <h5>Jumlah Sekolah</h5>
                 <?PHP
                 if ($model['data']['status'] == 'ok') {
                     echo count($model['data']['data']);
                 } else {
                     echo 0;
                 }
-
                 ?>
             </div>
             <div class="icon">

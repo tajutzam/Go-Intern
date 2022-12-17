@@ -351,7 +351,7 @@ SQL;
     public  function showPopularClose(): array
     {
         $query = "select DISTINCT penyedia_magang.id ,  penyedia_magang.nama_perusahaan , penyedia_magang.foto , penyedia_magang.alamat_perusahaan , penyedia_magang.email  , penyedia_magang.no_telp from penyedia_magang join lowongan_magang on penyedia_magang.id != lowongan_magang.penyediaMagang";
-
+        
         $PDOstatement = $this->connection->query($query);
         if ($PDOstatement->rowCount() > 0) {
             $response['body'] = array();
@@ -390,4 +390,12 @@ SQL;
         }
     }
 
+
+    public function setAktif($id){
+
+    }
+
+    public function setNonaktif($id){
+
+    }
 }

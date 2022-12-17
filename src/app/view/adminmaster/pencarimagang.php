@@ -1,23 +1,20 @@
 <?php
 
-
-
 ?>
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <?php
-
     ?>
     <div class="col-lg-3 col-6 mt-3">
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h5>Jumlah Penyedia</h5>
+                <h5>Jumlah Pencari</h5>
 
                 <?php
                 if($model['data']['status'] == 'oke'){
-                    echo count($model['data']['body']);
+                    echo count($model['data']['datum']);
                 }else{
                     echo 0;
                 }
@@ -33,12 +30,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Penyedia</h1>
+                    <h1>Pencari</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Penyedia</li>
+                        <li class="breadcrumb-item active">Pencari</li>
                     </ol>
                 </div>
             </div>
@@ -51,16 +48,15 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Penyedia</h3>
+                            <h3 class="card-title">Data Pencari</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example2" class="table  table-bordered table-hover">
+                            <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Perusahaan</th>
-                                        <th>Alamat Perusahaan</th>
+                                        <th>Nama Pencari</th>
                                         <th>Email</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -70,13 +66,12 @@
                                     <?php
                                     if ($model['data']['status'] == 'oke') {
                                         $count = 0;
-                                        foreach ($model['data']['body'] as $key => $value) {
+                                        foreach ($model['data']['datum'] as $key => $value) {
                                             # code...
                                     ?>
                                             <tr>
                                                 <td><?= $count + 1 ?></td>
-                                                <td><?= $value['nama_perusahaan'] ?></td>
-                                                <td><?= $value['alamat_perusahaan'] ?></td>
+                                                <td><?= $value['nama'] ?></td>
                                                 <td><?= $value['email'] ?></td>
                                                 <td><?= $value['status'] ?></td>
                                                 <td>
@@ -95,6 +90,15 @@
                                     <?php ; }
                                     ?>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                             <th>No</th>
+                                        <th>Nama Pencari</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <!-- /.card-body -->

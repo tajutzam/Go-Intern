@@ -16,6 +16,6 @@ class Url
     }
 
     static function domain(){
-        return "10.10.4.70";
+        return "192.168.3.119";
     }
 }

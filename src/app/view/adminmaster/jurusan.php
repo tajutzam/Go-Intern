@@ -12,7 +12,7 @@ use LearnPhpMvc\Config\Url;
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>Jumlah Jurusan</h3>
+                <h5>Jumlah Jurusan</h5>
 
                 <?php
                 if ($model['data']['status'] == 'oke') {

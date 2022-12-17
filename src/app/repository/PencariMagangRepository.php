@@ -51,7 +51,8 @@ class PencariMagangRepository
                     "update_add" => $update_add,
                     "expired_token" => $expired_token,
                     "tentang-saya" => $tentang_saya,
-                    "jenis_kelamin" => $jenis_kelamin
+                    "jenis_kelamin" => $jenis_kelamin , 
+                    "nama" => $nama
                 );
                 array_push($response['datum'], $item);
             }
@@ -176,7 +177,7 @@ class PencariMagangRepository
                         $pencariMagang->getRole(),
                         $now_stamp,
                         $pencariMagang->getFoto(),
-                        $pencariMagang->getId()
+                        $pencariMagang->getId() , 
                     ]
                 );
                 return $pencariMagang;

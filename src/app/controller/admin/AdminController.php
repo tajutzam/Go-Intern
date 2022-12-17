@@ -9,12 +9,16 @@ use LearnPhpMvc\Domain\Sekolah;
 use LearnPhpMvc\helper\Helper as HelperHelper;
 use LearnPhpMvc\helper\Helper;
 use LearnPhpMvc\repository\JurusanRepository;
+use LearnPhpMvc\repository\PencariMagangRepository;
+use LearnPhpMvc\repository\SkillRepository;
 use LearnPhpMvc\service\AdminService;
 
 use LearnPhpMvc\service\JenisUsahaService;
 use LearnPhpMvc\service\JurusanService;
+use LearnPhpMvc\service\PencariMagangService;
 use LearnPhpMvc\service\PenyediaMagangService;
 use LearnPhpMvc\service\SekolahService;
+use LearnPhpMvc\Session\MySession;
 use PHPUnit\TextUI\Help;
 
 class AdminController
@@ -29,6 +33,8 @@ class AdminController
 
     private AdminService $adminService;
 
+    private PencariMagangService $pencariService;
+
 
 
     function __construct()
@@ -39,34 +45,66 @@ class AdminController
         $this->jurusanService = new JurusanService($repositoryJurusan);
         $this->jenisUsahaService = new JenisUsahaService();
         $this->adminService = new AdminService();
+        $repositoryPencari = new PencariMagangRepository(Database::getConnection());
+        $skillRepo = new SkillRepository(Database::getConnection());
+        $this->pencariService = new PencariMagangService($repositoryPencari, $skillRepo);
     }
-
     function home()
     {
-        $model = [
-            'title' => "Belajar php mvc",
-            'content' => "Go Intern"
-        ];
-
-        View::renderAdmin("index", $model);
+        $isLogin = MySession::adminSession();
+        if ($isLogin['isLogin'] ==  true) {
+            $model = [
+                'title' => "Belajar php mvc",
+                'content' => "Go Intern",
+                "nama" => $isLogin['nama']
+            ];
+            View::renderAdmin("index", $model);
+        } else {
+            $model = [
+                'title' => "ADMIN || LOGIN",
+                'content' => "Go Intern"
+            ];
+            View::renderAdminLogin("login", $model);
+        }
     }
 
     function login()
     {
-        $model = [
-            'title' => "Login",
-            "content" => "login page"
-        ];
-        View::renderAdminLogin("login", $model);
+        $isLogin = MySession::adminSession();
+        if ($isLogin['isLogin'] == true) {
+            $model = [
+                'title' => "ADMIN || HOME DASHBOARD",
+                'content' => "Go Intern",
+                "nama" => $isLogin['nama']
+            ];
+            View::renderAdmin("index", $model);
+        } else {
+            $model = [
+                'title' => "ADMIN || LOGIN",
+                'content' => "Go Intern"
+            ];
+            View::renderAdminLogin("login", $model);
+        }
     }
 
     function register()
     {
-        $model = [
-            'title' => "Login",
-            "content" => "login page"
-        ];
-        View::renderAdminLogin("register", $model);
+        $session = MySession::adminSession();
+        if ($session['isLogin'] == true) {
+            $model = [
+                'title' => "ADMIN || HOME DASHBOARD",
+                'content' => "Go Intern",
+                "nama" => $session['nama']
+            ];
+
+            View::renderAdmin("index", $model);
+        } else {
+            $model = [
+                'title' => "ADMIN || REGISTER",
+                "content" => "Register page"
+            ];
+            View::renderAdminLogin("register", $model);
+        }
     }
 
     function postRegister()
@@ -87,14 +125,44 @@ class AdminController
         }
     }
 
+    function postLogin()
+    {
+        $model = [
+            "title" => "ADMIN || LOGIN"
+        ];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $btn = $_POST['login'];
+        if (isset($btn)) {
+            $response =  $this->adminService->login($username, $password);
+            if ($response['status'] == 'oke') {
+                Helper::showMessage($response['message'], "/admin/home");
+            } else {
+                Helper::showMessage($response['message'], "/admin/login");
+            }
+        } else {
+            View::renderAdminLogin("login", $model);
+        }
+    }
+
+    // close admin
+
     function kategori()
     {
-
-        $model = [
-            'title' => "Login",
-            "content" => "login page"
-        ];
-        View::renderAdmin("kategori", $model);
+        $session = MySession::adminSession();
+        if ($session['isLogin'] == false) {
+            $model = [
+                "title" => "ADMIN || LOGIN",
+                "content" => "Login Page"
+            ];
+            View::renderAdminLogin("login", $model);
+        } else {
+            $model = [
+                'title' => "ADMIN || KATEGORI",
+                "content" => "KATEGORI PAGE"
+            ];
+            View::renderAdmin("kategori", $model);
+        }
     }
 
     function addKategori()
@@ -102,30 +170,49 @@ class AdminController
         $kategori = $_POST['kategori'];
         echo $kategori;
     }
-    
+
     function penyedia()
     {
         $responsePenyedia = $this->service->findAll();
-        $model = [
-            'title' => "penyedia",
-            "content" => "Penyedia",
-            "data" => $responsePenyedia
-        ];
-        View::renderAdmin("penyedia", $model);
+
+        $session = MySession::adminSession();
+        if ($session['isLogin'] == true) {
+            $model = [
+                'title' => "penyedia",
+                "content" => "Penyedia",
+                "data" => $responsePenyedia
+            ];
+            View::renderAdmin("penyedia", $model);
+        } else {
+            $model = [
+                'title' => "ADMIN || LOGIN",
+                "content" => "ADMIN || LOGIN PAGE"
+            ];
+            View::renderAdminLogin("login", $model);
+        }
     }
     // sekolah
     function sekolah()
     {
         $responseDataSekolah = $this->sekolahService->findAll();
-        $model = [
-            'title' => "penyedia",
-            "content" => "Penyedia",
-            "data" => $responseDataSekolah
+        $session = MySession::adminSession();
+        if ($session['isLogin'] == true) {
+            $model = [
+                'title' => "penyedia",
+                "content" => "Penyedia",
+                "data" => $responseDataSekolah
 
-        ];
-        View::renderAdmin("sekolah", $model);
+            ];
+            View::renderAdmin("sekolah", $model);
+        } else {
+            $model = [
+                "title" => "ADMIN || LOGIN",
+                "content" => "LOGIN PAGE",
+            ];
+            View::renderAdminLogin("login", $model);
+        }
     }
-    
+
     function addSekolah()
     {
         $sekolah = $_POST['sekolah'];
@@ -155,13 +242,23 @@ class AdminController
     function jurusan()
     {
         $responseJurusan = $this->jurusanService->findAll();
-        $model = [
-            'title' => "penyedia",
-            "content" => "Penyedia",
-            "data" => $responseJurusan
+        $session = MySession::adminSession();
+        if ($session['isLogin'] == true) {
+            $model = [
+                'title' => "penyedia",
+                "content" => "Penyedia",
+                "data" => $responseJurusan
 
-        ];
-        View::renderAdmin("jurusan", $model);
+            ];
+            View::renderAdmin("jurusan", $model);
+        } else {
+            $model = [
+                'title' => "ADMIN || LOGIN",
+                "content" => "ADMIN LOGIN PAGE",
+
+            ];
+            View::renderAdminLogin("login", $model);
+        }
     }
     function addJurusan()
     {
@@ -194,13 +291,22 @@ class AdminController
 
     function jenisUsaha()
     {
-        $responseModel = $this->jenisUsahaService->showAll();
-        $model = [
-            "title" => "ADMIN || JENIS USAHA",
-            "content" => "jenis usaha",
-            "data" => $responseModel
-        ];
-        View::renderAdmin("jenisusaha", $model);
+        $session = MySession::adminSession();
+        if ($session['isLogin'] == false) {
+            $model = [
+                "title" => "ADMIN || LOGIN",
+                "content" => "ADMIN LOGIN PAGE"
+            ];
+            View::renderAdminLogin("login", $model);
+        } else {
+            $responseModel = $this->jenisUsahaService->showAll();
+            $model = [
+                "title" => "ADMIN || JENIS USAHA",
+                "content" => "jenis usaha",
+                "data" => $responseModel
+            ];
+            View::renderAdmin("jenisusaha", $model);
+        }
     }
 
     function addJenisUsaha()
@@ -226,5 +332,21 @@ class AdminController
         $response = $this->jenisUsahaService->deleteJenis($id);
         Helper::showMessage($response['message'], "/admin/jenisusaha");
     }
+
+
     // close jenis usaha
+
+    //pencarimagang
+    function pencariMagang()
+    {
+        $response = $this->pencariService->findAll();
+        $model = [
+            "title" => "ADMIN || PENCARI MAGANG" , 
+            "content" => "ADMIN , PENCARI MAGANG PAGE" , 
+            "data" => $response
+        ];
+        View::renderAdmin("pencarimagang", $model);
+        
+    }
+    //close pencari
 }
