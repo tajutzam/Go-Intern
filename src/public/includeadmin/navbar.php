@@ -92,7 +92,7 @@ use LearnPhpMvc\Config\Url;
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= Url::BaseUrl()."/admin/kategori"?>" class="nav-link">
+                <a href="<?= Url::BaseUrl()."/admin/jenisusaha"?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jenis Usaha</p>
                 </a>
