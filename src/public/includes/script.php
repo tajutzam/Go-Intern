@@ -24,7 +24,6 @@ use LearnPhpMvc\Config\Url;
     // Loop through the cookies and find the one with the name you want
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];
-
         // Use the trim method to remove leading and trailing white space
         // from the cookie string
         cookie = cookie.trim();

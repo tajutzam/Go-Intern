@@ -2,6 +2,7 @@
 
 namespace LearnPhpMvc\service;
 
+use Firebase\JWT\JWT;
 use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\Domain\Admin;
 use LearnPhpMvc\repository\AdminRepository;
@@ -44,5 +45,58 @@ class AdminService
             }
         }
         return $response;
+    }
+    public function login($username, $password):array
+    {
+        $key = "asdaksljk kasjdkasjdaosdankjncjkscnuiopwedhujksjcjkdfhowehfiowehfjsdcnks";
+        $response = [];
+        $responseFind = $this->repository->findByUsername($username);
+        if ($responseFind != null) {
+            $checkPassword = password_verify($password, $responseFind->getPassword());
+            if ($checkPassword) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil login';
+                // var_dump($response[0]['username']);
+                $payload = array(
+                    "nama" => $responseFind->getNama(), 
+                    "isLogin" => true 
+                );
+                $jwt =  JWT::encode($payload, $key, 'HS256');
+                // set cockie
+                setcookie("id", $responseFind->getId(), 0, "/");
+                setcookie("GO-INTERN-ADMIN", $jwt, 0, "/");
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal login , harap check username atau password anda';
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal login , Username atau password salah';
+        }
+        return $response;
+    }
+
+    public function getUsersRegristations() : array{
+        return $this->repository->getUsersRegristation();
+    }
+
+    public function getCompanyRegristation() : array{
+        return $this->repository->getCompanyRegistration();
+    }
+
+
+    public function countPencariMagang():array{
+       return $this->repository->countPencariMagang(); 
+    }
+
+    public function countPenyediaMagang() :array{
+        return $this->repository->countPenyediaMagang();
+    }
+
+    public function countSekolah():array{
+        return $this->repository->countSekolah();
+    }
+    public function countJurusan():array{
+        return $this->repository->countJurusan();
     }
 }

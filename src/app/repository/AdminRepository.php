@@ -7,15 +7,11 @@ use PDO;
 
 class AdminRepository
 {
-
     private PDO $connection;
-
-
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
     }
-
     public function save(Admin $admin): ?Admin
     {
         try {
@@ -28,7 +24,6 @@ class AdminRepository
             return null;
         }
     }
-
     public function findByUsername($username): ?Admin
     {
         try {
@@ -39,6 +34,7 @@ class AdminRepository
             if ($PDOStatement->rowCount() > 0) {
                 $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
                 extract($row);
+                $admin->setId($id);
                 $admin->setUsername($username);
                 $admin->setPassword($password);
                 $admin->setUpdate_at($update_at);
@@ -52,5 +48,110 @@ class AdminRepository
             //throw $th;
             return null;
         }
+    }
+
+    public function getUsersRegristation(): array
+    {
+        $response = array();
+        $response['body'] = array();
+        $query = "SELECT COUNT(pencari_magang.id) as COUNT , MONTHNAME(pencari_magang.crate_add) as bulan from pencari_magang GROUP BY MONTH(pencari_magang.crate_add)
+        ";
+        $PDOStatement = $this->connection->query($query);
+        if ($PDOStatement->rowCount() > 0) {
+            $response['status'] = 'oke';
+            $response['message'] = 'terdapat data user terdaftar';
+            while ($row = $PDOStatement->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                 $item = [
+                    "jumlah" => $COUNT , 
+                    "bulan" => $bulan
+                 ];
+                array_push($response['body'] , $item);
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'tidak ada user terdaftar';
+        }
+        return $response;
+    }
+
+    public function getCompanyRegistration() : array{
+        $response = [];
+        $query = "SELECT COUNT(penyedia_magang.id) as COUNT , MONTHNAME(penyedia_magang.create_at) as bulan from penyedia_magang GROUP BY MONTH(penyedia_magang.create_at)";
+        $PDOStatement =$this->connection->query($query);
+        if($PDOStatement->rowCount()> 0){
+            $response['status'] = 'oke';
+            $response['body'] = [];
+            while($row = $PDOStatement->fetch(PDO::FETCH_ASSOC)){
+                extract($row);
+                $item = [
+                    "jumlah" => $COUNT , 
+                    "bulan" => $bulan
+                ];
+                array_push($response['body'], $item);
+            }
+        }else{
+            $response['status'] = 'failed';
+        }
+        return $response;
+    }
+
+    // count table data
+    public function countPencariMagang() : array{
+        $query = "select count(pencari_magang.id) as jumlah from pencari_magang";
+        $PDOStatement = $this->connection->query($query);
+        $response = [];
+        if($PDOStatement->rowCount() > 0){
+            $response['status'] = 'oke';
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $response['jumlah'] = $row['jumlah'];
+        }else{
+            $response['status'] = 'oke';
+            $response['jumlah'] = 0;
+        }
+        return $response;
+    }
+    public function countPenyediaMagang() : array{
+        $query = "select count(penyedia_magang.id) as jumlah from penyedia_magang";
+        $PDOStatement = $this->connection->query($query);
+        $response = [];
+        if($PDOStatement->rowCount() > 0){
+            $response['status'] = 'oke';
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $response['jumlah'] = $row['jumlah'];
+        }else{
+            $response['status'] = 'oke';
+            $response['jumlah'] = 0;
+        }
+        return $response;
+    }
+
+    public function countSekolah() : array{
+        $query = "select count(sekolah.id) as jumlah from sekolah";
+        $PDOStatement = $this->connection->query($query);
+        $response = [];
+        if($PDOStatement->rowCount() > 0){
+            $response['status'] = 'oke';
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $response['jumlah'] = $row['jumlah'];
+        }else{
+            $response['status'] = 'oke';
+            $response['jumlah'] = 0;
+        }
+        return $response;
+    }
+    public function countJurusan() : array{
+        $query = "select count(jurusan.id) as jumlah from jurusan";
+        $PDOStatement = $this->connection->query($query);
+        $response = [];
+        if($PDOStatement->rowCount() > 0){
+            $response['status'] = 'oke';
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $response['jumlah'] = $row['jumlah'];
+        }else{
+            $response['status'] = 'oke';
+            $response['jumlah'] = 0;
+        }
+        return $response;
     }
 }

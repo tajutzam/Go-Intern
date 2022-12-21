@@ -6,6 +6,7 @@ use DateTime;
 use LearnPhpMvc\Domain\PenyediaMagang;
 use LearnPhpMvc\dto\AktivasiAkunResponse;
 use PDO;
+use PDOException;
 
 class PenyediaMagangRepository
 {
@@ -42,7 +43,7 @@ class PenyediaMagangRepository
                     "create_at" => $create_at,
                     "update_at" => $update_at,
                     "lokasi" => $lokasi,
-                    "foto" => $foto ,
+                    "foto" => $foto,
                 );
                 array_push($response['body'], $s);
             }
@@ -346,7 +347,7 @@ SQL;
         return $response;
     }
 
-    
+
 
     public  function showPopularClose(): array
     {
@@ -390,4 +391,30 @@ SQL;
         }
     }
 
+
+    public function enable($id): bool
+    {
+        try {
+            $query = "update penyedia_magang set status = 'aktif' where id = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
+    public function disable($id)
+    {
+        try {
+            $query = "update penyedia_magang set status = 'tidak-aktif' where id = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
+    }
 }

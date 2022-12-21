@@ -51,7 +51,8 @@ class PencariMagangRepository
                     "update_add" => $update_add,
                     "expired_token" => $expired_token,
                     "tentang-saya" => $tentang_saya,
-                    "jenis_kelamin" => $jenis_kelamin
+                    "jenis_kelamin" => $jenis_kelamin,
+                    "nama" => $nama
                 );
                 array_push($response['datum'], $item);
             }
@@ -176,7 +177,7 @@ class PencariMagangRepository
                         $pencariMagang->getRole(),
                         $now_stamp,
                         $pencariMagang->getFoto(),
-                        $pencariMagang->getId()
+                        $pencariMagang->getId(),
                     ]
                 );
                 return $pencariMagang;
@@ -641,7 +642,7 @@ SQL;
     public function showMagangActive($id): array
     {
         $response = array();
-        $query = "SELECT magang.posisi_magang , penyedia_magang.nama_perusahaan , lowongan_magang.start_on , magang.deskripsi , kategori.kategori , penyedia_magang.alamat_perusahaan , penyedia_magang.email , penyedia_magang.no_telp , penyedia_magang.foto , lowongan_magang.finish_on from lowongan_magang join magang on lowongan_magang.id_magang = magang.id join penyedia_magang on penyedia_magang.id = lowongan_magang.penyediaMagang join pencari_magang on pencari_magang.id = lowongan_magang.pencariMagang join kategori on kategori.id = magang.kategori where lowongan_magang.pencariMagang = ? and lowongan_magang.status = 'acc'";
+        $query = "SELECT magang.posisi_magang , penyedia_magang.nama_perusahaan , lowongan_magang.start_on , magang.deskripsi , kategori.kategori , penyedia_magang.alamat_perusahaan , penyedia_magang.email , penyedia_magang.no_telp , penyedia_magang.foto , lowongan_magang.finish_on from lowongan_magang join magang on lowongan_magang.id_magang = magang.id join penyedia_magang on penyedia_magang.id = lowongan_magang.penyediaMagang join pencari_magang on pencari_magang.id = lowongan_magang.pencariMagang join kategori on kategori.id = magang.kategori where lowongan_magang.pencariMagang = ? and lowongan_magang.status = 'acc' and lowongan_magang.finish_on > CURRENT_DATE";
         $PDOstatement = $this->connection->prepare($query);
         $dateNowFormated = date("Y-m-d");
         $dateNow = new DateTime($dateNowFormated);
@@ -674,5 +675,66 @@ SQL;
             $response['message'] = 'user belum memiliki lowongan aktif';
         }
         return $response;
+    }
+
+
+    public function showRiwayatLamaran($id): array
+    {
+
+        $query = "select lowongan_magang.id as id_lowongan , lowongan_magang.tanggal_lamar ,  penyedia_magang.foto ,   magang.posisi_magang , penyedia_magang.nama_perusahaan , lowongan_magang.status , penyedia_magang.alamat_perusahaan , penyedia_magang.email , magang.id as id_magang from lowongan_magang join pencari_magang on pencari_magang.id = lowongan_magang.pencariMagang join penyedia_magang on penyedia_magang.id = lowongan_magang.penyediaMagang join magang on magang.id = lowongan_magang.id_magang where  lowongan_magang.pencariMagang = ? and lowongan_magang.status  = 'pending'";
+        $response = [];
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$id]);
+        if ($PDOStatement->rowCount() > 0) {
+            http_response_code(200);
+            $response['body'] = array();
+            $response['status'] = 'oke';
+            $response['message'] = 'user memiliki riwayat lamaran';
+            while ($row = $PDOStatement->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                $item = [
+                    "posisi" => $posisi_magang,
+                    "nama_perusahaan" => $nama_perusahaan,
+                    "status" => $status,
+                    "alamat" => $alamat_perusahaan,
+                    "id_lowongan" => $id_lowongan , 
+                    "email" => $email , 
+                    "id_magang" => $id_magang , 
+                    "foto" => $foto , 
+                    "tanggal_lamar" => $tanggal_lamar == null ? "-" : $tanggal_lamar
+                ];
+                array_push($response['body'], $item);
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'user tidak memiliki riwayat lamaran';
+        }
+        return $response;
+    }
+    public function disable($id): bool
+    {
+        try {
+            $query = "update pencari_magang set status  = 'tidak_aktif' where id =?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
+    public function enable($id)
+    {
+        try {
+            $query = "update pencari_magang set status  = 'aktif' where id =?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
     }
 }

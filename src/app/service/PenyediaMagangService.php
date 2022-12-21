@@ -343,17 +343,17 @@ HTML;
     public function showPopularPenyedia()
     {
         $response = $this->repository->showPopularCompanies();
-        
-        if($response['status'] =='oke'){
+
+        if ($response['status'] == 'oke') {
             foreach ($response['body'] as $key => $value) {
                 # code...
                 $value['jumlah_magang'] = 0;
                 $id = $value['id'];
                 $penydia = new PenyediaMagang();
                 $penydia->setId($id);
-                $jumlah= $this->repository->countMagangIklan($penydia);
+                $jumlah = $this->repository->countMagangIklan($penydia);
                 $response['body'][$key]['jumlah_magang'] = $jumlah;
-            }       
+            }
         }
         $responseNotPopular = $this->repository->showPopularClose();
         foreach ($responseNotPopular['body'] as $key => $value) {
@@ -362,7 +362,7 @@ HTML;
             $id = $value['id'];
             $penydia = new PenyediaMagang();
             $penydia->setId($id);
-            $jumlah= $this->repository->countMagangIklan($penydia);
+            $jumlah = $this->repository->countMagangIklan($penydia);
             $value['jumlah_magang'] = $jumlah == null ? 0 : $jumlah;
             array_push($response['body'], $value);
         }
@@ -415,6 +415,45 @@ HTML;
             // todo data id not set
             $response['status'] = 'failed';
             $response['message'] = 'id not set , relog terlebih dahulu';
+        }
+        return $response;
+    }
+
+    function enable($id): array
+    {
+        $response = [];
+        $result = $this->repository->findById($id);
+        if ($result != null) {
+            $responseEnabled = $this->repository->enable($id);
+            if ($responseEnabled) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil mengaktifkan user / penyedia magang';
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal mengaktifkan user terjadi kesalahan';
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal mengaktifkan  user data user tidak ditemukan';
+        }
+        return $response;
+    }
+
+    function disable($id):array{
+        $response = [];
+        $result = $this->repository->findById($id);
+        if ($result != null) {
+            $responseEnabled = $this->repository->disable($id);
+            if ($responseEnabled) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil menonaktifkan user / penyedia magang';
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal menonaktifkan user terjadi kesalahan';
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal menonaktifkan  user data user tidak ditemukan';
         }
         return $response;
     }

@@ -31,7 +31,7 @@ class MySession
                 $jenisUsahaValue = $payload->jenis_usaha;
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
-                    CURLOPT_URL => Url::BaseApi().'/api/jenisusaha/findbyid/'.$jenis_usaha,
+                    CURLOPT_URL => Url::BaseApi() . '/api/jenisusaha/findbyid/' . $jenis_usaha,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => '',
                     CURLOPT_MAXREDIRS => 10,
@@ -42,7 +42,7 @@ class MySession
                 ));
 
                 $responseCurl = curl_exec($curl);
-                $decodedJenisUSaha = json_decode($responseCurl , true);
+                $decodedJenisUSaha = json_decode($responseCurl, true);
                 curl_close($curl);
                 $item = array(
                     "username" => $username,
@@ -53,13 +53,12 @@ class MySession
                     "jenis_usaha" => $jenisUsahaValue,
                     "email" => $email,
                     "token" => $token,
-                    "alamat" => $alamat , 
+                    "alamat" => $alamat,
                     "jenis_usaha_value" => $decodedJenisUSaha['body'][0]['jenis_usaha']
                 );
                 array_push($response, $item);
                 $response['status']  = true;
             } else {
-              
                 $response['coockie'] = $_COOKIE;
                 $response['status'] = false;
                 $response['message'] = 'harap login terlebih dahulu';
@@ -67,6 +66,26 @@ class MySession
         } catch (Exception $th) {
             $response['status'] = false;
             $response['message'] = 'harap login terlebih dahulu';
+        }
+        return $response;
+    }
+    static function adminSession(): array
+    {
+        $response = [];
+        $key = "asdaksljk kasjdkasjdaosdankjncjkscnuiopwedhujksjcjkdfhowehfiowehfjsdcnks";
+        if (isset($_COOKIE['GO-INTERN-ADMIN'])) {
+            $jwt = $_COOKIE['GO-INTERN-ADMIN'];
+            $payload = JWT::decode($jwt, new Key($key, 'HS256'));
+            if ($payload->isLogin == true) {
+                $response['status'] = 'oke';
+                $response['isLogin'] = true;
+                $response['nama'] = $payload->nama;
+            } else {
+                $response['status'] = 'failed';
+                $response['isLogin'] = false;
+            }
+        } else {
+            $response['isLogin'] = false;
         }
         return $response;
     }

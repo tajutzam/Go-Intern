@@ -8,11 +8,14 @@ use LearnPhpMvc\dto\SearchKeyword;
 use LearnPhpMvc\dto\UpdatePencariMagangRequest;
 use LearnPhpMvc\repository\PencariMagangRepository;
 use LearnPhpMvc\repository\SkillRepository;
+use LearnPhpMvc\service\LowonganMagangService;
 use LearnPhpMvc\service\PencariMagangService;
 
 class PencariMagangControllerApi
 {
     public PencariMagangService $service;
+
+    private LowonganMagangService $serviceLowonganMagang;
 
     /**
      * @param PencariMagangService $service
@@ -22,6 +25,7 @@ class PencariMagangControllerApi
         $repository = new PencariMagangRepository(Database::getConnection());
         $skillrepo = new SkillRepository(Database::getConnection());
         $this->service = new PencariMagangService($repository, $skillrepo);
+        $this->serviceLowonganMagang = new LowonganMagangService();
     }
 
 
@@ -214,7 +218,6 @@ class PencariMagangControllerApi
         $response =  $this->service->updateKeamann($username, $password, $id);
         echo json_encode($response);
     }
-
     public function updateCv()
     {
         header("Access-Control-Allow-Origin: *");
@@ -249,6 +252,31 @@ class PencariMagangControllerApi
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $id = $jsonData['id'];
         $response = $this->service->showMagangActive($id);
+        echo json_encode($response);
+    }
+
+    public function showRiwayatLamran()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $id = $jsonData['id'];
+        $response = $this->service->showRiwayatlamaran($id);
+        echo json_encode($response);
+    }
+
+    public function batalkanLamaran()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $idMagang = $jsonData['idMagang'];
+        $idPencari = $jsonData['idPencari'];
+        $response = $this->serviceLowonganMagang->batalkanLamaran($idMagang, $idPencari);
         echo json_encode($response);
     }
 }

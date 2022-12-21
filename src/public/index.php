@@ -141,4 +141,15 @@ Router::add("POST", "/admin/jenisusaha/update", AdminController::class, "updateJ
 Router::add("GET", "/admin/jenisusaha/delete/([0-9a-zA-Z]*)", AdminController::class, "deleteJenisUsaha");
 Router::add("GET", "/admin/register", AdminController::class, "register");
 Router::add("POST", "/admin/register/post", AdminController::class, "postRegister");
+Router::add("POST", "/admin/login/post", AdminController::class, "postLogin");
+Router::add("GET", "/admin/pencarimagang", AdminController::class, "pencariMagang");
+Router::add("GET", "/admin/pencarimagang/enable/([0-9a-zA-Z]*)", AdminController::class, "enablePencariMagang");
+Router::add("GET", "/admin/pencarimagang/disable/([0-9a-zA-Z]*)", AdminController::class, "disablePencariMagang");
+Router::add("GET", "/admin/penyedia/enable/([0-9a-zA-Z]*)", AdminController::class, "enablePenyedia");
+Router::add("GET", "/admin/penyedia/disable/([0-9a-zA-Z]*)", AdminController::class, "disablePenyedia");
+Router::add("GET", "/api/admin/getuser", AdminController::class, "getUserRegristations");
+Router::add("GET", "/api/admin/getcompany", AdminController::class, "getCompanRegristations");
+Router::add("POST", "/api/pencarimagang/riwayatlamaran", PencariMagangControllerApi::class, "showRiwayatLamran");
+Router::add("GET", "/api/magang/limit1", MagangControllerApi::class, "showMagangLimit1");
+Router::add("POST", "/api/riwayatlamaran/batalkan", PencariMagangControllerApi::class, "batalkanLamaran");
 Router::run();

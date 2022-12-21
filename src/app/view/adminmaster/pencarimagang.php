@@ -7,17 +7,16 @@ use LearnPhpMvc\Config\Url;
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <?php
-
     ?>
     <div class="col-lg-3 col-6 mt-3">
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h5>Jumlah Penyedia</h5>
+                <h5>Jumlah Pencari</h5>
 
                 <?php
                 if($model['data']['status'] == 'oke'){
-                    echo count($model['data']['body']);
+                    echo count($model['data']['datum']);
                 }else{
                     echo 0;
                 }
@@ -33,12 +32,12 @@ use LearnPhpMvc\Config\Url;
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Penyedia</h1>
+                    <h1>Pencari</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= Url::BaseUrl()."/admin/home" ?>">Home</a></li>
-                        <li class="breadcrumb-item active">Penyedia</li>
+                        <li class="breadcrumb-item active">Pencari</li>
                     </ol>
                 </div>
             </div>
@@ -51,16 +50,15 @@ use LearnPhpMvc\Config\Url;
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Penyedia</h3>
+                            <h3 class="card-title">Data Pencari</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example2" class="table  table-bordered table-hover">
+                            <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Perusahaan</th>
-                                        <th>Alamat Perusahaan</th>
+                                        <th>Nama Pencari</th>
                                         <th>Email</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -70,26 +68,23 @@ use LearnPhpMvc\Config\Url;
                                     <?php
                                     if ($model['data']['status'] == 'oke') {
                                         $count = 0;
-                                        foreach ($model['data']['body'] as $key => $value) {
+                                        foreach ($model['data']['datum'] as $key => $value) {
                                             # code...
                                     ?>
                                             <tr>
                                                 <td><?= $count + 1 ?></td>
-                                                <td><?= $value['nama_perusahaan'] ?></td>
-                                                <td><?= $value['alamat_perusahaan'] ?></td>
+                                                <td><?= $value['nama'] ?></td>
                                                 <td><?= $value['email'] ?></td>
                                                 <td><?= $value['status'] ?></td>
                                                 <td>
                                                     <?php
                                                     if ($value['status'] == 'aktif') {
                                                     ?>
-                                                        <div class="btn-disable-penyedia" data-id= "<?=  $value['id']?>">
-                                                        <a class="btn btn-danger" id="penyedia-disable">Disable</a>
-                                                        </div>
+                                                       <div class="btn-disable" data-id="<?= $value['id'] ?>"> <a class="btn btn-danger" id="user-disable" data-id="<?= $value['id'] ?>">Disable</a></div>
                                                     <?php } else {
                                                     ?>
-                                                       <div class="btn-enable-penyedia" data-id="<?= $value['id'] ?>">
-                                                       <a id="penyedia-enable" class="btn btn-success">Enable</a>
+                                                       <div class="btn-enable" data-id="<?= $value['id'] ?>">
+                                                       <a  class="btn btn-success" id="user-enable" data-id="<?= $value['id'] ?>">Enable</a>
                                                        </div>
                                                     <?php }
                                                     ?>
@@ -99,6 +94,15 @@ use LearnPhpMvc\Config\Url;
                                     <?php ; }
                                     ?>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                             <th>No</th>
+                                        <th>Nama Pencari</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <!-- /.card-body -->

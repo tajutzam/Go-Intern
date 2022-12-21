@@ -4,24 +4,12 @@ namespace LearnPhpMvc\Domain;
 class Admin{
 
     private int $id;
-
     private string $nama;
-
     private string $password;
-
     private string $username;
-
-
     private string $create_at;
-
     private string $update_at;
-
     private int $role;
-
-
-    
-
-
     /**
      * Get the value of id
      */ 
@@ -162,5 +150,3 @@ class Admin{
         return $this;
     }
 }
-
-?>
