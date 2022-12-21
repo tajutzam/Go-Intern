@@ -451,4 +451,20 @@ class LowonganMagangService
         }
         return $response;
     }
+
+    public function batalkanLamaran($idMagang, $idPencariMagang): array
+    {
+        $response = [];
+        $responseDelete = $this->repositoryLowonganMagang->batalkanLamaran($idMagang, $idPencariMagang);
+        if ($responseDelete) {
+            http_response_code(200);
+            $response['status'] = 'oke';
+            $response['message'] = 'berhasil membatalkan lamaran';
+        } else {
+            http_response_code(400);
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal membatalkan lamaran';
+        }
+        return $response;
+    }
 }

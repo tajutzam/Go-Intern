@@ -1,5 +1,7 @@
 <?php
 
+use LearnPhpMvc\Config\Url;
+
 ?>
 
 <div class="content-wrapper">
@@ -34,7 +36,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?= Url::BaseUrl()."/admin/home" ?>">Home</a></li>
                         <li class="breadcrumb-item active">Pencari</li>
                     </ol>
                 </div>
@@ -78,10 +80,12 @@
                                                     <?php
                                                     if ($value['status'] == 'aktif') {
                                                     ?>
-                                                        <button class="btn btn-danger">Disable</button>
+                                                       <div class="btn-disable" data-id="<?= $value['id'] ?>"> <a class="btn btn-danger" id="user-disable" data-id="<?= $value['id'] ?>">Disable</a></div>
                                                     <?php } else {
                                                     ?>
-                                                        <button class="btn btn-success">Enable</button>
+                                                       <div class="btn-enable" data-id="<?= $value['id'] ?>">
+                                                       <a  class="btn btn-success" id="user-enable" data-id="<?= $value['id'] ?>">Enable</a>
+                                                       </div>
                                                     <?php }
                                                     ?>
                                                 </td>

@@ -6,6 +6,7 @@ use DateTime;
 use LearnPhpMvc\Domain\PenyediaMagang;
 use LearnPhpMvc\dto\AktivasiAkunResponse;
 use PDO;
+use PDOException;
 
 class PenyediaMagangRepository
 {
@@ -42,7 +43,7 @@ class PenyediaMagangRepository
                     "create_at" => $create_at,
                     "update_at" => $update_at,
                     "lokasi" => $lokasi,
-                    "foto" => $foto ,
+                    "foto" => $foto,
                 );
                 array_push($response['body'], $s);
             }
@@ -346,12 +347,12 @@ SQL;
         return $response;
     }
 
-    
+
 
     public  function showPopularClose(): array
     {
         $query = "select DISTINCT penyedia_magang.id ,  penyedia_magang.nama_perusahaan , penyedia_magang.foto , penyedia_magang.alamat_perusahaan , penyedia_magang.email  , penyedia_magang.no_telp from penyedia_magang join lowongan_magang on penyedia_magang.id != lowongan_magang.penyediaMagang";
-        
+
         $PDOstatement = $this->connection->query($query);
         if ($PDOstatement->rowCount() > 0) {
             $response['body'] = array();
@@ -391,11 +392,29 @@ SQL;
     }
 
 
-    public function setAktif($id){
-
+    public function enable($id): bool
+    {
+        try {
+            $query = "update penyedia_magang set status = 'aktif' where id = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
     }
 
-    public function setNonaktif($id){
-
+    public function disable($id)
+    {
+        try {
+            $query = "update penyedia_magang set status = 'tidak-aktif' where id = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
     }
 }

@@ -34,8 +34,7 @@ class LowonganMagangRepository
             $PDOstatement->execute([$lowonganMagang->getId_magang(), $lowonganMagang->getId_pencariMagang(), null, null, 'pending', $lowonganMagang->getId_penyediaMagang()]);
             $lowonganMagang->setId($this->connection->lastInsertId());
             return $lowonganMagang;
-        } catch (\PDOException $th) {
-            var_dump($th);
+        } catch (PDOException $th) {
             return null;
         }
     }
@@ -102,7 +101,7 @@ class LowonganMagangRepository
             return true;
         }
     }
-    
+
     public function tolakLamaran(LowonganMagang $lowonganMagang): bool
     {
         try {
@@ -228,5 +227,18 @@ class LowonganMagangRepository
             $response['message'] = 'data magang tidak ditemukan';
         }
         return $response;
+    }
+
+    public function batalkanLamaran($idMagang, $idPencariMagang)
+    {
+        try {
+            $query = "delete from lowongan_magang where pencariMagang = ? and id_magang = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$idPencariMagang, $idMagang]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
     }
 }

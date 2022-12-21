@@ -881,7 +881,7 @@ HTML;
         return $response;
     }
 
-    public function showMagangActive($id) : array
+    public function showMagangActive($id): array
     {
         $response = $this->pencariMagangRepository->showMagangActive($id);
         if ($response['status'] == 'oke') {
@@ -890,5 +890,53 @@ HTML;
             http_response_code(404);
         }
         return $response;
+    }
+
+    public function enable($id): array
+    {
+
+        $response = [];
+        $result = $this->pencariMagangRepository->findById($id);
+        if ($result != null) {
+            $responseEnabled =  $this->pencariMagangRepository->enable($id);
+            if ($responseEnabled) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil mengaktifkan user / pencari magang';
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal mengaktifkan user terjadi kesalahan server';
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'data pencari magang tidak ditemukan';
+        }
+
+        return $response;
+    }
+
+    public function disable($id): array
+    {
+        $response = [];
+        $result = $this->pencariMagangRepository->findById($id);
+        if ($result != null) {
+            $responseEnabled =  $this->pencariMagangRepository->disable($id);
+            if ($responseEnabled) {
+                $response['status'] = 'oke';
+                $response['message'] = 'berhasil Menonaktifkan user / pencari magang';
+            } else {
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal Menonaktifkan user terjadi kesalahan server';
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'data pencari magang tidak ditemukan';
+        }
+
+        return $response;
+    }
+
+    public function showRiwayatlamaran($id): array
+    {
+        return $this->pencariMagangRepository->showRiwayatLamaran($id);
     }
 }

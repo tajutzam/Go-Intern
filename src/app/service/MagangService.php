@@ -160,4 +160,15 @@ class MagangService
         }
         return $response;
     }
+
+    public function showMagangLimitByPenyedia() : array
+    {
+        $response = $this->repository->showMagangLimit1ByPenyedia();
+        if ($response['status'] == 'oke') {
+            http_response_code(200);
+        } else {
+            http_response_code(404);
+        }
+        return $response;
+    }
 }

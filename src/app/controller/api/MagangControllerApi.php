@@ -81,5 +81,19 @@ class MagangControllerApi
         echo json_encode($response);
     }
 
-    
+    public function showMagangLimit1()
+    {
+        $response = $this->service->showMagangLimitByPenyedia();
+        if ($response['status'] == 'oke') {
+            foreach ($response['body'] as $key => $value) {
+                $id = $value['magang_id'];
+                $syarat = new SyaratRequest();
+                $syarat->setId_magang($id);
+                $dataSyarat = $this->syaratService->showSyarat($syarat);
+                $response['body'][$key]['syarat'] = array();
+                array_push($response['body'][$key]['syarat'], $dataSyarat['body']);
+            }
+        }
+        echo json_encode($response);
+    }
 }

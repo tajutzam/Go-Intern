@@ -53,10 +53,13 @@ class AdminController
     {
         $isLogin = MySession::adminSession();
         if ($isLogin['isLogin'] ==  true) {
+            $jumlahPencari = $this->adminService->countPencariMagang();
             $model = [
                 'title' => "Belajar php mvc",
                 'content' => "Go Intern",
-                "nama" => $isLogin['nama']
+                "nama" => $isLogin['nama'] , 
+                "jmlPencari" => $jumlahPencari['jumlah'] , 
+                
             ];
             View::renderAdmin("index", $model);
         } else {
@@ -190,6 +193,27 @@ class AdminController
             ];
             View::renderAdminLogin("login", $model);
         }
+    }
+
+
+    function enablePenyedia($id)
+    {
+        $path = $_SERVER['PATH_INFO'];
+        $exploded = explode("/", $path);
+        // admin/pencarimagang/enabled/id   
+        $id = $exploded[4];
+        $response = $this->service->enable($id);
+        Helper::showMessage($response['message'], "/admin/penyedia");
+    }
+
+    function disablePenyedia($id)
+    {
+        $path = $_SERVER['PATH_INFO'];
+        $exploded = explode("/", $path);
+        // admin/pencarimagang/enabled/id   
+        $id = $exploded[4];
+        $response = $this->service->disable($id);
+        Helper::showMessage($response['message'], "/admin/penyedia");
     }
     // sekolah
     function sekolah()
@@ -341,12 +365,41 @@ class AdminController
     {
         $response = $this->pencariService->findAll();
         $model = [
-            "title" => "ADMIN || PENCARI MAGANG" , 
-            "content" => "ADMIN , PENCARI MAGANG PAGE" , 
+            "title" => "ADMIN || PENCARI MAGANG",
+            "content" => "ADMIN , PENCARI MAGANG PAGE",
             "data" => $response
         ];
         View::renderAdmin("pencarimagang", $model);
-        
     }
     //close pencari
+
+    public function enablePencariMagang()
+    {
+        $path = $_SERVER['PATH_INFO'];
+        $exploded = explode("/", $path);
+        // admin/pencarimagang/enabled/id   
+        $id = $exploded[4];
+        $response = $this->pencariService->enable($id);
+        Helper::showMessage($response['message'], "/admin/pencarimagang");
+    }
+    public function disablePencariMagang()
+    {
+        $path = $_SERVER['PATH_INFO'];
+        $exploded = explode("/", $path);
+        $id = $exploded[4];
+        $response = $this->pencariService->disable($id);
+        Helper::showMessage($response['message'], "/admin/pencarimagang");
+    }
+
+
+    // admin api
+    function getUserRegristations(){
+        $response = $this->adminService->getUsersRegristations();
+        echo json_encode($response);
+    }
+
+    function getCompanRegristations(){
+        $response = $this->adminService->getCompanyRegristation();
+        echo json_encode($response);
+    }
 }

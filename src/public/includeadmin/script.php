@@ -48,9 +48,122 @@ use LearnPhpMvc\Config\Url;
 <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 
 
 <script>
+  var baseurl = "<?= Url::BaseUrl() ?>";
+  var domain = "<?= Url::domain() ?>";
+
+  var responseUser = fetch(baseurl + '/api/admin/getuser')
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status == "oke") {
+        var xValues = [];
+        var yValues = [];
+        var barColors = [];
+
+        data.body.forEach(element => {
+          xValues.push(element.bulan);
+          yValues.push(element.jumlah);
+          var r = Math.floor(Math.random() * 256);
+          var g = Math.floor(Math.random() * 256);
+          var b = Math.floor(Math.random() * 256);
+          var color = "rgb(" + r + "," + g + "," + b + ")";
+          barColors.push(color);
+     
+        });
+        new Chart("userChart", {
+          type: "pie",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "PIE CHART FOR USER REGISTER"
+            }
+          }
+        });
+      } else {
+        new Chart("userChart", {
+          type: "pie",
+          data: {
+            labels: "No data",
+            datasets: [{
+              backgroundColor: "red",
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "PIE CHART FOR USER REGISTER"
+            }
+          }
+        });
+      }
+    });
+    
+    var responseUser = fetch(baseurl + '/api/admin/getcompany')
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status == "oke") {
+        var xValues = [];
+        var yValues = [];
+        var barColors = [];
+
+        data.body.forEach(element => {
+          xValues.push(element.bulan);
+          yValues.push(element.jumlah);
+          var r = Math.floor(Math.random() * 256);
+          var g = Math.floor(Math.random() * 256);
+          var b = Math.floor(Math.random() * 256);
+          var color = "rgb(" + r + "," + g + "," + b + ")";
+          barColors.push(color);
+     
+        });
+        new Chart("companyChart", {
+          type: "pie",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "PIE CHART FOR COMPANY REGISTER"
+            }
+          }
+        });
+      } else {
+        new Chart("companyChart", {
+          type: "pie",
+          data: {
+            labels: "No data",
+            datasets: [{
+              backgroundColor: "red",
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "PIE CHART FOR USER REGISTER"
+            }
+          }
+        });
+      }
+    });
+
   $(document).on('click', '#btnUpdateJurusan', function() {
     console.log('update');
     var id = $(this).data('id');
@@ -58,8 +171,7 @@ use LearnPhpMvc\Config\Url;
     $('#jurusan').val(jurusan);
     $('#idjurusan').val(id);
   });
-  var baseurl = "<?= Url::BaseUrl() ?>";
-  var domain = "<?= Url::domain() ?>";
+
   $(document).on('click', '.deleteJurusan', function() {
     var confirmDelete = confirm("yakin ingin menghapus Jurusan ?");
     if (confirmDelete) {
@@ -109,9 +221,6 @@ use LearnPhpMvc\Config\Url;
     }
   }
 
-
-
-
   $(document).on('click', '#fieldUpdateJenis', function() {
     var jenis = $(this).data('jenis');
     var id = $(this).data('id');
@@ -126,18 +235,36 @@ use LearnPhpMvc\Config\Url;
       document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       alert("Berhasil logout");
       console.log(document.cookie)
-      location.replace(baseurl+"/admin/login");
+      location.replace(baseurl + "/admin/login");
     }
+  });
+  $(document).on('click', '.btn-enable', function() {
+    var id = $(this).data('id');
+    $(".btn-enable #user-enable").attr('href', baseurl + "/admin/pencarimagang/enable/" + id);
+  });
+  $(document).on('click', '.btn-disable', function() {
+    var id = $(this).data('id');
+    $(".btn-disable #user-disable").attr('href', baseurl + "/admin/pencarimagang/disable/" + id);
+  });
+
+  $(document).on('click', '.btn-enable-penyedia', function() {
+    var id = $(this).data('id');
+    $(".btn-enable-penyedia #penyedia-enable").attr('href', "/admin/penyedia/enable/" + id);
+  });
+
+  $(document).on('click', '.btn-disable-penyedia', function() {
+    var id = $(this).data('id');
+    $(".btn-disable-penyedia #penyedia-disable").attr('href', "/admin/penyedia/disable/" + id);
   });
 </script>
 <script>
   $(function() {
-      $("#example2").DataTable({
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": true,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-      })
+    $("#example2").DataTable({
+      "responsive": true,
+      "lengthChange": true,
+      "autoWidth": true,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    })
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,

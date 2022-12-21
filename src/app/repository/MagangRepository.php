@@ -317,4 +317,39 @@ class MagangRepository
         }
         return $response;
     }
+
+    public function showMagangLimit1ByPenyedia() : array
+    {
+        $response = [];
+        $query = "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status != 'penuh' and magang.jumlah_maksimal != magang.jumlah_saatini GROUP BY penyedia_magang.id";
+        $PDOStatement = $this->connection->query($query);
+        if ($PDOStatement->rowCount() > 0) {
+            $response['status'] = 'oke';
+            $response['body'] = [];
+            while ($row = $PDOStatement->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                $item = [
+                    "posisi" => $posisi_magang,
+                    "create_at" => $create_at,
+                    'foto' => $foto,
+                    "penyedia_id" => $penyedia_id,
+                    "salary" => $salary,
+                    "alamat" => $alamat_perusahaan,
+                    "nama_perusahaan" => $nama_perusahaan,
+                    "email" => $email,
+                    "lama_magang" => $lama_magang . " bulan",
+                    "magang_id" => $magang_id,
+                    "jumlah_maksimal" => $jumlah_maksimal,
+                    "deskripsi" => $deskripsi,
+                    "kategori" => $kategori,
+                    "jumlah_saatini" => $jumlah_saatini , 
+                    "lowonganTersedia" => $jumlah_maksimal - $jumlah_saatini
+                ];
+                array_push($response['body'], $item);
+            }
+        } else {
+            $response['status'] = 'failed';
+        }
+        return $response;
+    }
 }

@@ -75,4 +75,28 @@ class AdminService
         }
         return $response;
     }
+
+    public function getUsersRegristations() : array{
+        return $this->repository->getUsersRegristation();
+    }
+
+    public function getCompanyRegristation() : array{
+        return $this->repository->getCompanyRegistration();
+    }
+
+
+    public function countPencariMagang():array{
+       return $this->repository->countPencariMagang(); 
+    }
+
+    public function countPenyediaMagang() :array{
+        return $this->repository->countPenyediaMagang();
+    }
+
+    public function countSekolah():array{
+        return $this->repository->countSekolah();
+    }
+    public function countJurusan():array{
+        return $this->repository->countJurusan();
+    }
 }
