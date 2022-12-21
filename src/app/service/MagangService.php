@@ -171,4 +171,14 @@ class MagangService
         }
         return $response;
     }
+
+    public function findMagangBykeyword($keyword) : array{
+        $response = $this->repository->findMagangByKeyword($keyword);
+        if($response['status'] == 'oke' ){
+            http_response_code(200);
+        }else{
+            http_response_code(404);
+        }
+        return $response;
+    }
 }

@@ -325,9 +325,9 @@ class PencariMagangService
         } else {
             try {
                 $mail = new PHPMailer();  // create a new object
-                $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                $email_pengirim = "gointern.pt.6@gmail.com";
                 $mail->Username = $email_pengirim;
-                $mail->Password = "coskgmkmkonrchpy";
+                $mail->Password = "vxuswlzezomsuzwz";
                 $mail->IsSMTP(); // enable SMTP
                 $nama_pengirim = "Go intern";
                 $email_penerima = $request->getEmail();
@@ -397,7 +397,8 @@ HTML;
                         $response['status'] = "link expired";
                     } else {
                         $this->pencariMagangRepository->updatStatus($usernameAkunVerivication);
-                        $response['status'] = "berhasil aktivasi , harap login menggunakan akun anda";
+                        $response['status'] = 'oke';
+                        $response['message'] = "berhasil aktivasi , harap login menggunakan akun anda";
                     }
                 } else {
                     $response['status'] = "failed";

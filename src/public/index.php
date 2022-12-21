@@ -152,4 +152,5 @@ Router::add("GET", "/api/admin/getcompany", AdminController::class, "getCompanRe
 Router::add("POST", "/api/pencarimagang/riwayatlamaran", PencariMagangControllerApi::class, "showRiwayatLamran");
 Router::add("GET", "/api/magang/limit1", MagangControllerApi::class, "showMagangLimit1");
 Router::add("POST", "/api/riwayatlamaran/batalkan", PencariMagangControllerApi::class, "batalkanLamaran");
+Router::add("POST", "/api/magang/keyword", MagangControllerApi::class, "findMagangByKeyword");
 Router::run();

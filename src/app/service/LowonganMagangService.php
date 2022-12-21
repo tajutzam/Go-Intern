@@ -92,9 +92,9 @@ class LowonganMagangService
                 $responseMagang = $this->repositoryMagang->findByIdResult($idMagang);
                 if ($responseMagang != null) {
                     $mail = new PHPMailer();  // create a new object
-                    $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                    $email_pengirim = "gointern.pt.6@gmail.com";
                     $mail->Username = $email_pengirim;
-                    $mail->Password = "coskgmkmkonrchpy";
+                    $mail->Password = "vxuswlzezomsuzwz";
                     $mail->IsSMTP(); // enable SMTP
                     $nama_pengirim = $responsePencari->getNama();
                     $email_penerima = $responsePenyedia->getEmail();
@@ -175,9 +175,9 @@ class LowonganMagangService
                     if ($responseTolak) {
                         // todo send email , to pencari magang
                         $mail = new PHPMailer();  // create a new object
-                        $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                        $email_pengirim = "gointern.pt.6@gmail.com";
                         $mail->Username = $email_pengirim;
-                        $mail->Password = "coskgmkmkonrchpy";
+                        $mail->Password = "vxuswlzezomsuzwz";
                         $mail->IsSMTP(); // enable SMTP
                         $nama_pengirim =  "Go intern";
                         $email_penerima = $responseFindPencariMagang->getEmail();
@@ -286,9 +286,9 @@ class LowonganMagangService
                 $responseFindPenyedia = $this->repositoryPenyedia->findById($responseFindMagang->getPenyedia());
                 if ($responseFindPenyedia != null) {
                     $mail = new PHPMailer();  // create a new object
-                    $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                    $email_pengirim = "gointern.pt.6@gmail.com";
                     $mail->Username = $email_pengirim;
-                    $mail->Password = "coskgmkmkonrchpy";
+                    $mail->Password = "vxuswlzezomsuzwz";
                     $mail->IsSMTP(); // enable SMTP
                     $nama_pengirim =  "Go intern";
                     $email_penerima = $responseFindPencariMagang->getEmail();
@@ -404,9 +404,9 @@ class LowonganMagangService
                     $email = $responseFindPemagang->getEmail();
                     $nama = $responseFindPemagang->getNama();
                     $mail = new PHPMailer();  // create a new object
-                    $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                    $email_pengirim = "gointern.pt.6@gmail.com";
                     $mail->Username = $email_pengirim;
-                    $mail->Password = "coskgmkmkonrchpy";
+                    $mail->Password = "vxuswlzezomsuzwz";
                     $mail->IsSMTP(); // enable SMTP
                     $nama_pengirim =  "Go intern";
                     $subjek = "Notifikasi , Lamaran Magang";

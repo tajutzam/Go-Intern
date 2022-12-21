@@ -125,9 +125,9 @@ class PenyediaMagangService
             try {
                 // konfigurasi mail stmpt
                 $mail = new PHPMailer(); // create a new object
-                $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                $email_pengirim = "gointern.pt.6@gmail.com";
                 $mail->Username = $email_pengirim;
-                $mail->Password = "coskgmkmkonrchpy";
+                $mail->Password = "vxuswlzezomsuzwz";
                 $mail->IsSMTP(); // enable SMTP
                 $nama_pengirim = "Go intern";
                 $email_penerima = $request->getEmail();
