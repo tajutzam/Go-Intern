@@ -240,7 +240,7 @@ class PencariMagangService
                         $request->getNamaBelakang() == null || $request->getNamaDepan() == null
                     ) {
                         // Todo , send message null
-                        http_response_code(400);
+                        http_response_code(401);
                         $response['status'] = "failed";
                         $response['message'] = "harap isi semua field";
                     } else {
@@ -248,7 +248,7 @@ class PencariMagangService
                             $request->getUsername() == "" || $request->getPassword() == "" || $request->getEmail() == ""  ||
                             $request->getNamaBelakang() == "" || $request->getNamaDepan() == ""
                         ) {
-                            http_response_code(400);
+                            http_response_code(401);
                             $response['status'] = "failed";
                             $response['message'] = "harap isi semua field";
                         } else {
@@ -306,6 +306,7 @@ class PencariMagangService
                 }
             }
         } else {
+            http_response_code(401);
             $response['status'] = "failed";
             $response['message'] = "Username sudah digunakan gunakan username yang lain";
         }
@@ -429,6 +430,7 @@ HTML;
 
         $model =  $this->pencariMagangRepository->findById($request->getId());
         if ($model == null) {
+            http_response_code(404);
             $response['status'] = 'failed';
             $response['message'] = "data tidak ditemukan terjadi kesalahan";
         } else {
@@ -467,6 +469,7 @@ HTML;
                             $response['status'] = 'ok';
                             $response['message'] = "Berhasil Update data";
                         } else {
+                            http_response_code(401);
                             $response['status'] = 'failed';
                             $response['message'] = "Username harus diawali dengan huruf Kapital";
                         }
@@ -517,15 +520,18 @@ HTML;
         $resultCari = $this->pencariMagangRepository->findById($id);
         $response = array();
         if ($resultCari == null) {
+            http_response_code(404);
             $response['status'] = 'failed';
             $response['message'] = 'gagal memperbarui data sekolah';
         } else {
             $pencariMagang->setDeskripsi_sekolah($deskripsi);
             $responseUpdate = $this->pencariMagangRepository->updateDeskripsiSekolah($pencariMagang);
             if ($responseUpdate != null) {
+                http_response_code(200);
                 $response['status'] = 'oke';
                 $response['message'] = 'berhasil memperbarui deskripsi sekolah';
             } else {
+                http_response_code(400);
                 $response['status'] = 'failed';
                 $response['message'] = 'gagal memperbarui data sekolah';
             }
@@ -539,34 +545,46 @@ HTML;
             $avatar_name = $_FILES["avatar"]["name"];
             $avatar_tmp_name = $_FILES["avatar"]["tmp_name"];
             $error = $_FILES["avatar"]["error"];
-            if ($error > 0) {
-                http_response_code(400);
+            $responseFind  = $this->pencariMagangRepository->findByUsername($username);
+            if ($responseFind['status'] != 'oke') {
+                http_response_code(404);
                 $response['status'] = 'failed';
-                $response['message'] =  'terjadi kesalahan upload image';
+                $response['message'] = 'data user tidak ditemukan username tidak ada';
             } else {
-                $nameDecoded = md5($avatar_name);
-                $fotoExtensions = explode(".", $avatar_name);
-                $microTime = floor(microtime(true) * 1000);
-                $fullNameFoto = $microTime . rand(10, 100) . $nameDecoded . "." . $fotoExtensions[1];
-                $response =  MoveFile::moveFilePenyedia($avatar_tmp_name, $fullNameFoto, 'avatarpencari');
-                if ($response['status'] == 'oke') {
-                    // todo update photo path in DB
-                    $pencariMagang = new PencariMagang();
-                    $pencariMagang->setFoto($fullNameFoto);
-                    $pencariMagang->setUsername($username);
-                    $responserepo = $this->pencariMagangRepository->saveImage($pencariMagang);
-                    var_dump($responserepo);
-                    http_response_code(200);
-                } else if ($response['status'] == 'failed') {
-                    $response['status'] = 'failed';
-                    $response['message'] =  'Kamu tidak bisa menambahkan foto yang sama , coba rename foto mu';
-                    http_response_code(404);
-                } else {
+                if ($error > 0) {
+                    http_response_code(400);
                     $response['status'] = 'failed';
                     $response['message'] =  'terjadi kesalahan upload image';
-                    http_response_code(400);
+                } else {
+                    $nameDecoded = md5($avatar_name);
+                    $fotoExtensions = explode(".", $avatar_name);
+                    $microTime = floor(microtime(true) * 1000);
+                    $fullNameFoto = $microTime . rand(10, 100) . $nameDecoded . "." . $fotoExtensions[1];
+                    $response =  MoveFile::moveFilePenyedia($avatar_tmp_name, $fullNameFoto, 'avatarpencari');
+                    if ($response['status'] == 'oke') {
+                        // todo update photo path in DB
+                        $pencariMagang = new PencariMagang();
+                        $pencariMagang->setFoto($fullNameFoto);
+                        $pencariMagang->setUsername($username);
+                        $responserepo = $this->pencariMagangRepository->saveImage($pencariMagang);
+                        $response['status'] = 'oke';
+                        $response['message'] = 'berhasil mengupload image';
+                        http_response_code(200);
+                    } else if ($response['status'] == 'failed') {
+                        $response['status'] = 'failed';
+                        $response['message'] =  'Kamu tidak bisa menambahkan foto yang sama , coba rename foto mu';
+                        http_response_code(404);
+                    } else {
+                        $response['status'] = 'failed';
+                        $response['message'] =  'terjadi kesalahan upload image';
+                        http_response_code(400);
+                    }
                 }
             }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'avatar belum dipilih';
         }
         return $response;
     }
@@ -640,14 +658,15 @@ HTML;
                 $responseUpload =  MoveFile::moveFilePenyedia($tmp_name, $fullname, "penghargaan");
                 if ($responseUpload['status'] == 'oke') {
                     $responseByUsername = $this->pencariMagangRepository->findByUsername($username);
-                    $id_penghargaanTemp = $responseByUsername['body'][0]['id_penghargaan'];
-                    $id_pencarimagang = $responseByUsername['body'][0]['id'];
-                    // succes move file to directory
-                    $penghargaan = new Penghargaan();
-                    $penghargaan->setJudul($judul);
-                    $penghargaan->setFile($fullname);
-                    $penghargaan->setPencari_magang($id_pencarimagang);
+
                     if ($responseByUsername['status'] == 'oke') {
+                        $id_penghargaanTemp = $responseByUsername['body'][0]['id_penghargaan'];
+                        $id_pencarimagang = $responseByUsername['body'][0]['id'];
+                        // succes move file to directory
+                        $penghargaan = new Penghargaan();
+                        $penghargaan->setJudul($judul);
+                        $penghargaan->setFile($fullname);
+                        $penghargaan->setPencari_magang($id_pencarimagang);
                         if ($id_penghargaanTemp != 0) {
                             $penghargaan->setId_penghargaan($id_penghargaanTemp);
                             $responsePenghargaan = $this->penghargaanRepository->findById($penghargaan);
@@ -867,18 +886,25 @@ HTML;
 
     public function updateNoHp($noHp, $id)
     {
-        $responseBool = $this->pencariMagangRepository->updateNoHp($noHp, $id);
         $response = array();
-
-        if ($responseBool) {
-            http_response_code(200);
-            $response['status'] = 'success';
-            $response['message'] = 'berhasil memperbarui no telpeon';
+        $find = $this->pencariMagangRepository->findById($id);
+        if ($find != null) {
+            $responseBool = $this->pencariMagangRepository->updateNoHp($noHp, $id);
+            if ($responseBool) {
+                http_response_code(200);
+                $response['status'] = 'success';
+                $response['message'] = 'berhasil memperbarui no telpeon';
+            } else {
+                http_response_code(400);
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui no telpon';
+            }
         } else {
-            http_response_code(400);
+            http_response_code(404);
             $response['status'] = 'failed';
-            $response['message'] = 'gagal memperbarui no telpon';
+            $response['message'] = 'gagal memperbarui no telp , user tidak ditemukan';
         }
+
         return $response;
     }
 

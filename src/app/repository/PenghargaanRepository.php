@@ -83,6 +83,7 @@ class PenghargaanRepository
             );
             array_push($response['body'] , $item);
         }else{
+            http_response_code(404);
             $response['status'] = 'failed';
             $response['message'] ='user belum memiliki penghargaan';
         }

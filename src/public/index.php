@@ -75,7 +75,7 @@ Router::add('GET', '/formlamar', LamarController::class, 'formLamar');
 Router::add("POST", "/api/update/tentang-saya", PencariMagangControllerApi::class, "updateTentangSaya");
 Router::add("GET", "/company/detail", CompanyController::class, "detailCompany");
 Router::add("GET", "/magang", MagangController::class, "search_magang");
-Router::add("GET", "/magang/findall", MagangController::class, "findAll");
+Router::add("GET", "magang/findall", MagangController::class, "findAll");
 Router::add("GET", "/magang/cari/nama", MagangController::class, "hasil_cari");
 Router::add("GET", "/magang/detail", MagangController::class, "detailMagang");
 Router::add("GET", "/login", LoginController::class, "formLogin");
