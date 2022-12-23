@@ -153,4 +153,7 @@ Router::add("POST", "/api/pencarimagang/riwayatlamaran", PencariMagangController
 Router::add("GET", "/api/magang/limit1", MagangControllerApi::class, "showMagangLimit1");
 Router::add("POST", "/api/riwayatlamaran/batalkan", PencariMagangControllerApi::class, "batalkanLamaran");
 Router::add("POST", "/api/magang/keyword", MagangControllerApi::class, "findMagangByKeyword");
+Router::add("POST", "/admin/kategori/add", AdminController::class, "addKategori");
+Router::add("POST", "/admin/kategori/update", AdminController::class, "updateKategori");
+Router::add("GET", "/admin/kategori/delete/([0-9a-zA-Z]*)", AdminController::class, "deleteKategori");
 Router::run();

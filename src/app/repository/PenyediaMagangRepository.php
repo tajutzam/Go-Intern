@@ -416,4 +416,11 @@ SQL;
             return false;
         }
     }
+
+    public function countPenyedia()
+    {
+        $query = "select * from penyedia_magang";
+        $PDOStatement = $this->connection->query($query);
+        return $PDOStatement->rowCount();
+    }
 }

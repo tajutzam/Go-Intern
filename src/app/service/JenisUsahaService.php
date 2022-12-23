@@ -145,4 +145,8 @@ class JenisUsahaService
         }
         return $response;
     }
+
+    public function count(){
+        return $this->repository->countJenis();
+    }
 }

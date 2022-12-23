@@ -148,4 +148,8 @@ class SekolahService
         }
         return $response;
     }
+
+    public function count(){
+        return $this->sekolahRepository->countSekolah();
+    }
 }

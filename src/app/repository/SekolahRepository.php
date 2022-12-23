@@ -129,7 +129,7 @@ class SekolahRepository
         }
     }
 
-    public function addJurusan(Sekolah $sekolah) : ?Sekolah
+    public function addJurusan(Sekolah $sekolah): ?Sekolah
     {
         try {
 
@@ -143,5 +143,11 @@ class SekolahRepository
             return null;
         }
     }
-    
+
+    public function countSekolah()
+    {
+        $query = "select * from sekolah";
+        $PDOstatement  = $this->connection->query($query);
+        return $PDOstatement->rowCount();
+    }
 }
