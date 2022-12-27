@@ -279,4 +279,44 @@ class PencariMagangControllerApi
         $response = $this->serviceLowonganMagang->batalkanLamaran($idMagang, $idPencari);
         echo json_encode($response);
     }
+
+    
+    public function sendOtp()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $username = $jsonData['username'];
+        $response = $this->service->sendOtp($username);
+        echo json_encode($response);
+    }
+
+    public function updatePassword()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $username = $jsonData['username'];
+        $password = $jsonData['password'];
+        $response = $this->service->updatePassword($password, $username);
+        echo json_encode($response);
+    }
+
+    public function verivikasiOtp()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $username = $jsonData['username'];
+        $otp = $jsonData['otp'];
+        $response = $this->service->verivikasiOtp($username, $otp);
+        echo json_encode($response);
+    }
+    
 }

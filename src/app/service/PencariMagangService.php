@@ -32,11 +32,12 @@ class PencariMagangService
 {
     private PencariMagangRepository $pencariMagangRepository;
     private SkillRepository $skilrepository;
-
     private JurusanRepository $jurusanRepository;
     private SekolahRepository $sekolahRepository;
     private PenghargaanRepository $penghargaanRepository;
 
+
+    private OtpService $otpService;
     public function __construct(PencariMagangRepository $pencariMagangRepository, SkillRepository $skillRepository)
     {
         $this->pencariMagangRepository = $pencariMagangRepository;
@@ -44,6 +45,7 @@ class PencariMagangService
         $this->sekolahRepository = new SekolahRepository(Database::getConnection());
         $this->jurusanRepository = new JurusanRepository(Database::getConnection());
         $this->penghargaanRepository = new PenghargaanRepository(Database::getConnection());
+        $this->otpService = new OtpService();
     }
     public function findAll(): array
     {
@@ -965,5 +967,163 @@ HTML;
     public function showRiwayatlamaran($id): array
     {
         return $this->pencariMagangRepository->showRiwayatLamaran($id);
+    }
+    public function sendOtp($username)
+    {
+        $response = [];
+        $otp = (rand(10000, 999));
+        $find = $this->pencariMagangRepository->findByUsername($username);
+        if ($find['status'] == 'oke') {
+            $email = $find['body'][0]['email'];
+            $nama = $find['body'][0]['nama'];
+            $id = $find['body'][0]['id'];
+            $findOtp = $this->otpService->findByPencari($id);
+            if ($findOtp != null) {
+                $otpSend =   $this->otpService->resendOtp($id, $otp);
+                if ($otpSend['status'] == 'oke') {
+                    $mail = new PHPMailer();  // create a new object
+                    $email_pengirim = "gointern.pt.6@gmail.com";
+                    $mail->Username = $email_pengirim;
+                    $mail->Password = "vxuswlzezomsuzwz";
+                    $mail->IsSMTP(); // enable SMTP
+                    $nama_pengirim = "Go intern";
+                    $email_penerima = $email;
+                    $subjek = "OTP VERIFICATION";
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->Port =  465;
+                    $mail->SMTPAuth = true;
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->setFrom($email_pengirim, $nama_pengirim);
+                    $mail->addAddress($email_penerima);
+                    $mail->Subject = $subjek;
+                    $expire_stamp = date('Y-m-d H:i:s', strtotime("+5 min"));
+                    $now_stamp = date("Y-m-d H:i:s");
+                    $pesan = <<<HTML
+                        <h3>Forgot Password</h3>
+                        <p>Hai , $nama untuk Merubah password mu masukan kode otp dibawah ini</p>
+                        <br>
+                        <h1>$otp</h1>
+                        <br>
+                        <br>
+                        <p>Salam Manis , Go intern :) </p>
+        HTML;
+                    $mail->Body =  html_entity_decode($pesan);
+                    $mail->isHTML(true);
+                    $isSend = $mail->send();
+                    if ($isSend) {
+                        http_response_code(200);
+                        $response['status'] = 'oke';
+                        $response['otp'] = $otp;
+                        $response['username'] = $username;
+                    } else {
+                        http_response_code(400);
+                        $response['status'] = 'failed';
+                    }
+                } else {
+                    http_response_code(400);
+                    $response['status'] = 'failed';
+                    $response['message'] = $otpSend['message'];
+                }
+            } else {
+                $otpSend = $this->otpService->save($otp, $id);
+                if ($otpSend['status'] == 'oke') {
+                    $mail = new PHPMailer();  // create a new object
+                    $email_pengirim = "gointern.pt.6@gmail.com";
+                    $mail->Username = $email_pengirim;
+                    $mail->Password = "vxuswlzezomsuzwz";
+                    $mail->IsSMTP(); // enable SMTP
+                    $nama_pengirim = "Go Intern";
+                    $email_penerima = $email;
+                    $subjek = "OTP VERIFICATION";
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->Port =  465;
+                    $mail->SMTPAuth = true;
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->setFrom($email_pengirim, $nama_pengirim);
+                    $mail->addAddress($email_penerima);
+                    $mail->Subject = $subjek;
+                    $pesan = <<<HTML
+                        <h3>Forgot Password</h3>
+                        <p>Hai , $nama untuk Merubah password mu masukan kode otp dibawah ini</p>
+                        <br>
+                        <h1 style="text-align = center; ">$otp</h1>
+                        <br>
+                        <br>
+                        <p>Salam Manis , Go intern :) </p>
+        HTML;
+                    $mail->Body =  html_entity_decode($pesan);
+                    $mail->isHTML(true);
+                    $isSend = $mail->send();
+                    if ($isSend) {
+                        http_response_code(200);
+                        $response['status'] = 'oke';
+                        $response['otp'] = $otp;
+                        $response['username'] = $username;
+                    } else {
+                        http_response_code(400);
+                        $response['status'] = 'failed';
+                    }
+                } else {
+                    http_response_code(400);
+                    $response['status'] = 'failed';
+                    $response['message'] = $otpSend['message'];
+                }
+            }
+        } else {
+            http_response_code(404);
+            $response['status']  = 'failed';
+            $response['message'] = 'data user tidak ditemukan';
+        }
+        return $response;
+    }
+    public function verivikasiOtp($username,  $kode): array
+    {
+        $response = [];
+        $find =  $this->pencariMagangRepository->findByUsername($username);
+        if ($find['status'] == 'oke') {
+            $id = $find['body'][0]['id'];
+            $otpRes = $this->otpService->findByPencari($id);
+            if ($otpRes != null) {
+                if ($otpRes->getOtp() == $kode) {
+                    http_response_code(200);
+                    $response['status'] = 'oke';
+                    $response['message'] = 'Terverivikasi';
+                } else {
+                    http_response_code(400);
+                    $response['status'] = 'failed';
+                    $response['message'] = 'kode otp tidak sesuai , masukan kode yang sesuai dengan email yang kamu terima';
+                }
+            } else {
+                http_response_code(403);
+                $response['status'] = 'failed';
+                $response['message'] = 'user belum mempunyai otp';
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'data user tidak ditemukan';
+        }
+        return $response;
+    }
+
+
+    public function updatePassword($password, $username):array
+    {
+        $response = [];
+        $pencari = new PencariMagang();
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $pencari->setPassword($hash);
+        $pencari->setUsername($username);
+        $isUpdate = $this->pencariMagangRepository->updatePassword($pencari);
+        if($isUpdate){
+            http_response_code(200);
+            $response['status'] = 'oke';
+            $response['message'] = 'Password berhasil diperbarui , silahkan login';
+        }else{
+            http_response_code(500);
+            $response['status'] = 'failed';
+            $response['message'] = 'password gagal diperbarui , terjadi kesalahan server';
+        }   
+        return $response;
     }
 }

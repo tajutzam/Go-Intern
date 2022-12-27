@@ -65,7 +65,7 @@ class AdminController
             $jenis = $this->jenisUsahaService->count();
 
             $model = [
-                'title' => "Belajar php mvc",
+                'title' => "ADMIN||GOINTERN",
                 'content' => "Go Intern",
                 "nama" => $isLogin['nama'],
                 "jmlPencari" => $jumlahPencari['jumlah'],

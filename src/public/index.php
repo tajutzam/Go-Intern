@@ -156,4 +156,7 @@ Router::add("POST", "/api/magang/keyword", MagangControllerApi::class, "findMaga
 Router::add("POST", "/admin/kategori/add", AdminController::class, "addKategori");
 Router::add("POST", "/admin/kategori/update", AdminController::class, "updateKategori");
 Router::add("GET", "/admin/kategori/delete/([0-9a-zA-Z]*)", AdminController::class, "deleteKategori");
+Router::add("POST", "/api/pencarimagang/sendotp", PencariMagangControllerApi::class, "sendOtp");
+Router::add("POST", "/api/pencarimagang/otp/veriv", PencariMagangControllerApi::class, "verivikasiOtp");
+Router::add("POST", "/api/pencarimagang/resetpassword", PencariMagangControllerApi::class, "updatePassword");
 Router::run();

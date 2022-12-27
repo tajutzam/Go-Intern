@@ -355,6 +355,7 @@ SQL;
         $PDOstatement = $this->connection->query($query);
         if ($PDOstatement->rowCount() > 0) {
             $response['body'] = array();
+            $response['status'] = 'oke';
             http_response_code(200);
             while ($row = $PDOstatement->fetch(PDO::FETCH_ASSOC)) {
                 extract($row);
