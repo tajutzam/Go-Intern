@@ -108,4 +108,11 @@ class JurusanRepository
             return false;
         }
     }
+
+    public function countJurusan():int
+    {
+        $query = "select * from jurusan";
+        $PDOStatemetn = $this->connection->query($query);
+        return $PDOStatemetn->rowCount();
+    }
 }

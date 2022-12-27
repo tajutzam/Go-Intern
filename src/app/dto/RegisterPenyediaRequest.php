@@ -21,8 +21,10 @@ class RegisterPenyediaRequest
 
     private string $alamat;
 
-    
+    private string $konfirmasiPassword;
 
+    
+        
 
     
 
@@ -201,6 +203,26 @@ class RegisterPenyediaRequest
     public function setAlamat($alamat)
     {
         $this->alamat = $alamat;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of konfirmasiPassword
+     */ 
+    public function getKonfirmasiPassword()
+    {
+        return $this->konfirmasiPassword;
+    }
+
+    /**
+     * Set the value of konfirmasiPassword
+     *
+     * @return  self
+     */ 
+    public function setKonfirmasiPassword($konfirmasiPassword)
+    {
+        $this->konfirmasiPassword = $konfirmasiPassword;
 
         return $this;
     }

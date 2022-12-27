@@ -2,6 +2,7 @@
 
 namespace LearnPhpMvc\controller\api;
 
+use LearnPhpMvc\APP\View;
 use LearnPhpMvc\Config\Database;
 use LearnPhpMvc\dto\AktivasiAkunRequest;
 use LearnPhpMvc\dto\LoginRequest;
@@ -84,8 +85,8 @@ class AuthentikasiController
         $request->setNamaBelakang($jsonData['nama_belakang']);
         $request->setJenis_kelamin($jsonData['jenis_kelamin']);
         $arr = $this->service->registerMobile($request);
-    
-        
+
+
         echo json_encode($arr);
     }
     public function sendEmail()
@@ -110,11 +111,11 @@ class AuthentikasiController
     }
     public function verivikasiAkun()
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Content-Type: application/json; charset=UTF-8");
-        header("Access-Control-Allow-Methods: POST");
-        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $arr = $this->service->verivikasiAkun();
-        echo json_encode($arr);
-    }
+        $model = [
+            'title' => "succes",
+            "content" => $arr['message']
+        ];
+        View::renderAdminLogin("succes", $model);
+ }
 }

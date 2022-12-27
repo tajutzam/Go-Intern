@@ -212,4 +212,11 @@ SQL;
             return false;
         }
     }
+
+    public function countJenis():int
+    {
+        $query = "select * from jenis_usaha";
+        $PDOStatement = $this->connection->query($query);
+        return $PDOStatement->rowCount();
+    }
 }

@@ -13,7 +13,7 @@ use LearnPhpMvc\Config\Url;
         <p class="login-box-msg">Sign in to start your session</p>
         <form action="<?= Url::BaseUrl()."/admin/login/post" ?>" method="post">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Username" name="username">
+            <input type="text" class="form-control" placeholder="Username" name="username" required oninvalid="this.setCustomValidity('Username tidak boleh kosong')" oninput="setCustomValidity('')">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
@@ -21,7 +21,7 @@ use LearnPhpMvc\Config\Url;
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password" name="password">
+            <input type="password" class="form-control" placeholder="Password" name="password" required oninvalid="this.setCustomValidity('Password tidak boleh kosong')" oninput="setCustomValidity('')">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>

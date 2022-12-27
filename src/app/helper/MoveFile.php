@@ -67,6 +67,19 @@ class MoveFile
                     $response['name'] = $nama;
                 }
                 break;
+            case 'kategori':
+                if (file_exists(__DIR__ . "/../../public/image/kategori/" . $nama)) {
+                    $response['status'] = "failed";
+                    $response['message'] = "gagal menambahkan kategori , cv sudah ada";
+                } else {
+                    $responseTrue = move_uploaded_file(
+                        $tmp,
+                        __DIR__ . "/../../public/image/kategori/" . $nama
+                    );
+                    $response['status'] = "oke";
+                    $response['message'] = "Berhasil menambahkan kategori , ";
+                    $response['name'] = $nama;
+                }
             default:
                 # code...
                 break;

@@ -96,4 +96,26 @@ class MagangControllerApi
         }
         echo json_encode($response);
     }
+
+    public function findMagangByKeyword()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: POST");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $jsonData = json_decode(file_get_contents("php://input"), true);
+        $keyword = $jsonData['keyword'];
+        $response = $this->service->findMagangBykeyword($keyword);
+        if ($response['status'] == 'oke') {
+            foreach ($response['body'] as $key => $value) {
+                $id = $value['id_magang'];
+                $syarat = new SyaratRequest();
+                $syarat->setId_magang($id);
+                $dataSyarat = $this->syaratService->showSyarat($syarat);
+                $response['body'][$key]['syarat'] = array();
+                array_push($response['body'][$key]['syarat'], $dataSyarat['body']);
+            }
+        }
+        echo json_encode($response);
+    }
 }

@@ -72,7 +72,7 @@ use LearnPhpMvc\Config\Url;
           var b = Math.floor(Math.random() * 256);
           var color = "rgb(" + r + "," + g + "," + b + ")";
           barColors.push(color);
-     
+
         });
         new Chart("userChart", {
           type: "pie",
@@ -109,8 +109,8 @@ use LearnPhpMvc\Config\Url;
         });
       }
     });
-    
-    var responseUser = fetch(baseurl + '/api/admin/getcompany')
+
+  var responseUser = fetch(baseurl + '/api/admin/getcompany')
     .then((response) => response.json())
     .then((data) => {
       if (data.status == "oke") {
@@ -126,7 +126,7 @@ use LearnPhpMvc\Config\Url;
           var b = Math.floor(Math.random() * 256);
           var color = "rgb(" + r + "," + g + "," + b + ")";
           barColors.push(color);
-     
+
         });
         new Chart("companyChart", {
           type: "pie",
@@ -256,6 +256,29 @@ use LearnPhpMvc\Config\Url;
     var id = $(this).data('id');
     $(".btn-disable-penyedia #penyedia-disable").attr('href', "/admin/penyedia/disable/" + id);
   });
+
+  $(document).on('click', '.deleteKategori', function() {
+    var id = $(this).data('id');
+    console.log(id);
+    console.log(baseurl+"/admin/kategori/delete/"+id);
+    var isdelete = confirm('yakin ingin menghapus kategori');
+    if (isdelete) {
+      $(".deleteKategori .deleteLinkKategori").attr('href', "/admin/kategori/delete/" + id);
+    } else {
+      location.reload();
+    }
+  });
+  $(document).on('click', '#btnUpdateKategori', function() {
+    var kategori = $(this).data('kategori');
+    var foto = $(this).data('foto');
+    var id = $(this).data('id');
+    console.log(foto);
+    console.log(kategori);
+    console.log(id);
+    $("#kategoriUp").val(kategori);
+    $("#nama-foto").text(foto);
+    $("#idKategori").val(id);
+  });
 </script>
 <script>
   $(function() {
@@ -274,6 +297,19 @@ use LearnPhpMvc\Config\Url;
       "autoWidth": false,
       "responsive": true,
     });
+  });
+
+  $('#file-upload').change(function() {
+    var i = $(this).prev('label').clone();
+    var file = $('#file-upload')[0].files[0].name;
+    $(this).prev('label').text(file);
+  });
+
+  $('#file-upload1').change(function() {
+    console.log("asdasd");
+    var i = $(this).prev('label').clone();
+    var file = $('#file-upload1')[0].files[0].name;
+    $("#nama-foto").text(file);
   });
 </script>
 

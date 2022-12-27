@@ -130,7 +130,7 @@ use LearnPhpMvc\Config\Url;
                 <form action="<?= Url::BaseUrl() . "/admin/jenisusaha/add" ?>" method="post">
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nama Jenis Usaha</label>
-                        <input required type="text" class="form-control" id="exampleFormControlInput1" placeholder="ESPORT" name="jenis">
+                        <input required type="text" class="form-control" id="exampleFormControlInput1" placeholder="ESPORT" name="jenis" required oninvalid="this.setCustomValidity('Jenis Usaha tidak boleh kosong')" oninput="setCustomValidity('')">
                     </div>
             </div>
             <div class="modal-footer">

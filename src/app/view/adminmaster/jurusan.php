@@ -133,7 +133,7 @@ use LearnPhpMvc\Config\Url;
                 <form action="<?= Url::BaseUrl() . "/admin/jurusan/add" ?>" method="post">
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nama Jurusan</label>
-                        <input required name="jurusan" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Teknik Komputer Dan Jaringan">
+                        <input required name="jurusan" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Teknik Komputer Dan Jaringan" required oninvalid="this.setCustomValidity('Jurusan Tidak Boleh Kosong')" oninput="setCustomValidity('')">
                     </div>
             </div>
             <div class="modal-footer">
@@ -158,7 +158,7 @@ use LearnPhpMvc\Config\Url;
                 <form action="<?= Url::BaseUrl() . "/admin/jurusan/update" ?>" method="post">
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nama Jurusan</label>
-                        <input required type="text" class="form-control" id="jurusan" placeholder="TEKNIK KOMPUTER" name="updateJurusan">
+                        <input required type="text" class="form-control" id="jurusan" placeholder="TEKNIK KOMPUTER" name="updateJurusan" required oninvalid="this.setCustomValidity('Jurusan tidak boleh kosong')" oninput="setCustomValidity('')">
                     </div>
                     <input hidden id="idjurusan" name="id"></input>
             </div>

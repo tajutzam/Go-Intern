@@ -125,9 +125,9 @@ class PenyediaMagangService
             try {
                 // konfigurasi mail stmpt
                 $mail = new PHPMailer(); // create a new object
-                $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                $email_pengirim = "gointern.pt.6@gmail.com";
                 $mail->Username = $email_pengirim;
-                $mail->Password = "coskgmkmkonrchpy";
+                $mail->Password = "vxuswlzezomsuzwz";
                 $mail->IsSMTP(); // enable SMTP
                 $nama_pengirim = "Go intern";
                 $email_penerima = $request->getEmail();
@@ -343,7 +343,6 @@ HTML;
     public function showPopularPenyedia()
     {
         $response = $this->repository->showPopularCompanies();
-
         if ($response['status'] == 'oke') {
             foreach ($response['body'] as $key => $value) {
                 # code...
@@ -356,15 +355,17 @@ HTML;
             }
         }
         $responseNotPopular = $this->repository->showPopularClose();
-        foreach ($responseNotPopular['body'] as $key => $value) {
-            # code...
-            $value['jumlah_magang'] = 0;
-            $id = $value['id'];
-            $penydia = new PenyediaMagang();
-            $penydia->setId($id);
-            $jumlah = $this->repository->countMagangIklan($penydia);
-            $value['jumlah_magang'] = $jumlah == null ? 0 : $jumlah;
-            array_push($response['body'], $value);
+        if ($responseNotPopular['status'] == 'oke') {
+            foreach ($responseNotPopular['body'] as $key => $value) {
+                # code...
+                $value['jumlah_magang'] = 0;
+                $id = $value['id'];
+                $penydia = new PenyediaMagang();
+                $penydia->setId($id);
+                $jumlah = $this->repository->countMagangIklan($penydia);
+                $value['jumlah_magang'] = $jumlah == null ? 0 : $jumlah;
+                array_push($response['body'], $value);
+            }
         }
         return $response;
     }
@@ -439,7 +440,8 @@ HTML;
         return $response;
     }
 
-    function disable($id):array{
+    function disable($id): array
+    {
         $response = [];
         $result = $this->repository->findById($id);
         if ($result != null) {
@@ -456,5 +458,10 @@ HTML;
             $response['message'] = 'gagal menonaktifkan  user data user tidak ditemukan';
         }
         return $response;
+    }
+
+    public function count()
+    {
+        return $this->repository->countPenyedia();
     }
 }

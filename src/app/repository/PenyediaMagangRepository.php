@@ -319,7 +319,6 @@ SQL;
     {
         $response = array();
         $query = "select penyedia_magang.id ,  penyedia_magang.nama_perusahaan , penyedia_magang.foto , penyedia_magang.alamat_perusahaan , penyedia_magang.email  , penyedia_magang.no_telp , COUNT(lowongan_magang.id) as jumlah from penyedia_magang JOIN lowongan_magang on penyedia_magang.id = lowongan_magang.penyediaMagang  GROUP BY(penyedia_magang.id) ORDER BY(jumlah) DESC";
-
         $PDOstatement = $this->connection->query($query);
         if ($PDOstatement->rowCount() > 0) {
             $response['body'] = array();
@@ -356,6 +355,7 @@ SQL;
         $PDOstatement = $this->connection->query($query);
         if ($PDOstatement->rowCount() > 0) {
             $response['body'] = array();
+            $response['status'] = 'oke';
             http_response_code(200);
             while ($row = $PDOstatement->fetch(PDO::FETCH_ASSOC)) {
                 extract($row);
@@ -416,5 +416,12 @@ SQL;
             //throw $th;
             return false;
         }
+    }
+
+    public function countPenyedia()
+    {
+        $query = "select * from penyedia_magang";
+        $PDOStatement = $this->connection->query($query);
+        return $PDOStatement->rowCount();
     }
 }

@@ -318,7 +318,7 @@ class MagangRepository
         return $response;
     }
 
-    public function showMagangLimit1ByPenyedia() : array
+    public function showMagangLimit1ByPenyedia(): array
     {
         $response = [];
         $query = "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status != 'penuh' and magang.jumlah_maksimal != magang.jumlah_saatini GROUP BY penyedia_magang.id";
@@ -342,13 +342,48 @@ class MagangRepository
                     "jumlah_maksimal" => $jumlah_maksimal,
                     "deskripsi" => $deskripsi,
                     "kategori" => $kategori,
-                    "jumlah_saatini" => $jumlah_saatini , 
+                    "jumlah_saatini" => $jumlah_saatini,
                     "lowonganTersedia" => $jumlah_maksimal - $jumlah_saatini
                 ];
                 array_push($response['body'], $item);
             }
         } else {
             $response['status'] = 'failed';
+        }
+        return $response;
+    }
+    public function findMagangByKeyword($keyword): array
+    {
+        $query = "select magang.posisi_magang , magang.create_at as create_at , penyedia_magang.foto , penyedia_magang.id as penyedia_id, magang.salary , penyedia_magang.alamat_perusahaan , penyedia_magang.nama_perusahaan , penyedia_magang.email , magang.lama_magang , magang.id as magang_id ,  magang.jumlah_maksimal , magang.deskripsi  ,  magang.kategori , magang.jumlah_maksimal , magang.jumlah_saatini from magang join penyedia_magang  on magang.penyedia = penyedia_magang.id  where magang.status != 'penuh' and magang.jumlah_maksimal != magang.jumlah_saatini and  magang.posisi_magang LIKE ?";
+        $response = [];
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute(["%".$keyword."%"]);
+        if ($PDOStatement->rowCount() > 0) {
+            $response['message'] = 'oke data ditemukan';
+            $response['status'] = 'oke';
+            $response['body'] = [];
+            while ($row = $PDOStatement->fetch(PDO::FETCH_ASSOC)) {
+                $item = array(
+                    "posisi_magang" => $row['posisi_magang'],
+                    "foto" => $row['foto'],
+                    "id_penyedia" => $row['penyedia_id'],
+                    "salary" => $row['salary'],
+                    "alamat_perusahaan" => $row['alamat_perusahaan'],
+                    "nama_perusahaan" => $row['nama_perusahaan'],
+                    "email" => $row['email'],
+                    "lama_magang" => $row['lama_magang'],
+                    "id_magang" => $row['magang_id'],
+                    "jumlah_maksimal" => $row['jumlah_maksimal'],
+                    "deskripsi" => $row['deskripsi'],
+                    "kategori" => $row['kategori'],
+                    "create_at" => $row['create_at'],
+                    "lowongan_tersedia" => $row['jumlah_maksimal'] - $row['jumlah_saatini']
+                );
+                array_push($response['body'], $item);
+            }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'data magang tidak ditemukan';
         }
         return $response;
     }

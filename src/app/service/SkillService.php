@@ -14,117 +14,132 @@ class SkillService
     {
         $this->repository = new SkillRepository(Database::getConnection());
     }
-    public function findAll() : array {
+    public function findAll(): array
+    {
         $arr = $this->repository->findAll();
-        if($arr['status']==="ok"){
+        if ($arr['status'] === "ok") {
             http_response_code(200);
-        }else{
+        } else {
             http_response_code(404);
         }
         return $arr;
     }
-    public function addSkill(SkillRequest $request) : array {
+    public function addSkill(SkillRequest $request): array
+    {
         $response = array();
         $skill = new Skill();
         $skill->setSkill($request->getSkill());
         $skill->setPencari_magang($request->getPencariMagang());
         $bySkill = $this->repository->findBySkill($skill);
         try {
-            if($bySkill==null){
+            if ($bySkill == null) {
                 $this->repository->save($skill);
                 http_response_code(200);
                 $response['status'] = "ok";
                 $response['message'] = "berhasil menambahkan skill";
-            }else{
+            } else {
                 http_response_code(400);
                 $response['status'] = "failed";
                 $response['message'] = "Skill sudah ada pada ";
             }
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             http_response_code(500);
             $response['status'] = "failed";
             $response['message'] = $exception->getMessage();
         }
         return $response;
     }
-    public function update(SkillRequest $request) : array {
+    public function update(SkillRequest $request): array
+    {
         $response = array();
         $skillData = new Skill();
         $byId = $this->repository->findById($request->getId());
-        if($byId==null) {
+        if ($byId == null) {
             $response['message'] = "skill tidak ada";
             $response['status'] = "failed";
-        } else{
+        } else {
             $skillData->setSkill($request->getSkill());
             $skillData->setPencari_magang($request->getPencariMagang());
             $skillData->setId($request->getId());
-            $skills =$skillData->getSkill();
-                if($skills==""){
-                    $response['status']="failed";
-                    $response['message'] = "Field Skill tidak boleh kosong";
-                }else{
-                    if($request->getSkill() === $byId->getSkill()){
-                        $response['status'] = "failed";
-                        $response['message']="Gagal Memperbarui skill , tidak ada perubahan data";
-                    }else{
-                        $this->repository->update($skillData);
-                        $response['status'] = "ok";
-                        $response['message']="Berhasil memperbarui skill";
-                    }
-                    return $response;
+            $skills = $skillData->getSkill();
+            if ($skills == "") {
+                $response['status'] = "failed";
+                $response['message'] = "Field Skill tidak boleh kosong";
+            } else {
+                if ($request->getSkill() === $byId->getSkill()) {
+                    $response['status'] = "failed";
+                    $response['message'] = "Gagal Memperbarui skill , tidak ada perubahan data";
+                } else {
+                    $this->repository->update($skillData);
+                    $response['status'] = "ok";
+                    $response['message'] = "Berhasil memperbarui skill";
                 }
+                return $response;
             }
+        }
         return $response;
     }
 
-    public function findByid() : array{
+    public function findByid(): array
+    {
         $response = array();
         $path = $_SERVER['PATH_INFO'];
-        $data = explode("/" , $path);
+        $data = explode("/", $path);
         $response['body'] = array();
         $byId = $this->repository->findById($data[4]);
-        if($byId==null){
-            $response['status']="failed";
-            $response['message']="tidak ada data skill";
-        }else{
+        if ($byId == null) {
+            $response['status'] = "failed";
+            $response['message'] = "tidak ada data skill";
+        } else {
             $response['status'] = "ok";
             $response['message'] = "data ketemu";
             $item = array(
-                "id" => $byId->getId() ,
-                "skill" => $byId->getSkill() ,
-                "pencari_magang"=> $byId->getPencari_magang()
+                "id" => $byId->getId(),
+                "skill" => $byId->getSkill(),
+                "pencari_magang" => $byId->getPencari_magang()
             );
-            array_push($response['body'] , $item);
+            array_push($response['body'], $item);
         }
         return $response;
     }
 
-    public function deleteById($id) : array {
+    public function deleteById($id): array
+    {
         $skill = new Skill();
         $skill->setId($id);
-        $deletebyId = $this->repository->deletebyId($skill);
-        $response = array();
-        if($deletebyId){
-            $response['status'] = "ok";
-            $response['message'] = "succes delete skill";
-        }else{
-            $response['status'] = "failed";
-            $response['message'] = "gagal hapus skill";
+        $find = $this->repository->findById($id);
+        if ($find != null) {
+            $deletebyId = $this->repository->deletebyId($skill);
+            $response = array();
+            if ($deletebyId) {
+                http_response_code(200);
+                $response['status'] = "ok";
+                $response['message'] = "succes delete skill";
+            } else {
+                http_response_code(400);
+                $response['status'] = "failed";
+                $response['message'] = "gagal hapus skill";
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal menghapus skill , skill tidak ditemukan ';
         }
+
         return $response;
     }
 
-    public function findByPencariMagang(int $idPencariMagang):array{
-        
+    public function findByPencariMagang(int $idPencariMagang): array
+    {
+
         $skill = new Skill();
         $skill->setPencari_magang($idPencariMagang);
         $response = $this->repository->findByPencariMagang($skill);
-        if($response['status'] == 'ok'){
+        if ($response['status'] == 'ok') {
             http_response_code(200);
-        }else{
+        } else {
             http_response_code(404);
         }
         return $response;
     }
-    
 }

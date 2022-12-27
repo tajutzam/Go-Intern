@@ -11,8 +11,9 @@ class Kategori{
 
     private string $kategori;
 
+    private string $foto;
 
-
+    
     /**
      * Get the value of id
      */ 
@@ -49,6 +50,26 @@ class Kategori{
     public function setKategori($kategori)
     {
         $this->kategori = $kategori;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of foto
+     */ 
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
+     * Set the value of foto
+     *
+     * @return  self
+     */ 
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
 
         return $this;
     }

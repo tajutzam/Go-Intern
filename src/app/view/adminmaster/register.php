@@ -36,7 +36,7 @@ use LearnPhpMvc\Config\Url;
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Masukan Password" name="password">
+          <input type="password" class="form-control" placeholder="Masukan Password" name="password" required oninvalid="this.setCustomValidity('Password tidak boleh kosong')" oninput="setCustomValidity('')">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -44,7 +44,7 @@ use LearnPhpMvc\Config\Url;
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Ketik Ulang password" name="konfirmasiPassword">
+          <input type="password" class="form-control" placeholder="Ketik Ulang password" name="konfirmasiPassword" required oninvalid="this.setCustomValidity('Konfirmasi Password tidak boleh kosong')" oninput="setCustomValidity('')">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>

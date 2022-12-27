@@ -74,7 +74,8 @@ class PenyediaMagangControllerApi
         $jsonData = json_decode(file_get_contents("php://input"), true);
         $request = new RegisterPenyediaRequest();
         $request->setUsername($jsonData['username']);
-        $request->setPassword(password_hash($jsonData['password'], PASSWORD_BCRYPT));
+        $request->setPassword($jsonData['password']);
+        $request->setKonfirmasiPassword($jsonData['konfirmasi']);
         $request->setEmail($jsonData['email']);
         $request->setNo_telp($jsonData['no_telp']);
         $request->setRole($jsonData['role']);

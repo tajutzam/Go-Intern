@@ -697,10 +697,10 @@ SQL;
                     "nama_perusahaan" => $nama_perusahaan,
                     "status" => $status,
                     "alamat" => $alamat_perusahaan,
-                    "id_lowongan" => $id_lowongan , 
-                    "email" => $email , 
-                    "id_magang" => $id_magang , 
-                    "foto" => $foto , 
+                    "id_lowongan" => $id_lowongan,
+                    "email" => $email,
+                    "id_magang" => $id_magang,
+                    "foto" => $foto,
                     "tanggal_lamar" => $tanggal_lamar == null ? "-" : $tanggal_lamar
                 ];
                 array_push($response['body'], $item);
@@ -731,6 +731,19 @@ SQL;
             $query = "update pencari_magang set status  = 'aktif' where id =?";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute([$id]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
+    public function updatePassword(PencariMagang $pencariMagang):bool
+    {
+        try {
+            $query = "update pencari_magang set password = ? where username = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$pencariMagang->getPassword(), $pencariMagang->getUsername()]);
             return true;
         } catch (PDOException $th) {
             //throw $th;

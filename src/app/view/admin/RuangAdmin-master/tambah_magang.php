@@ -66,7 +66,7 @@ if (isset($_SESSION['succes'])) {
                         <th>Jumlah Saat ini</th>
                         <th>Desripsi Magang</th>
                         <th>Action</th>
-                        <th hidden>Action</th>
+                        <!-- <th hidden>Action</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -90,20 +90,7 @@ if (isset($_SESSION['succes'])) {
                                 <td><?= $model['magang']['body'][$i]['jumlah_maksimal'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['jumlah_saatini'] ?></td>
                                 <td><?= $model['magang']['body'][$i]['deskripsi'] ?></td>
-                                <td hidden>
-                                    <?php
-                                    for ($j = $count; $j < sizeof($model['magang']['body']); $j++) {
-                                        if ($model['magang']['body'][$i]['syarat'][0] != null) {
-                                            for ($h = 0; $h < sizeof($model['magang']['body'][$i]['syarat'][0]); $h++) {
-                                                # code...
-                                                if ($j <= sizeof($model['magang']['body'][$i]['syarat'][0])) {
-                                                    echo $model['magang']['body'][$i]['syarat'][$j][$h]['syarat'] . ",";
-                                                }
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </td>
+                                
 
                                 <td>
                                     <div class="row justify-content-between">

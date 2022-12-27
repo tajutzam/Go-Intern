@@ -129,4 +129,8 @@ class JurusanService
         }
         return $response;
     }
+
+    public function count(){
+        return $this->repository->countJurusan();
+    }
 }

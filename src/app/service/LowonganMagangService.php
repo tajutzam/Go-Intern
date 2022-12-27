@@ -92,9 +92,9 @@ class LowonganMagangService
                 $responseMagang = $this->repositoryMagang->findByIdResult($idMagang);
                 if ($responseMagang != null) {
                     $mail = new PHPMailer();  // create a new object
-                    $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                    $email_pengirim = "gointern.pt.6@gmail.com";
                     $mail->Username = $email_pengirim;
-                    $mail->Password = "coskgmkmkonrchpy";
+                    $mail->Password = "vxuswlzezomsuzwz";
                     $mail->IsSMTP(); // enable SMTP
                     $nama_pengirim = $responsePencari->getNama();
                     $email_penerima = $responsePenyedia->getEmail();
@@ -139,17 +139,26 @@ class LowonganMagangService
 
     public function updateSuratLamaran($suratLamaram, $id_magang): array
     {
+
         $response = array();
-        $responseBool =  $this->repositoryPencariMagang->updateSuratLamaran($suratLamaram, $id_magang);
-        if ($responseBool) {
-            http_response_code(200);
-            $response['status'] = 'success';
-            $response['message'] = 'berhasil memperbaru surat lamaran';
+        $find = $this->repositoryPencariMagang->findById($id_magang);
+        if ($find != null) {
+            $responseBool =  $this->repositoryPencariMagang->updateSuratLamaran($suratLamaram, $id_magang);
+            if ($responseBool) {
+                http_response_code(200);
+                $response['status'] = 'success';
+                $response['message'] = 'berhasil memperbaru surat lamaran';
+            } else {
+                http_response_code(400);
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal memperbarui surat lamaran';
+            }
         } else {
-            http_response_code(400);
+            http_response_code(404);
             $response['status'] = 'failed';
-            $response['message'] = 'gagal memperbarui surat lamaran';
+            $response['message'] = 'gagal memperbarui surat lamaran data user tidak ditemukan';
         }
+
         return $response;
     }
 
@@ -175,9 +184,9 @@ class LowonganMagangService
                     if ($responseTolak) {
                         // todo send email , to pencari magang
                         $mail = new PHPMailer();  // create a new object
-                        $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                        $email_pengirim = "gointern.pt.6@gmail.com";
                         $mail->Username = $email_pengirim;
-                        $mail->Password = "coskgmkmkonrchpy";
+                        $mail->Password = "vxuswlzezomsuzwz";
                         $mail->IsSMTP(); // enable SMTP
                         $nama_pengirim =  "Go intern";
                         $email_penerima = $responseFindPencariMagang->getEmail();
@@ -286,9 +295,9 @@ class LowonganMagangService
                 $responseFindPenyedia = $this->repositoryPenyedia->findById($responseFindMagang->getPenyedia());
                 if ($responseFindPenyedia != null) {
                     $mail = new PHPMailer();  // create a new object
-                    $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                    $email_pengirim = "gointern.pt.6@gmail.com";
                     $mail->Username = $email_pengirim;
-                    $mail->Password = "coskgmkmkonrchpy";
+                    $mail->Password = "vxuswlzezomsuzwz";
                     $mail->IsSMTP(); // enable SMTP
                     $nama_pengirim =  "Go intern";
                     $email_penerima = $responseFindPencariMagang->getEmail();
@@ -404,9 +413,9 @@ class LowonganMagangService
                     $email = $responseFindPemagang->getEmail();
                     $nama = $responseFindPemagang->getNama();
                     $mail = new PHPMailer();  // create a new object
-                    $email_pengirim = "mohammadtajutzamzami07@gmail.com";
+                    $email_pengirim = "gointern.pt.6@gmail.com";
                     $mail->Username = $email_pengirim;
-                    $mail->Password = "coskgmkmkonrchpy";
+                    $mail->Password = "vxuswlzezomsuzwz";
                     $mail->IsSMTP(); // enable SMTP
                     $nama_pengirim =  "Go intern";
                     $subjek = "Notifikasi , Lamaran Magang";
@@ -455,16 +464,31 @@ class LowonganMagangService
     public function batalkanLamaran($idMagang, $idPencariMagang): array
     {
         $response = [];
-        $responseDelete = $this->repositoryLowonganMagang->batalkanLamaran($idMagang, $idPencariMagang);
-        if ($responseDelete) {
-            http_response_code(200);
-            $response['status'] = 'oke';
-            $response['message'] = 'berhasil membatalkan lamaran';
+        $findpencari = $this->repositoryPencariMagang->findById($idPencariMagang);
+        if ($findpencari != null) {
+            $findMagang = $this->repositoryMagang->findById($idMagang);
+            if ($findMagang) {
+                $responseDelete = $this->repositoryLowonganMagang->batalkanLamaran($idMagang, $idPencariMagang);
+                if ($responseDelete) {
+                    http_response_code(200);
+                    $response['status'] = 'oke';
+                    $response['message'] = 'berhasil membatalkan lamaran';
+                } else {
+                    http_response_code(400);
+                    $response['status'] = 'failed';
+                    $response['message'] = 'gagal membatalkan lamaran';
+                }
+            } else {
+                http_response_code(404);
+                $response['status'] = 'failed';
+                $response['message'] = 'gagal membatalkan lamaran data magang tidak ditemukan';
+            }
         } else {
-            http_response_code(400);
+            http_response_code(404);
             $response['status'] = 'failed';
-            $response['message'] = 'gagal membatalkan lamaran';
+            $response['message'] = ' gagal menolak lamaran data user tidak ditemukan';
         }
+
         return $response;
     }
 }
