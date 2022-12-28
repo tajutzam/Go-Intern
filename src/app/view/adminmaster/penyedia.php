@@ -54,8 +54,8 @@ use LearnPhpMvc\Config\Url;
                             <h3 class="card-title">Data Penyedia</h3>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="example2" class="table  table-bordered table-hover">
+                        <div class="card-body table-responsive p-0">
+                            <table id="example2" class="table table-bordered table-hover text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -83,12 +83,12 @@ use LearnPhpMvc\Config\Url;
                                                     <?php
                                                     if ($value['status'] == 'aktif') {
                                                     ?>
-                                                        <div class="btn-disable-penyedia" data-id= "<?=  $value['id']?>">
+                                                        <div class="btn-disable-penyedia text-center" data-id= "<?=  $value['id']?>">
                                                         <a class="btn btn-danger" id="penyedia-disable">Disable</a>
                                                         </div>
                                                     <?php } else {
                                                     ?>
-                                                       <div class="btn-enable-penyedia" data-id="<?= $value['id'] ?>">
+                                                       <div class="btn-enable-penyedia text-center" data-id="<?= $value['id'] ?>">
                                                        <a id="penyedia-enable" class="btn btn-success">Enable</a>
                                                        </div>
                                                     <?php }

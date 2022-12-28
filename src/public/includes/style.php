@@ -8,7 +8,6 @@
 
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 <!-- 
-    
 
 <style>
     .fotoprofile {
@@ -51,6 +50,32 @@
         opacity: 1;
     }
 </style> -->
+
+
+<style>
+
+
+
+  
+ 
+@media only screen and (max-width: 720px) {
+    
+   table thead  tr th{
+    font-size: 13px;
+   }
+}
+@media only screen and (max-width: 458px) {
+    
+    table thead  tr th{
+     font-size: 12px;
+    }
+    table tbody tr td{
+        font-size: 12px;
+    }
+    
+ }
+
+</style>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="<?= Url::BaseUrl() . "/includes/fontawesome-free/css/all.min.css" ?>">

@@ -449,12 +449,11 @@ thead tr th {
   .info-smile .kotak-v2 .cewek-senyum {
     height: 375px !important;
   }
-
   .content-head .laki {
     position: absolute;
     bottom: 0;
     right: -1px;
-    height: 250px !important;
+    height: 300px !important;
   }
 
   html,

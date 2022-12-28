@@ -53,8 +53,8 @@ use LearnPhpMvc\Config\Url;
                             <h3 class="card-title">Data Pencari</h3>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
+                        <div class="card-body table-responsive p-0">
+                            <table id="example2" class="table table-bordered table-hover text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -80,10 +80,10 @@ use LearnPhpMvc\Config\Url;
                                                     <?php
                                                     if ($value['status'] == 'aktif') {
                                                     ?>
-                                                       <div class="btn-disable" data-id="<?= $value['id'] ?>"> <a class="btn btn-danger" id="user-disable" data-id="<?= $value['id'] ?>">Disable</a></div>
+                                                       <div class="btn-disable text-center" data-id="<?= $value['id'] ?>"> <a class="btn btn-danger" id="user-disable" data-id="<?= $value['id'] ?>">Disable</a></div>
                                                     <?php } else {
                                                     ?>
-                                                       <div class="btn-enable" data-id="<?= $value['id'] ?>">
+                                                       <div class="btn-enable text-center" data-id="<?= $value['id'] ?>">
                                                        <a  class="btn btn-success" id="user-enable" data-id="<?= $value['id'] ?>">Enable</a>
                                                        </div>
                                                     <?php }
