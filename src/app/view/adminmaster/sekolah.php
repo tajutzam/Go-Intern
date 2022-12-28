@@ -75,13 +75,13 @@ use LearnPhpMvc\Config\Url;
                                                 <td><?= $count + 1 ?></td>
                                                 <td><?= $value['nama_sekolah'] ?></td>
                                                 <td>
-                                                    <div class="row justify-content-evenly">
-                                                        <div class="col-lg-4" id="fieldUpdateSekolah" data-sekolah="<?= $value['nama_sekolah'] ?>" data-id="<?= $value['id'] ?>">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6" id="fieldUpdateSekolah" data-sekolah="<?= $value['nama_sekolah'] ?>" data-id="<?= $value['id'] ?>">
                                                             <div class="btn btn-warning" data-toggle="modal" data-target="#updateSekolah">
                                                                 <span style="color: white;"> <i class="fa-solid fa-pen-to-square"></i></span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-4 deletebtn" data-id="<?= $value['id'] ?>">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 deletebtn" data-id="<?= $value['id'] ?>">
                                                             <a class="btn btn-danger deleteSekolah">
                                                                 <span style="color: white;"> <i class="fa-solid fa-trash"></i></span>
                                                             </a>

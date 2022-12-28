@@ -282,20 +282,14 @@ use LearnPhpMvc\Config\Url;
 </script>
 <script>
   $(function() {
-    $("#example2").DataTable({
-      "responsive": true,
-      "lengthChange": true,
-      "autoWidth": true,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    })
     $('#example2').DataTable({
       "paging": true,
-      "lengthChange": false,
-      "searching": false,
+      "lengthChange": true,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,
-      "responsive": true,
+      
     });
   });
 

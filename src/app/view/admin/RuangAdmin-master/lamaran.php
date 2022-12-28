@@ -3,8 +3,6 @@
 use LearnPhpMvc\Config\Url;
 
 ?>
-
-
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-1">
         <h1 class="h5 mb-0 text-gray-800">Lamaran</h1>
@@ -31,7 +29,6 @@ use LearnPhpMvc\Config\Url;
         </div>
     </div>
 </div>
-
 
 <div class="col-xl-12 col-lg-12  mb-4 mx-auto" style="margin-bottom: 1000px;">
     <div class="card">

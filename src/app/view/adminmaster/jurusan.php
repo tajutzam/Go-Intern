@@ -55,8 +55,8 @@ use LearnPhpMvc\Config\Url;
                             </button>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
+                        <div class="card-body table-responsive p-0">
+                            <table id="example2" class="table table-bordered table-hover text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -75,13 +75,13 @@ use LearnPhpMvc\Config\Url;
                                                 <td><?= $count + 1 ?></td>
                                                 <td><?= $value['jurusan'] ?></td>
                                                 <td>
-                                                    <div class="row justify-content-evenly">
-                                                        <div class="col-lg-4" id="btnUpdateJurusan" data-jrs="<?= $value['jurusan'] ?>" data-id="<?= $value['id'] ?>">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6" id="btnUpdateJurusan" data-jrs="<?= $value['jurusan'] ?>" data-id="<?= $value['id'] ?>">
                                                             <div class="btn btn-warning" data-toggle="modal" data-target="#updateJurusan">
                                                                 <span style="color: white;"> <i class="fa-solid fa-pen-to-square"></i></span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-4 deleteJurusan" data-id="<?= $value['id'] ?>">
+                                                        <div class="col-lg-4 col-md-6 col-sm-6 deleteJurusan" data-id="<?= $value['id'] ?>">
                                                             <a href="" class="deleteLinkJurusan">
                                                                 <div class="btn btn-danger">
                                                                     <span style="color: white;"> <i class="fa-solid fa-trash"></i></span>
