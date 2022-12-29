@@ -28,7 +28,6 @@ class PencariMagangControllerApi
         $this->serviceLowonganMagang = new LowonganMagangService();
     }
 
-
     function findAll(): void
     {
         //get dari database dan masukan kedalam array , gunakan fetch_assoc

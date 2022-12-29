@@ -2,8 +2,6 @@
 
 namespace LearnPhpMvc\controller;
 
-require_once __DIR__ ."/../../../vendor/autoload.php";
-use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use LearnPhpMvc\APP\View;
@@ -16,7 +14,6 @@ use LearnPhpMvc\Session\MySession;
 class LoginController
 {
     static public PenyediaMagangService $service;
-
 
     public function __construct()
     {
