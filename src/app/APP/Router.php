@@ -15,7 +15,6 @@ class Router
 
     public static function add(string $method, string $path, string $controller, string $function): void
     {
-
         if (substr($path, -1) == "/") {
             $path = substr($path, 0, -1);
         }
@@ -86,8 +85,5 @@ class Router
         </body>
 
         </html>
-
-
-
 <?php }
 }
