@@ -37,6 +37,7 @@ class PencariMagangService
     private PenghargaanRepository $penghargaanRepository;
 
 
+
     private OtpService $otpService;
     public function __construct(PencariMagangRepository $pencariMagangRepository, SkillRepository $skillRepository)
     {
@@ -784,21 +785,28 @@ HTML;
         $pencariMagang->setId($id);
         $response = array();
         $responseFindById = $this->pencariMagangRepository->findById($id);
+        $responseUsername = $this->pencariMagangRepository->findByUsername($username);
         if ($responseFindById != null) {
             if (password_verify($password, $responseFindById->getPassword()) && $username == $responseFindById->getUsername()) {
                 http_response_code(401);
                 $response['status'] = 'failed';
                 $response['message'] = 'gagal memperbarui Data Keamanan , tidak ada perubahan';
             } else {
-                $responseUpdate =  $this->pencariMagangRepository->updateKeamanan($pencariMagang);
-                if ($responseUpdate != null) {
-                    http_response_code(200);
-                    $response['status'] = 'oke';
-                    $response['message'] = "berhasil memperbarui keamanan user";
-                } else {
+                if ($responseUsername['status'] == 'oke') {
                     http_response_code(400);
                     $response['status'] = 'failed';
-                    $response['message'] = 'gagal memperbarui kemanan user ';
+                    $response['message'] = 'gagal memperbarui username . username sudah digunakan';
+                } else {
+                    $responseUpdate =  $this->pencariMagangRepository->updateKeamanan($pencariMagang);
+                    if ($responseUpdate != null) {
+                        http_response_code(200);
+                        $response['status'] = 'oke';
+                        $response['message'] = "berhasil memperbarui keamanan user";
+                    } else {
+                        http_response_code(400);
+                        $response['status'] = 'failed';
+                        $response['message'] = 'gagal memperbarui kemanan user ';
+                    }
                 }
             }
         } else {
@@ -1107,7 +1115,7 @@ HTML;
     }
 
 
-    public function updatePassword($password, $username):array
+    public function updatePassword($password, $username): array
     {
         $response = [];
         $pencari = new PencariMagang();
@@ -1115,15 +1123,27 @@ HTML;
         $pencari->setPassword($hash);
         $pencari->setUsername($username);
         $isUpdate = $this->pencariMagangRepository->updatePassword($pencari);
-        if($isUpdate){
+        if ($isUpdate) {
             http_response_code(200);
             $response['status'] = 'oke';
             $response['message'] = 'Password berhasil diperbarui , silahkan login';
-        }else{
+        } else {
             http_response_code(500);
             $response['status'] = 'failed';
             $response['message'] = 'password gagal diperbarui , terjadi kesalahan server';
-        }   
+        }
+        return $response;
+    }
+
+
+    public function showJurusanUser($id)
+    {
+        $response = $this->jurusanRepository->showJurusanUser($id);
+        if ($response['status'] == 'oke') {
+            http_response_code(200);
+        } else {
+            http_response_code(400);
+        }
         return $response;
     }
 }

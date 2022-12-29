@@ -159,4 +159,5 @@ Router::add("GET", "/admin/kategori/delete/([0-9a-zA-Z]*)", AdminController::cla
 Router::add("POST", "/api/pencarimagang/sendotp", PencariMagangControllerApi::class, "sendOtp");
 Router::add("POST", "/api/pencarimagang/otp/veriv", PencariMagangControllerApi::class, "verivikasiOtp");
 Router::add("POST", "/api/pencarimagang/resetpassword", PencariMagangControllerApi::class, "updatePassword");
+Router::add("POST" , "/api/pencarimagang/showjurusan" , PencariMagangControllerApi::class , "showJurusanUser");
 Router::run();
