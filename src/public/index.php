@@ -15,6 +15,7 @@ use LearnPhpMvc\controller\api\PenghargaanControllerApi;
 use LearnPhpMvc\controller\api\PenyediaMagangControllerApi;
 use LearnPhpMvc\controller\api\SekolahControllerApi;
 use LearnPhpMvc\controller\api\SkillController;
+use LearnPhpMvc\controller\api\TestController;
 use LearnPhpMvc\controller\CompanyController;
 use LearnPhpMvc\controller\HomeController;
 use LearnPhpMvc\controller\ProductController;
@@ -160,4 +161,5 @@ Router::add("POST", "/api/pencarimagang/sendotp", PencariMagangControllerApi::cl
 Router::add("POST", "/api/pencarimagang/otp/veriv", PencariMagangControllerApi::class, "verivikasiOtp");
 Router::add("POST", "/api/pencarimagang/resetpassword", PencariMagangControllerApi::class, "updatePassword");
 Router::add("POST" , "/api/pencarimagang/showjurusan" , PencariMagangControllerApi::class , "showJurusanUser");
+Router::add("GET", "/test/show", TestController::class, "index");
 Router::run();
