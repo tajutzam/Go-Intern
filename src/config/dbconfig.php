@@ -9,7 +9,7 @@ namespace LearnPhpMvc\config;
                 "test" =>[
                     "url" => "mysql:host=localhost:3306;dbname=gointern_db_test",
                     "username"=>"root",
-                    "password"=>""
+                    "password"=>"root"
                 ],
                 "prod"=>[
                     "url" => "mysql:host=localhost:3306;dbname=gointern_db_test",
