@@ -13,12 +13,8 @@ use LearnPhpMvc\dto\LoginRequest;
 use LearnPhpMvc\helper\ModelMapper;
 use LearnPhpMvc\service\PenyediaMagangService;
 use LearnPhpMvc\Session\MySession;
-
 class LoginController
 {
-
-
-
     static public PenyediaMagangService $service;
 
 
