@@ -7,12 +7,12 @@ class Url
     static function BaseUrl(): string
     {
         // ngrok url
-        $url = "http://143.198.198.61";
+        $url = "http://localhost:8081";
         return $url;
     }
     static function BaseApi() : string{
         // ngrok api
-        $url = "http://143.198.198.61";
+        $url = "http://localhost:8080";
         // $url = "http//localhost:8080";
         return $url;
     }
