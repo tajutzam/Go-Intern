@@ -3,6 +3,7 @@
 namespace LearnPhpMvc\repository;
 
 use LearnPhpMvc\Domain\Jurusan;
+use PDO;
 
 class JurusanRepository
 {
@@ -109,10 +110,26 @@ class JurusanRepository
         }
     }
 
-    public function countJurusan():int
+    public function countJurusan(): int
     {
         $query = "select * from jurusan";
         $PDOStatemetn = $this->connection->query($query);
         return $PDOStatemetn->rowCount();
+    }
+
+    public function showJurusanUser($id): array
+    {
+        $response = [];
+        $query = "SELECT jurusan.jurusan , pencari_magang.id from pencari_magang join jurusan on jurusan.id = pencari_magang.jurusan where pencari_magang.id = ?";
+        $PDOStatement = $this->connection->prepare($query);
+        $PDOStatement->execute([$id]);
+        if ($PDOStatement->rowCount() > 0) {
+            $response['status'] = 'oke';
+            $row = $PDOStatement->fetch(PDO::FETCH_ASSOC);
+            $response['jurusan'] =  $row['jurusan']; 
+        } else {
+            $response['status'] = 'failed';
+        }
+        return $response;
     }
 }
