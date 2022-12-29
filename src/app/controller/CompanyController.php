@@ -14,14 +14,12 @@ class CompanyController
         ];
         View::render("/company/index", $model, "getFooter");
     }
-
     function detailCompany()
     {
         $model = [
             'title' => "Belajar php mvc",
             'content' => "Go Intern"
         ];
-
         View::render("/company/detail_company", $model, "getFooter");
     }
 }
