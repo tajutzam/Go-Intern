@@ -19,6 +19,6 @@ class Url
 
     static function domain()
     {
-        return "http://143.198.198.61";
+        return "143.198.198.61";
     }
 }
