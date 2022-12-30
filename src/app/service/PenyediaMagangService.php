@@ -140,7 +140,7 @@ class PenyediaMagangService
                 $mail->setFrom($email_pengirim, $nama_pengirim);
                 $mail->addAddress($email_penerima);
                 $mail->Subject = $subjek;
-                $expire_stamp = date('Y-m-d H:i:s', strtotime("+5 min"));
+                $expire_stamp = date('Y-m-d H:i:s', strtotime("+15 min"));
                 $now_stamp = date("Y-m-d H:i:s");
                 // link aktivate berdasarkan token
                 $token = $byUsername[0]['token'];
