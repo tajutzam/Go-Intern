@@ -1,12 +1,12 @@
 # GO INTERN
  #### Sistem GO INTERN adalah sistem informasi berbasis website untuk Menghubungkan Penyedia magang atau perusahaan perusahaan yang membutuhkan Tenaga Magang 
 
- ![alt](https://ibb.co/LvJQkyP)
+ ![landing page](https://i.ibb.co/ZNYHLrJ/Screenshot-from-2022-12-31-01-19-25.png)
 
 
  **base url**
  ### 143.198.198.61 // vps 
- 
+
 - Penyedia Magang
     #### Penyedia magang Dapat menambahkan data magang mengedit data magang dan menghapus data magang serta dapat Menerima lamaran yang masuk
 - User Mobile
