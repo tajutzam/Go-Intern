@@ -13,6 +13,12 @@ class Router
 {
     private static array $routes = [];
 
+    public function __construct()
+    {
+        // set time zone
+        date_default_timezone_set("Asia/jakarta");
+    }
+
     public static function add(string $method, string $path, string $controller, string $function): void
     {
         if (substr($path, -1) == "/") {
