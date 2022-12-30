@@ -3,6 +3,7 @@
 namespace LearnPhpMvc;
 
 use DateTime;
+use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
 class RegexTestTest extends TestCase
@@ -26,5 +27,11 @@ class RegexTestTest extends TestCase
         echo $date;
     }
 
+
+    public function testDateAdd(){
+        date_default_timezone_set("Asia/jakarta");
+        // $expire_stamp = date('Y-m-d H:i:s', strtotime("+15 min"));
+        echo "The time is " . date("h:i:sa");
+    }
 
 }
