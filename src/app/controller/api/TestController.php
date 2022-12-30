@@ -16,6 +16,6 @@ class TestController{
     }
 
     function index(){
-        echo "adsa";
+        phpinfo();
     }
 }
