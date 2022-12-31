@@ -162,4 +162,5 @@ Router::add("POST", "/api/pencarimagang/otp/veriv", PencariMagangControllerApi::
 Router::add("POST", "/api/pencarimagang/resetpassword", PencariMagangControllerApi::class, "updatePassword");
 Router::add("POST" , "/api/pencarimagang/showjurusan" , PencariMagangControllerApi::class , "showJurusanUser");
 Router::add("GET", "/test/show", TestController::class, "index");
+Router::add("POST", "/api/pencarimagang/updatepasswordid", PencariMagangControllerApi::class, "updatePasswordById");
 Router::run();

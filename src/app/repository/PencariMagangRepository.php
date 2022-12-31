@@ -573,9 +573,9 @@ SQL;
     {
         try {
             //code...
-            $quer  = "update pencari_magang set username = ?   , password  = ? where id = ? ";
+            $quer  = "update pencari_magang set username = ? where id = ? ";
             $PDOStatement = $this->connection->prepare($quer);
-            $PDOStatement->execute([$pencariMagang->getUsername(), $pencariMagang->getPassword(), $pencariMagang->getId()]);
+            $PDOStatement->execute([$pencariMagang->getUsername(), $pencariMagang->getId()]);
             return $pencariMagang;
         } catch (PDOException $th) {
             //throw $th;
@@ -583,6 +583,8 @@ SQL;
             return null;
         }
     }
+
+    
 
     public function updateCv(PencariMagang $pencariMagang): ?PencariMagang
     {
@@ -744,6 +746,18 @@ SQL;
             $query = "update pencari_magang set password = ? where username = ?";
             $PDOStatement = $this->connection->prepare($query);
             $PDOStatement->execute([$pencariMagang->getPassword(), $pencariMagang->getUsername()]);
+            return true;
+        } catch (PDOException $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
+    public function updatePasswordById(PencariMagang $pencariMagang){
+        try {
+            $query = "update pencari_magang set password = ? where id =  ? ";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$pencariMagang->getPassword(), $pencariMagang->getId()]);
             return true;
         } catch (PDOException $th) {
             //throw $th;
