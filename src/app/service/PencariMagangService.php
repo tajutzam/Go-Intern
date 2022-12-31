@@ -782,7 +782,6 @@ HTML;
         $hashed = password_hash($password, PASSWORD_BCRYPT);
         $pencariMagang = new PencariMagang();
         $pencariMagang->setUsername($username);
-        $pencariMagang->setPassword($hashed);
         $pencariMagang->setId($id);
         $response = array();
         $responseFindById = $this->pencariMagangRepository->findById($id);
@@ -802,11 +801,11 @@ HTML;
                     if ($responseUpdate != null) {
                         http_response_code(200);
                         $response['status'] = 'oke';
-                        $response['message'] = "berhasil memperbarui keamanan user";
+                        $response['message'] = "berhasil memperbarui Username user";
                     } else {
                         http_response_code(400);
                         $response['status'] = 'failed';
-                        $response['message'] = 'gagal memperbarui kemanan user ';
+                        $response['message'] = 'gagal memperbarui Username user ';
                     }
                 }
             }
@@ -817,6 +816,7 @@ HTML;
         }
         return $response;
     }
+
 
     public function updateCv($files, $username): array
     {
@@ -841,7 +841,7 @@ HTML;
         if ($responseFindById['status'] == 'oke') {
             if ($responseFindCv->getCv() != "belum ada cv") {
                 // ada data cv di dalam server , delete
-                if (unlink(__DIR__ . "/../../public/dokuments/cv/" . $responseFindCv->getCv())) {
+                if (unlink(__DIR__ . "/../../public/dokuments/cv" . $responseFindCv->getCv())) {
                     $responseMove = MoveFile::moveFilePenyedia($tmp_name, $fullname, "cv");
                     $responseUpdate = $this->pencariMagangRepository->updateCv($pencariMagang);
                     if ($responseUpdate != null) {
@@ -1144,6 +1144,39 @@ HTML;
             http_response_code(200);
         } else {
             http_response_code(400);
+        }
+        return $response;
+    }
+
+    public function updatePasswordById($password, $id) : array
+    {
+        $response = [];
+        $responseFind = $this->pencariMagangRepository->findById($id);
+        if ($responseFind != null) {
+            if (password_verify($password, $responseFind->getPassword())) {
+                http_response_code(401);
+                $response['status'] = 'failed';
+                $response['message'] = 'tidak ada perubahan pada password';
+            } else {
+                $hash = password_hash($password, PASSWORD_BCRYPT);
+                $pencariMagang = new PencariMagang();
+                $pencariMagang->setPassword($hash);
+                $pencariMagang->setId($id);
+                $responseUpdate =  $this->pencariMagangRepository->updatePasswordById($pencariMagang);
+                if($responseUpdate){
+                    http_response_code(200);
+                    $response['status'] = 'oke';
+                    $response['message'] = 'berhasil memperbarui password';
+                }else{
+                    http_response_code(400);
+                    $response['status'] = 'oke';
+                    $response['message'] = 'Gagal memperbarui password';
+                }
+            }
+        } else {
+            http_response_code(404);
+            $response['status'] = 'failed';
+            $response['message'] = 'data user tidak ditemukan';
         }
         return $response;
     }
