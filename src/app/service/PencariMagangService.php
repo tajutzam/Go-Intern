@@ -841,7 +841,7 @@ HTML;
         if ($responseFindById['status'] == 'oke') {
             if ($responseFindCv->getCv() != "belum ada cv") {
                 // ada data cv di dalam server , delete
-                if (unlink(__DIR__ . "/../../public/dokuments/cv/" . $responseFindCv->getCv())) {
+                if (unlink(__DIR__ . "/../../public/dokuments/cv" . $responseFindCv->getCv())) {
                     $responseMove = MoveFile::moveFilePenyedia($tmp_name, $fullname, "cv");
                     $responseUpdate = $this->pencariMagangRepository->updateCv($pencariMagang);
                     if ($responseUpdate != null) {
