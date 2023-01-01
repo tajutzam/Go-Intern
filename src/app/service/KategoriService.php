@@ -52,21 +52,17 @@ class KategoriService
         $response = [];
         $findId = $this->repository->findById($id);
         $findKategori = $this->repository->findByKategori($kategorikey);
-        if ($findKategori['status'] == 'oke') {
-            $response['status'] = 'failed';
-            $response['message'] = 'gagal  memperbarui kategori , terdapat kategori dengan nama yang sama';
-        } else {
-            if ($findId != null) {
-                $kategoriLama = $findId->getKategori();
-                $fotoLama = $findId->getFoto();
-                if ($kategoriLama == $kategorikey && $size == 0) {
-                    $response['status'] = 'failed';
-                    $response['message'] = 'tidak ada perubahan kategori';
-                } else {
-                    $kategori = new Kategori();
-                    $kategori->setKategori($kategorikey);
-                    $kategori->setFoto($foto);
-                    $kategori->setId($id);
+        if ($findId != null) {
+            $kategoriLama = $findId->getKategori();
+            if ($kategoriLama == $kategorikey && $size == 0) {
+                $response['status'] = 'failed';
+                $response['message'] = 'tidak ada perubahan kategori';
+            } else {
+                $kategori = new Kategori();
+                $kategori->setKategori($kategorikey);
+                $kategori->setFoto($foto);
+                $kategori->setId($id);
+                if ($size != 0) {
                     $responseUpdate =  $this->repository->updateKategori($kategori);
                     if ($responseUpdate != null) {
                         $responseMove = MoveFile::moveFilePenyedia($tmpName, $foto, "kategori");
@@ -81,16 +77,80 @@ class KategoriService
                         $response['status'] = 'failed';
                         $response['message'] = 'gagal memperbarui kategori';
                     }
-                    //}
+                } else {
+                    if ($findKategori['status'] == 'oke') {
+                        foreach ($findKategori['body'] as $key => $value) {
+                            # code...
+                            if ($value['kategori'] === $kategorikey) {
+                                $response['status'] = 'failed';
+                                $response['message'] = 'gagal  memperbarui kategori , terdapat kategori dengan nama yang sama';
+                                break;
+                            } else {
+                                if ($size == 0) {
+                                    $responseUpdateNama =  $this->repository->updateKategoriNama($kategori);
+                                    if ($responseUpdateNama != null) {
+                                        $response['status'] = 'oke';
+                                        $response['message'] = 'Kategori berhasil diperbarui';
+                                    } else {
+                                        $response['status'] = 'Failed';
+                                        $response['message'] = 'Kategori gagal diperbarui';
+                                    }
+                                    break;
+                                } else {
+                                    $responseUpdate =  $this->repository->updateKategori($kategori);
+                                    if ($responseUpdate != null) {
+                                        $responseMove = MoveFile::moveFilePenyedia($tmpName, $foto, "kategori");
+                                        if ($responseMove['status'] == 'oke') {
+                                            $response['status'] = 'oke';
+                                            $response['message'] = 'berhasil memperbarui kategori';
+                                            
+                                        } else {
+                                            $response['status'] = 'failed';
+                                            $response['message'] = 'berhasil memperbarui kategori , gagal menghapus foto di server';
+                                        }
+                                    } else {
+                                        $response['status'] = 'failed';
+                                        $response['message'] = 'gagal memperbarui kategori';
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        if ($size == 0) {
+                            $responseUpdateNama =  $this->repository->updateKategoriNama($kategori);
+                            if ($responseUpdateNama != null) {
+                                $response['status'] = 'oke';
+                                $response['message'] = 'Kategori berhasil diperbarui';
+                            } else {
+                                $response['status'] = 'Failed';
+                                $response['message'] = 'Kategori gagal diperbarui';
+                            }
+                        } else {
+                            $responseUpdate =  $this->repository->updateKategori($kategori);
+                            if ($responseUpdate != null) {
+                                $responseMove = MoveFile::moveFilePenyedia($tmpName, $foto, "kategori");
+                                if ($responseMove['status'] == 'oke') {
+                                    $response['status'] = 'oke';
+                                    $response['message'] = 'berhasil memperbarui kategori';
+                                } else {
+                                    $response['status'] = 'failed';
+                                    $response['message'] = 'berhasil memperbarui kategori , gagal menghapus foto di server';
+                                }
+                            } else {
+                                $response['status'] = 'failed';
+                                $response['message'] = 'gagal memperbarui kategori';
+                            }
+                        }
+                    }
                 }
-            } else {
-                $response['status'] = 'failed';
-                $response['message'] = 'gagal memperbarui kategori data kategori tidak ditemukan';
             }
+        } else {
+            $response['status'] = 'failed';
+            $response['message'] = 'gagal memperbarui kategori data kategori tidak ditemukan';
         }
         return $response;
     }
-
     public function deleteKategori($id): array
     {
         $response = [];
@@ -111,7 +171,8 @@ class KategoriService
         return $response;
     }
 
-    public function count(){
+    public function count()
+    {
         return $this->repository->countKategori();
     }
 }
