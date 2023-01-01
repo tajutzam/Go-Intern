@@ -46,7 +46,7 @@ use LearnPhpMvc\config\Url;
             </div>
         </div>
         <div class="input-group mb-4">
-            <input type="password" name="konfirmasiPasswordRegister" class="input form-control" id="password2" placeholder="Password" required aria-label="password" aria-describedby="basic-addon1">
+            <input type="password" name="konfirmasiPasswordRegister" class="input form-control" id="password2" placeholder="Konfirmasi Password" required aria-label="password" aria-describedby="basic-addon1">
             <div class="input-group-append">
                 <span class="input-group-text" onclick="showHide2();">
                     <i class="fas fa-eye" id="show_eye1"><img src=<?= Url::BaseUrl() . "/assets/eye.svg" ?> alt="" srcset=""></i>
