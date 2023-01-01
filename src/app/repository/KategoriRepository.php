@@ -56,7 +56,6 @@ class KategoriRepository
         $response = [];
         $query = "select * from kategori where kategori = ?";
         $PDOSTatement = $this->connection->prepare($query);
-
         $PDOSTatement->execute([$kategori]);
         if ($PDOSTatement->rowCount() > 0) {
             $response['status'] = 'oke';
@@ -109,6 +108,18 @@ class KategoriRepository
         }
     }
 
+    public function updateKategoriNama(Kategori $kategori): ?Kategori
+    {
+        try {
+            $query = "update kategori set kategori = ? where id  = ?";
+            $PDOStatement = $this->connection->prepare($query);
+            $PDOStatement->execute([$kategori->getKategori(), $kategori->getId()]);
+            return $kategori;
+        } catch (\PDOException $th) {
+            //throw $th;
+            return null;
+        }
+    }
     public function deleteById($id): bool
     {
         try {
